@@ -254,6 +254,79 @@ footer a:hover{text-decoration:underline}
   .na-cover{width:120px}
   .shelf-hero{padding:36px 0 24px}
 }
+
+/* ══════════════ PDF READER ══════════════ */
+.pdf-layout{display:grid;grid-template-columns:272px 1fr;height:calc(100vh - 62px);overflow:hidden}
+.pdf-sidebar{overflow:hidden;border-right:1px solid var(--line);background:var(--card);display:flex;flex-direction:column}
+.pdf-sb-head{padding:16px 18px 12px;border-bottom:1px solid var(--line);flex-shrink:0}
+.pdf-sb-title{font-family:"Tiro Devanagari Hindi",serif;font-size:16px;color:var(--ink);margin:0 0 3px;line-height:1.2}
+.pdf-sb-sub{font-size:13px;color:var(--soft);margin:0}
+.pdf-sb-filter{padding:10px 14px;border-bottom:1px solid var(--line);flex-shrink:0}
+.pdf-sb-filter select{width:100%;font-size:13.5px;padding:6px 10px;border:1px solid var(--line);
+  border-radius:8px;background:var(--paper);color:var(--ink);font-family:"Noto Serif Devanagari",serif}
+.pdf-toc{list-style:none;margin:0;padding:6px 0;overflow-y:auto;flex:1;
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.pdf-tg{padding:10px 16px 4px;font-size:11px;letter-spacing:.14em;color:var(--gold);
+  text-transform:uppercase;font-family:"Noto Serif Devanagari",serif;flex-shrink:0}
+.pdf-ti{display:flex;align-items:flex-start;gap:10px;padding:9px 14px 9px 12px;
+  cursor:pointer;border:none;background:none;width:100%;text-align:left;
+  border-left:3px solid transparent;transition:.15s;color:inherit;font-family:inherit}
+.pdf-ti:hover{background:var(--faint)}
+.pdf-ti[aria-current="true"]{background:rgba(193,54,43,.07);border-left-color:var(--kumkum)}
+.pdf-ti-body{flex:1;min-width:0}
+.pdf-ti-title{font-size:14px;color:var(--ink);line-height:1.35;font-family:"Noto Serif Devanagari",serif}
+.pdf-ti-auth{font-size:12px;color:var(--soft);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pdf-ti-pg{font-size:13px;color:var(--gold);flex-shrink:0;font-variant-numeric:tabular-nums;padding-top:1px}
+
+.pdf-main{display:flex;flex-direction:column;overflow:hidden}
+.pdf-bar{display:flex;align-items:center;gap:8px;padding:9px 14px;
+  border-bottom:1px solid var(--line);background:var(--card);flex-shrink:0;flex-wrap:wrap}
+.pdf-back{background:none;border:1px solid var(--line);color:var(--soft);
+  font-size:13.5px;padding:5px 12px;border-radius:6px;cursor:pointer;
+  font-family:"Noto Serif Devanagari",serif;transition:.15s;white-space:nowrap}
+.pdf-back:hover{border-color:var(--ink);color:var(--ink)}
+.pdf-pgnav{display:flex;align-items:center;gap:5px;margin-left:auto}
+.pdf-pgbtn{width:30px;height:30px;border-radius:7px;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);cursor:pointer;font-size:17px;
+  display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1}
+.pdf-pgbtn:hover:not(:disabled){background:var(--indigo);color:#fff;border-color:var(--indigo)}
+.pdf-pgbtn:disabled{opacity:.28;cursor:default}
+.pdf-pginput{width:46px;text-align:center;border:1px solid var(--line);border-radius:6px;
+  padding:5px 4px;font-size:14px;background:var(--paper);color:var(--ink);
+  font-family:"Noto Serif Devanagari",serif}
+.pdf-pgtotal{font-size:13.5px;color:var(--soft);white-space:nowrap}
+.pdf-zoom{display:flex;align-items:center;gap:5px;margin-left:10px}
+.pdf-zbtn{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);cursor:pointer;font-size:15px;
+  display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1}
+.pdf-zbtn:hover{background:var(--paper2)}
+.pdf-zlabel{font-size:12.5px;color:var(--soft);min-width:38px;text-align:center}
+.pdf-fitbtn{font-size:11px;padding:0 8px;width:auto;letter-spacing:.04em}
+
+.pdf-canvas-area{flex:1;overflow:auto;background:var(--paper2);display:flex;
+  justify-content:center;align-items:flex-start;padding:28px 20px}
+.pdf-page-wrap{box-shadow:0 6px 32px -8px rgba(36,31,26,.6);background:#fff;line-height:0;flex-shrink:0}
+.pdf-page-wrap canvas{display:block}
+.pdf-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:18px;color:var(--soft);font-size:15px;min-height:300px}
+.pdf-spinner{width:34px;height:34px;border:3px solid var(--line);
+  border-top-color:var(--kumkum);border-radius:50%;animation:pdfSpin .65s linear infinite}
+@keyframes pdfSpin{to{transform:rotate(360deg)}}
+.pdf-err{text-align:center;color:var(--kumkum);font-size:15px;padding:48px 24px}
+.pdf-err .ei{font-size:42px;margin-bottom:14px;opacity:.5}
+
+@media(max-width:800px){
+  .pdf-layout{grid-template-columns:1fr;grid-template-rows:200px 1fr}
+  .pdf-sidebar{border-right:none;border-bottom:1px solid var(--line)}
+  .pdf-toc{max-height:120px}
+  .pdf-sb-filter{display:none}
+  .pdf-zoom{display:none}
+}
+@media(max-width:480px){
+  .pdf-layout{grid-template-rows:160px 1fr}
+  .pdf-bar{padding:7px 10px;gap:5px}
+  .pdf-canvas-area{padding:16px 8px}
+}
 </style>
 </head>
 <body>
@@ -347,7 +420,11 @@ const VOLUMES = [
 /* ════════════════════════════════════════════════════
    STATE
    ════════════════════════════════════════════════════ */
-let S = {view:'shelf', vol:10, itemId:0, authorIdx:0, showColophon:false};
+let S = {view:'shelf', vol:10, itemId:0, authorIdx:0, showColophon:false, pdfPage:1};
+
+/* PDF.js runtime state (lives outside S — heavy objects, not serialisable) */
+let _pdf=null, _pdfRendering=false, _pdfPending=null;
+let _pdfZoom='fit', _pdfTotal=0, _pdfForVol=null;
 
 /* ════════════════════════════════════════════════════
    HELPERS
@@ -397,11 +474,17 @@ function coverImg(vol, attrs){
    ROUTING
    ════════════════════════════════════════════════════ */
 function go(view, params){
+  // Remove PDF keyboard listener when leaving pdf view
+  if(S.view==='pdf' && view!=='pdf') document.removeEventListener('keydown',_pdfKey);
   Object.assign(S, {view}, params||{});
   if(view==='shelf') S.showColophon=false;
   if(view==='volume'){
     if(!('itemId' in (params||{}))) S.itemId=0;
     S.showColophon=false;
+  }
+  if(view==='pdf'){
+    if(!('pdfPage' in (params||{}))) S.pdfPage=1;
+    document.addEventListener('keydown',_pdfKey);
   }
   if(view==='contributors'){
     const vol = volByNum(S.vol);
@@ -413,7 +496,7 @@ function go(view, params){
   }
   _updateNav();
   render();
-  window.scrollTo({top:0,behavior:'smooth'});
+  if(view!=='pdf') window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function goContrib(){
@@ -479,7 +562,7 @@ function viewShelf(){
         <p class="stats">${featStats}</p>
         <div class="btn-row">
           <button class="btn" onclick="go('volume',{vol:${latest.vol}})">अङ्क खोल्नुहोस् →</button>
-          <a class="btn-outline" href="${latest.pdf}" target="_blank" rel="noopener">PDF डाउनलोड</a>
+          <button class="btn-outline" onclick="go('pdf',{vol:${latest.vol},pdfPage:1})">PDF पढ्नुहोस्</button>
         </div>
       </div>
     </div>
@@ -535,8 +618,8 @@ function viewVolume(){
       </div>
       <div class="pdf-view">
         <div class="pdf-icon">📄</div>
-        <p class="pdf-note">यो रचना मूल अङ्कको <b>पृष्ठ ${deva(it.page)}</b> बाट सुरु हुन्छ। पूरा पाठ पढ्न PDF खोल्नुहोस्।</p>
-        <a class="pdfbtn" href="${vol.pdf}#page=${it.page}" target="_blank" rel="noopener">PDF मा खोल्नुहोस् — पृष्ठ ${deva(it.page)}</a>
+        <p class="pdf-note">यो रचना मूल अङ्कको <b>पृष्ठ ${deva(it.page)}</b> बाट सुरु हुन्छ। पूरा पाठ पढ्न PDF रिडरमा खोल्नुहोस्।</p>
+        <button class="pdfbtn" onclick="go('pdf',{vol:${vol.vol},pdfPage:${it.page}})">PDF रिडरमा खोल्नुहोस् — पृष्ठ ${deva(it.page)} →</button>
       </div>
       <div class="pager">
         <button class="pgb" ${prev?'':'disabled'} onclick="go('volume',{vol:${vol.vol},itemId:${S.itemId-1}})">
@@ -556,7 +639,7 @@ function viewVolume(){
         <div class="nm deva-display">${vol.name}</div>
         <div class="meta">${deva(pieceCount)} रचना · ${deva(contribCount)} योगदानकर्ता${vol.pages?` · ${deva(vol.pages)} पृष्ठ`:''}</div>
         <div class="toc-actions">
-          <a class="pdfbtn" style="font-size:13px;padding:8px 16px" href="${vol.pdf}" target="_blank" rel="noopener">PDF डाउनलोड</a>
+          <button class="pdfbtn" style="font-size:13px;padding:8px 16px" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् →</button>
           <button class="btn-outline" style="font-size:13px;padding:8px 16px" onclick="go('contributors',{vol:${vol.vol},authorIdx:0})">योगदानकर्ता</button>
         </div>
         <div class="toc-label">अनुक्रमणिका</div>
@@ -583,7 +666,7 @@ function viewVolume(){
       <p class="na-label" style="margin-top:2px">${vol.bday}</p>
       <p class="na-desc">भगवान् श्री सत्य साई बाबाका भक्तहरूका रचनाहरूको वार्षिक स्मारिका — साई देखि साई सम्म, पुट्टपर्ती।</p>
       <div class="btn-row">
-        <a class="pdfbtn" href="${vol.pdf}" target="_blank" rel="noopener">PDF डाउनलोड</a>
+        <button class="pdfbtn" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् →</button>
       </div>
       <div class="na-soon">
         <span class="om deva-display">ॐ</span>
@@ -652,13 +735,228 @@ function viewContributors(){
 }
 
 /* ════════════════════════════════════════════════════
+   VIEW: PDF READER
+   ════════════════════════════════════════════════════ */
+function viewPdfReader(){
+  const vol = volByNum(S.vol) || VOLUMES[VOLUMES.length-1];
+  const items = vol.items.filter(x=>!x.front);
+
+  // Build author filter options
+  const authors = [...new Set(items.map(x=>x.author))].sort((a,b)=>a.localeCompare(b,'hi'));
+  const filterOpts = `<option value="">— सबै योगदानकर्ता —</option>`
+    + authors.map(a=>`<option value="${a}">${a}</option>`).join('');
+
+  // Build TOC list (all items by genre groups)
+  let tocRows = '';
+  if(items.length){
+    const genres = [...new Set(items.map(x=>x.genre))];
+    genres.forEach(g => {
+      tocRows += `<li class="pdf-tg">${g}</li>`;
+      items.filter(x=>x.genre===g).forEach(it => {
+        tocRows += `<li><button class="pdf-ti" id="ptoc-${it.page}" data-pg="${it.page}"
+          onclick="pdfJump(${it.page})" oncontextmenu="return false">
+          <div class="pdf-ti-body">
+            <div class="pdf-ti-title">${it.title}</div>
+            <div class="pdf-ti-auth">${it.author}${it.place?' · '+it.place:''}</div>
+          </div>
+          <span class="pdf-ti-pg">${deva(it.page)}</span>
+        </button></li>`;
+      });
+    });
+  } else {
+    tocRows = `<li style="padding:18px 16px;font-size:14px;color:var(--soft)">
+      यस अङ्कको विषय–सूची अझै थपिएको छैन।<br>पृष्ठ नेभिगेसन प्रयोग गर्नुहोस्।</li>`;
+  }
+
+  return `<div class="pdf-layout" id="pdf-layout">
+    <nav class="pdf-sidebar" aria-label="अनुक्रमणिका">
+      <div class="pdf-sb-head">
+        <p class="pdf-sb-title deva-display">${vol.name}</p>
+        <p class="pdf-sb-sub">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)} · ${vol.year}</p>
+      </div>
+      ${items.length>1?`<div class="pdf-sb-filter">
+        <select onchange="pdfFilterAuthor(this.value)" aria-label="लेखक अनुसार खोज्नुहोस्">${filterOpts}</select>
+      </div>`:''}
+      <ul class="pdf-toc" id="pdf-toc">${tocRows}</ul>
+    </nav>
+
+    <div class="pdf-main">
+      <div class="pdf-bar">
+        <button class="pdf-back" onclick="go('volume',{vol:${vol.vol}})">← अङ्क विवरण</button>
+        <div class="pdf-pgnav">
+          <button class="pdf-pgbtn" id="pprev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ">&#8249;</button>
+          <input class="pdf-pginput" id="ppg" type="number" min="1" value="1"
+            onchange="pdfJump(+this.value)" onkeydown="if(event.key==='Enter')pdfJump(+this.value)"
+            aria-label="पृष्ठ सङ्ख्या">
+          <span class="pdf-pgtotal">/ <span id="ptotal">—</span></span>
+          <button class="pdf-pgbtn" id="pnext" onclick="pdfNext()" disabled title="अर्को पृष्ठ">&#8250;</button>
+        </div>
+        <div class="pdf-zoom">
+          <button class="pdf-zbtn" onclick="pdfZoomOut()" title="सानो">−</button>
+          <span class="pdf-zlabel" id="pzlbl">—</span>
+          <button class="pdf-zbtn" onclick="pdfZoomIn()" title="ठूलो">+</button>
+          <button class="pdf-zbtn pdf-fitbtn" onclick="pdfFit()" title="पृष्ठ अनुसार">↔ FIT</button>
+        </div>
+      </div>
+      <div class="pdf-canvas-area" id="pca" oncontextmenu="return false">
+        <div class="pdf-loading" id="ploading">
+          <div class="pdf-spinner"></div>
+          <span>पीडीएफ लोड हुँदैछ…</span>
+        </div>
+        <div class="pdf-page-wrap" id="ppwrap" style="display:none">
+          <canvas id="pcanvas" oncontextmenu="return false"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── PDF.js loader (lazy, once) ── */
+function _loadPdfJs(cb){
+  if(window.pdfjsLib){ cb(); return; }
+  const s=document.createElement('script');
+  s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  s.onload=()=>{
+    pdfjsLib.GlobalWorkerOptions.workerSrc=
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    cb();
+  };
+  s.onerror=()=>_pdfError('PDF.js लोड हुन सकेन।');
+  document.head.appendChild(s);
+}
+
+function _initPdfReader(){
+  const vol=volByNum(S.vol)||VOLUMES[VOLUMES.length-1];
+  if(!vol.pdf) return;
+  _loadPdfJs(()=>{
+    // Re-use already-loaded doc for same volume
+    if(_pdfForVol===vol.vol && _pdf){
+      _pdfApplyTotal(); _renderPage(S.pdfPage||1); return;
+    }
+    // Fetch as ArrayBuffer so the real URL never appears in browser UI
+    fetch(vol.pdf)
+      .then(r=>{ if(!r.ok) throw new Error('fetch failed'); return r.arrayBuffer(); })
+      .then(buf=>pdfjsLib.getDocument({data:buf}).promise)
+      .then(doc=>{
+        _pdf=doc; _pdfTotal=doc.numPages; _pdfForVol=vol.vol;
+        _pdfApplyTotal();
+        _renderPage(S.pdfPage||1);
+      })
+      .catch(()=>_pdfError('यो अङ्कको PDF हाल उपलब्ध छैन।'));
+  });
+}
+
+function _pdfApplyTotal(){
+  const el=document.getElementById('ptotal');
+  if(el) el.textContent=deva(_pdfTotal);
+}
+
+function _pdfError(msg){
+  const el=document.getElementById('ploading');
+  if(el) el.innerHTML=`<div class="pdf-err"><div class="ei">⚠</div>${msg}</div>`;
+}
+
+function _renderPage(num){
+  if(!_pdf) return;
+  if(_pdfRendering){ _pdfPending=num; return; }
+  num=Math.max(1,Math.min(num,_pdfTotal));
+  S.pdfPage=num;
+  const pg=document.getElementById('ppg');
+  const pb=document.getElementById('pprev');
+  const nb=document.getElementById('pnext');
+  if(pg) pg.value=num;
+  if(pb) pb.disabled=num<=1;
+  if(nb) nb.disabled=num>=_pdfTotal;
+  _pdfRendering=true;
+  _pdf.getPage(num).then(page=>{
+    // Compute scale
+    const area=document.getElementById('pca');
+    let sc=typeof _pdfZoom==='number'?_pdfZoom:1.5;
+    if(_pdfZoom==='fit'&&area){
+      const aw=area.clientWidth-56;
+      const ah=area.clientHeight-56;
+      const vp0=page.getViewport({scale:1});
+      sc=Math.min(aw/vp0.width, ah/vp0.height, 2.5);
+    }
+    const vp=page.getViewport({scale:sc});
+    const canvas=document.getElementById('pcanvas');
+    const wrap=document.getElementById('ppwrap');
+    const load=document.getElementById('ploading');
+    if(!canvas){_pdfRendering=false;return;}
+    canvas.width=vp.width; canvas.height=vp.height;
+    if(wrap) wrap.style.display='';
+    if(load) load.style.display='none';
+    const zlbl=document.getElementById('pzlbl');
+    if(zlbl) zlbl.textContent=Math.round(sc*100)+'%';
+    page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise.then(()=>{
+      _pdfRendering=false;
+      if(_pdfPending!==null){const p=_pdfPending;_pdfPending=null;_renderPage(p);}
+      _tocHighlight(num);
+    });
+  });
+}
+
+function _tocHighlight(pageNum){
+  const vol=volByNum(S.vol);
+  if(!vol||!vol.items.length) return;
+  const items=vol.items.filter(x=>!x.front);
+  let cur=null;
+  for(let i=items.length-1;i>=0;i--){ if(items[i].page<=pageNum){cur=items[i];break;} }
+  document.querySelectorAll('.pdf-ti').forEach(el=>el.setAttribute('aria-current','false'));
+  if(cur){
+    const el=document.getElementById(`ptoc-${cur.page}`);
+    if(el){el.setAttribute('aria-current','true');el.scrollIntoView({block:'nearest',behavior:'smooth'});}
+  }
+}
+
+/* ── Public PDF controls ── */
+function pdfJump(n){ if(!isNaN(n)) _renderPage(n); }
+function pdfPrev(){ if(S.pdfPage>1) _renderPage(S.pdfPage-1); }
+function pdfNext(){ if(S.pdfPage<_pdfTotal) _renderPage(S.pdfPage+1); }
+function pdfZoomIn(){ _pdfZoom=typeof _pdfZoom==='number'?Math.min(_pdfZoom+.2,3):1.7; _renderPage(S.pdfPage); }
+function pdfZoomOut(){ _pdfZoom=typeof _pdfZoom==='number'?Math.max(_pdfZoom-.2,.4):1.0; _renderPage(S.pdfPage); }
+function pdfFit(){ _pdfZoom='fit'; _renderPage(S.pdfPage); }
+
+function pdfFilterAuthor(author){
+  const items=document.querySelectorAll('.pdf-ti');
+  items.forEach(btn=>{
+    const li=btn.closest('li');
+    if(!li) return;
+    if(!author){ li.style.display=''; return; }
+    const auth=btn.querySelector('.pdf-ti-auth');
+    li.style.display=(auth&&auth.textContent.startsWith(author))?'':'none';
+  });
+  // Also hide/show genre group headers
+  document.querySelectorAll('.pdf-tg').forEach(tg=>{
+    const next=tg.nextElementSibling;
+    // show group label if at least one sibling li is visible
+    let el=tg.nextElementSibling, vis=false;
+    while(el&&!el.classList.contains('pdf-tg')){
+      if(el.style.display!=='none') vis=true;
+      el=el.nextElementSibling;
+    }
+    tg.style.display=vis?'':'none';
+  });
+}
+
+/* ── Keyboard handler ── */
+function _pdfKey(e){
+  if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); pdfPrev(); }
+  if(['ArrowRight','ArrowDown','PageDown'].includes(e.key)){ e.preventDefault(); pdfNext(); }
+  if(e.key==='Home'){ e.preventDefault(); pdfJump(1); }
+  if(e.key==='End'){ e.preventDefault(); pdfJump(_pdfTotal); }
+}
+
+/* ════════════════════════════════════════════════════
    RENDER
    ════════════════════════════════════════════════════ */
 function render(){
   document.getElementById('app').innerHTML =
     S.view==='shelf' ? viewShelf() :
     S.view==='volume' ? viewVolume() :
+    S.view==='pdf' ? viewPdfReader() :
     viewContributors();
+  if(S.view==='pdf') setTimeout(_initPdfReader, 0);
 }
 
 /* ════════════════════════════════════════════════════
