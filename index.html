@@ -330,7 +330,11 @@ footer a:hover{text-decoration:underline}
 }
 
 /* ── PDF fullpage mode ── */
-.pdf-layout.fullpage{grid-template-columns:1fr;position:fixed;inset:0;z-index:300;height:100dvh}
+.pdf-layout.fullpage{
+  grid-template-columns:1fr;
+  grid-template-rows:1fr;
+  position:fixed;inset:0;z-index:300;
+  height:100vh;height:100dvh}
 .pdf-layout.fullpage .pdf-sidebar{display:none}
 .pdf-layout.fullpage .pdf-bar{display:none}
 .pdf-layout.fullpage .pdf-canvas-area{
@@ -373,7 +377,7 @@ footer a:hover{text-decoration:underline}
 .pfn-exit:hover{color:#f0e8d8}
 
 /* TOC drawer */
-.pdf-toc-drawer{position:fixed;top:0;right:0;width:min(340px,92vw);height:100dvh;
+.pdf-toc-drawer{position:fixed;top:0;right:0;width:min(340px,92vw);height:100vh;height:100dvh;
   background:var(--card);border-left:1px solid var(--line);
   z-index:320;transform:translateX(100%);transition:transform .28s cubic-bezier(.25,.8,.25,1);
   display:flex;flex-direction:column;overflow:hidden;
