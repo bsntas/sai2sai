@@ -256,8 +256,9 @@ footer a:hover{text-decoration:underline}
 }
 
 /* ══════════════ PDF READER ══════════════ */
-.pdf-layout{display:grid;grid-template-columns:272px 1fr;height:calc(100vh - 62px);overflow:hidden}
-.pdf-sidebar{overflow:hidden;border-right:1px solid var(--line);background:var(--card);display:flex;flex-direction:column}
+.pdf-layout{display:grid;grid-template-columns:1fr 272px;height:calc(100vh - 62px);overflow:hidden}
+.pdf-main{grid-column:1}
+.pdf-sidebar{grid-column:2;overflow:hidden;border-left:1px solid var(--line);background:var(--card);display:flex;flex-direction:column}
 .pdf-sb-head{padding:16px 18px 12px;border-bottom:1px solid var(--line);flex-shrink:0}
 .pdf-sb-title{font-family:"Tiro Devanagari Hindi",serif;font-size:16px;color:var(--ink);margin:0 0 3px;line-height:1.2}
 .pdf-sb-sub{font-size:13px;color:var(--soft);margin:0}
@@ -303,6 +304,30 @@ footer a:hover{text-decoration:underline}
 .pdf-zbtn:hover{background:var(--paper2)}
 .pdf-zlabel{font-size:12.5px;color:var(--soft);min-width:38px;text-align:center}
 .pdf-fitbtn{font-size:11px;padding:0 8px;width:auto;letter-spacing:.04em}
+.pdf-zbtn:disabled{opacity:.28;cursor:default}
+
+/* article breadcrumb in toolbar */
+.pdf-crumb{flex:1;min-width:0;font-size:12.5px;color:var(--soft);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;text-align:center;padding:0 6px;
+  font-family:"Noto Serif Devanagari",serif}
+.pdf-crumb-genre{font-size:10.5px;color:var(--gold);margin-right:5px;
+  letter-spacing:.06em;font-family:"Noto Serif Devanagari",serif;opacity:.85}
+
+/* sidebar collapse toggle */
+.pdf-sbtoggle{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);
+  background:var(--card);color:var(--soft);cursor:pointer;font-size:13px;
+  display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1;flex-shrink:0}
+.pdf-sbtoggle:hover{background:var(--paper2);color:var(--ink)}
+.pdf-layout.sb-hidden{grid-template-columns:1fr 0}
+.pdf-layout.sb-hidden .pdf-sidebar{display:none}
+
+/* reading progress bar */
+.pdf-progress{height:3px;background:var(--line);flex-shrink:0;overflow:hidden}
+.pdf-progress-bar{height:100%;background:var(--kumkum);width:0%;
+  transition:width .3s ease;border-radius:0 2px 2px 0}
+
+/* page canvas fade transition */
+#pcanvas{transition:opacity .15s ease}
 
 .pdf-canvas-area{flex:1;overflow:auto;background:var(--paper2);display:flex;
   justify-content:center;align-items:flex-start;padding:28px 20px}
@@ -318,9 +343,10 @@ footer a:hover{text-decoration:underline}
 
 @media(max-width:800px){
   .pdf-layout{grid-template-columns:1fr;grid-template-rows:clamp(180px,30vw,240px) 1fr}
-  .pdf-sidebar{border-right:none;border-bottom:1px solid var(--line)}
+  .pdf-sidebar{grid-column:1;border-left:none;border-bottom:1px solid var(--line)}
   .pdf-sb-filter{display:none}
-  .pdf-zoom{display:none}
+  .pdf-zoom .pdf-zlabel,.pdf-zoom .pdf-fitbtn{display:none}
+  .pdf-sbtoggle,.pdf-crumb{display:none}
 }
 @media(max-width:480px){
   .pdf-layout{grid-template-rows:180px 1fr}
@@ -539,7 +565,7 @@ let S = {view:'shelf', vol:10, itemId:0, authorIdx:0, showColophon:false, pdfPag
 /* PDF.js runtime state (lives outside S — heavy objects, not serialisable) */
 let _pdf=null, _pdfRendering=false, _pdfPending=null;
 let _pdfZoom='fit', _pdfTotal=0, _pdfForVol=null;
-let _pdfFullpage=false, _pdfDrawerOpen=false;
+let _pdfFullpage=false, _pdfDrawerOpen=false, _pdfSidebarHidden=false;
 
 /* ════════════════════════════════════════════════════
    HELPERS
@@ -910,22 +936,25 @@ function viewPdfReader(){
     <div class="pdf-main">
       <div class="pdf-bar">
         <button class="pdf-back" onclick="go('volume',{vol:${vol.vol}})">← अङ्क विवरण</button>
+        <button class="pdf-sbtoggle" onclick="pdfToggleSidebar()" title="साइडबार लुकाउनुहोस्/देखाउनुहोस्">☰</button>
+        <div class="pdf-crumb" id="pcrumb"></div>
         <div class="pdf-pgnav">
-          <button class="pdf-pgbtn" id="pprev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ">&#8249;</button>
+          <button class="pdf-pgbtn" id="pprev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ (←)">&#8249;</button>
           <input class="pdf-pginput" id="ppg" type="number" min="1" value="1"
             onchange="pdfJump(+this.value)" onkeydown="if(event.key==='Enter')pdfJump(+this.value)"
             aria-label="पृष्ठ सङ्ख्या">
           <span class="pdf-pgtotal">/ <span id="ptotal">—</span></span>
-          <button class="pdf-pgbtn" id="pnext" onclick="pdfNext()" disabled title="अर्को पृष्ठ">&#8250;</button>
+          <button class="pdf-pgbtn" id="pnext" onclick="pdfNext()" disabled title="अर्को पृष्ठ (→)">&#8250;</button>
         </div>
         <div class="pdf-zoom">
-          <button class="pdf-zbtn" onclick="pdfZoomOut()" title="सानो">−</button>
+          <button class="pdf-zbtn" id="pzout" onclick="pdfZoomOut()" title="सानो (−)">−</button>
           <span class="pdf-zlabel" id="pzlbl">—</span>
-          <button class="pdf-zbtn" onclick="pdfZoomIn()" title="ठूलो">+</button>
-          <button class="pdf-zbtn pdf-fitbtn" onclick="pdfFit()" title="पृष्ठ अनुसार">↔ FIT</button>
+          <button class="pdf-zbtn" id="pzin" onclick="pdfZoomIn()" title="ठूलो (+)">+</button>
+          <button class="pdf-zbtn pdf-fitbtn" onclick="pdfFit()" title="पृष्ठमा मिलाउनुहोस्">↔ FIT</button>
         </div>
         <button class="pdf-fullbtn" id="pfullbtn" onclick="pdfToggleFullpage()" title="पूर्ण पर्दा (F)">⛶</button>
       </div>
+      <div class="pdf-progress"><div class="pdf-progress-bar" id="pprogress"></div></div>
       <div class="pdf-canvas-area" id="pca" oncontextmenu="return false">
         <div class="pdf-loading" id="ploading">
           <div class="pdf-spinner"></div>
@@ -947,8 +976,8 @@ function viewPdfReader(){
     <span class="pfn-of">/ <span id="pfn-total">—</span></span>
     <button class="pfn-btn" id="pfn-next" onclick="pdfNext()" disabled title="अर्को पृष्ठ">&#8250;</button>
     <div class="pfn-sep"></div>
-    <button class="pfn-btn pfn-zm" onclick="pdfZoomOut()" title="सानो (−)">−</button>
-    <button class="pfn-btn pfn-zm" onclick="pdfZoomIn()" title="ठूलो (+)">+</button>
+    <button class="pfn-btn pfn-zm" id="pfn-zout" onclick="pdfZoomOut()" title="सानो (−)">−</button>
+    <button class="pfn-btn pfn-zm" id="pfn-zin" onclick="pdfZoomIn()" title="ठूलो (+)">+</button>
     <button class="pfn-fit" onclick="pdfFit()" title="पृष्ठ अनुसार">FIT</button>
     ${hasToc?`<div class="pfn-sep"></div><button class="pfn-toc-btn" onclick="pdfToggleDrawer()" title="अनुक्रमणिका">☰<span class="pfn-toc-label"> अनुक्रम</span></button>`:''}
     <div class="pfn-sep"></div>
@@ -983,6 +1012,22 @@ function _loadPdfJs(cb){
 function _initPdfReader(){
   const vol=volByNum(S.vol)||VOLUMES[VOLUMES.length-1];
   if(!vol.pdf) return;
+  // Restore sidebar collapsed state
+  if(_pdfSidebarHidden){
+    const layout=document.getElementById('pdf-layout');
+    if(layout) layout.classList.add('sb-hidden');
+  }
+  // Touch swipe: left=next, right=prev
+  const pca=document.getElementById('pca');
+  if(pca){
+    let _tx=0,_ty=0;
+    pca.addEventListener('touchstart',e=>{_tx=e.touches[0].clientX;_ty=e.touches[0].clientY;},{passive:true});
+    pca.addEventListener('touchend',e=>{
+      const dx=e.changedTouches[0].clientX-_tx;
+      const dy=e.changedTouches[0].clientY-_ty;
+      if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>60){dx<0?pdfNext():pdfPrev();}
+    },{passive:true});
+  }
   _loadPdfJs(()=>{
     // Re-use already-loaded doc for same volume
     if(_pdfForVol===vol.vol && _pdf){
@@ -1056,11 +1101,17 @@ function _renderPage(num){
     if(!canvas){_pdfRendering=false;return;}
     canvas.width=vpHi.width; canvas.height=vpHi.height;
     canvas.style.width=vp.width+'px'; canvas.style.height=vp.height+'px';
+    canvas.style.opacity='0';
     if(wrap) wrap.style.display='';
     if(load) load.style.display='none';
     const zlbl=document.getElementById('pzlbl');
     if(zlbl) zlbl.textContent=Math.round(sc*100)+'%';
     page.render({canvasContext:canvas.getContext('2d'),viewport:vpHi}).promise.then(()=>{
+      const ca=document.getElementById('pca');
+      if(ca) ca.scrollTop=0;
+      canvas.style.opacity='1';
+      const prog=document.getElementById('pprogress');
+      if(prog&&_pdfTotal>0) prog.style.width=(num/_pdfTotal*100)+'%';
       _pdfRendering=false;
       if(_pdfPending!==null){const p=_pdfPending;_pdfPending=null;_renderPage(p);}
       _tocHighlight(num);
@@ -1074,6 +1125,9 @@ function _tocHighlight(pageNum){
   const items=vol.items.filter(x=>!x.front);
   let cur=null;
   for(let i=items.length-1;i>=0;i--){ if(items[i].page<=pageNum){cur=items[i];break;} }
+  const crumb=document.getElementById('pcrumb');
+  if(crumb) crumb.innerHTML=cur
+    ?`<span class="pdf-crumb-genre">${cur.genre}</span>${cur.title}`:'';
   document.querySelectorAll('.pdf-ti').forEach(el=>el.setAttribute('aria-current','false'));
   if(cur){
     const el=document.getElementById(`ptoc-${cur.page}`);
@@ -1091,9 +1145,21 @@ function _tocHighlight(pageNum){
 function pdfJump(n){ if(!isNaN(n)) _renderPage(n); }
 function pdfPrev(){ if(S.pdfPage>1) _renderPage(S.pdfPage-1); }
 function pdfNext(){ if(S.pdfPage<_pdfTotal) _renderPage(S.pdfPage+1); }
-function pdfZoomIn(){ _pdfZoom=typeof _pdfZoom==='number'?Math.min(_pdfZoom+.2,3):1.7; _renderPage(S.pdfPage); }
-function pdfZoomOut(){ _pdfZoom=typeof _pdfZoom==='number'?Math.max(_pdfZoom-.2,.4):1.0; _renderPage(S.pdfPage); }
-function pdfFit(){ _pdfZoom='fit'; _renderPage(S.pdfPage); }
+function _updateZoomBtns(){
+  const atMin=typeof _pdfZoom==='number'&&_pdfZoom<=.4;
+  const atMax=typeof _pdfZoom==='number'&&_pdfZoom>=3;
+  ['pzout','pfn-zout'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=atMin;});
+  ['pzin','pfn-zin'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=atMax;});
+}
+function pdfZoomIn(){ _pdfZoom=typeof _pdfZoom==='number'?Math.min(_pdfZoom+.2,3):1.7; _updateZoomBtns(); _renderPage(S.pdfPage); }
+function pdfZoomOut(){ _pdfZoom=typeof _pdfZoom==='number'?Math.max(_pdfZoom-.2,.4):1.0; _updateZoomBtns(); _renderPage(S.pdfPage); }
+function pdfFit(){ _pdfZoom='fit'; _updateZoomBtns(); _renderPage(S.pdfPage); }
+function pdfToggleSidebar(){
+  _pdfSidebarHidden=!_pdfSidebarHidden;
+  const layout=document.getElementById('pdf-layout');
+  if(layout) layout.classList.toggle('sb-hidden',_pdfSidebarHidden);
+  if(_pdfZoom==='fit') setTimeout(()=>_renderPage(S.pdfPage),50);
+}
 
 function pdfToggleFullpage(){
   _pdfFullpage=!_pdfFullpage;
