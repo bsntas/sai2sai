@@ -2,7 +2,7 @@
 <html lang="ne">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="description" content="साई देखि साई सम्मको वार्षिक स्मारिका — भगवान् श्री सत्य साई बाबाका भक्तहरूका कविता, अनुभव, लेख अनि नियात्राको संग्रह। वर्ष २०१६ देखि प्रकाशित।"/>
 <title>साई देखि साई सम्म · sai2sai</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -265,7 +265,8 @@ footer a:hover{text-decoration:underline}
 .pdf-sb-filter select{width:100%;font-size:13.5px;padding:6px 10px;border:1px solid var(--line);
   border-radius:8px;background:var(--paper);color:var(--ink);font-family:"Noto Serif Devanagari",serif}
 .pdf-toc{list-style:none;margin:0;padding:6px 0;overflow-y:auto;flex:1;
-  scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+  scrollbar-width:thin;scrollbar-color:var(--line) transparent;
+  -webkit-overflow-scrolling:touch}
 .pdf-tg{padding:10px 16px 4px;font-size:11px;letter-spacing:.14em;color:var(--gold);
   text-transform:uppercase;font-family:"Noto Serif Devanagari",serif;flex-shrink:0}
 .pdf-ti{display:flex;align-items:flex-start;gap:10px;padding:9px 14px 9px 12px;
@@ -316,23 +317,25 @@ footer a:hover{text-decoration:underline}
 .pdf-err .ei{font-size:42px;margin-bottom:14px;opacity:.5}
 
 @media(max-width:800px){
-  .pdf-layout{grid-template-columns:1fr;grid-template-rows:200px 1fr}
+  .pdf-layout{grid-template-columns:1fr;grid-template-rows:clamp(180px,30vw,240px) 1fr}
   .pdf-sidebar{border-right:none;border-bottom:1px solid var(--line)}
-  .pdf-toc{max-height:120px}
   .pdf-sb-filter{display:none}
   .pdf-zoom{display:none}
 }
 @media(max-width:480px){
-  .pdf-layout{grid-template-rows:160px 1fr}
+  .pdf-layout{grid-template-rows:180px 1fr}
   .pdf-bar{padding:7px 10px;gap:5px}
-  .pdf-canvas-area{padding:16px 8px}
+  .pdf-canvas-area{padding:14px 6px}
+  .pdf-fullbtn{width:34px;height:34px}
 }
 
 /* ── PDF fullpage mode ── */
 .pdf-layout.fullpage{grid-template-columns:1fr;position:fixed;inset:0;z-index:300;height:100dvh}
 .pdf-layout.fullpage .pdf-sidebar{display:none}
 .pdf-layout.fullpage .pdf-bar{display:none}
-.pdf-layout.fullpage .pdf-canvas-area{padding:12px}
+.pdf-layout.fullpage .pdf-canvas-area{
+  padding:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 80px max(12px,env(safe-area-inset-left,0px))
+}
 .pdf-fullbtn{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);
   background:var(--card);color:var(--soft);cursor:pointer;font-size:14px;
   display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1;
@@ -340,11 +343,14 @@ footer a:hover{text-decoration:underline}
 .pdf-fullbtn:hover{background:var(--paper2);color:var(--ink)}
 
 /* Float nav pill (shown only in fullpage) */
-.pdf-float-nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+.pdf-float-nav{position:fixed;
+  bottom:max(28px, calc(env(safe-area-inset-bottom, 0px) + 14px));
+  left:50%;transform:translateX(-50%);
   display:flex;align-items:center;gap:6px;
   background:rgba(36,31,26,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   border-radius:100px;padding:8px 14px;z-index:310;
-  opacity:0;pointer-events:none;transition:opacity .25s}
+  opacity:0;pointer-events:none;transition:opacity .25s;
+  max-width:calc(100vw - 24px);overflow:hidden}
 .pdf-float-nav.visible{opacity:1;pointer-events:auto}
 .pfn-btn{width:34px;height:34px;border-radius:50%;border:none;
   background:rgba(255,255,255,.12);color:#f0e8d8;cursor:pointer;
@@ -358,17 +364,21 @@ footer a:hover{text-decoration:underline}
 .pfn-sep{width:1px;height:20px;background:rgba(255,255,255,.18);margin:0 4px}
 .pfn-toc-btn{font-size:13px;color:rgba(240,232,216,.85);background:none;border:none;
   cursor:pointer;padding:4px 10px;border-radius:20px;font-family:"Noto Serif Devanagari",serif;
-  transition:.15s;white-space:nowrap}
+  transition:.15s;white-space:nowrap;min-width:34px;min-height:34px;
+  display:flex;align-items:center;gap:4px}
 .pfn-toc-btn:hover{background:rgba(255,255,255,.14)}
+.pfn-toc-label{display:inline}
 .pfn-exit{font-size:18px;color:rgba(240,232,216,.7);background:none;border:none;
   cursor:pointer;padding:2px 4px;border-radius:20px;transition:.15s;line-height:1}
 .pfn-exit:hover{color:#f0e8d8}
 
 /* TOC drawer */
-.pdf-toc-drawer{position:fixed;top:0;right:0;width:min(340px,90vw);height:100dvh;
+.pdf-toc-drawer{position:fixed;top:0;right:0;width:min(340px,92vw);height:100dvh;
   background:var(--card);border-left:1px solid var(--line);
   z-index:320;transform:translateX(100%);transition:transform .28s cubic-bezier(.25,.8,.25,1);
-  display:flex;flex-direction:column;overflow:hidden}
+  display:flex;flex-direction:column;overflow:hidden;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px)}
 .pdf-toc-drawer.open{transform:none}
 .pdf-drawer-head{display:flex;align-items:center;justify-content:space-between;
   padding:14px 18px;border-bottom:1px solid var(--line);flex-shrink:0}
@@ -379,6 +389,12 @@ footer a:hover{text-decoration:underline}
 .pdf-drawer-overlay{position:fixed;inset:0;background:rgba(36,31,26,.4);
   z-index:315;opacity:0;pointer-events:none;transition:opacity .25s}
 .pdf-drawer-overlay.open{opacity:1;pointer-events:auto}
+@media(max-width:420px){
+  .pfn-toc-label{display:none}
+  .pfn-input{width:36px}
+  .pfn-of{font-size:12px}
+  .pdf-float-nav{gap:4px;padding:8px 10px}
+}
 </style>
 </head>
 <body>
@@ -564,8 +580,11 @@ function coverImg(vol, attrs){
    ROUTING
    ════════════════════════════════════════════════════ */
 function go(view, params){
-  // Remove PDF keyboard listener when leaving pdf view
-  if(S.view==='pdf' && view!=='pdf') document.removeEventListener('keydown',_pdfKey);
+  // Remove PDF keyboard listener when leaving pdf view; restore body scroll
+  if(S.view==='pdf' && view!=='pdf'){
+    document.removeEventListener('keydown',_pdfKey);
+    document.body.style.overflow='';
+  }
   Object.assign(S, {view}, params||{});
   if(view==='shelf') S.showColophon=false;
   if(view==='volume'){
@@ -918,7 +937,7 @@ function viewPdfReader(){
       aria-label="पृष्ठ सङ्ख्या">
     <span class="pfn-of">/ <span id="pfn-total">—</span></span>
     <button class="pfn-btn" id="pfn-next" onclick="pdfNext()" disabled title="अर्को पृष्ठ">&#8250;</button>
-    ${hasToc?`<div class="pfn-sep"></div><button class="pfn-toc-btn" onclick="pdfToggleDrawer()">☰ अनुक्रम</button>`:''}
+    ${hasToc?`<div class="pfn-sep"></div><button class="pfn-toc-btn" onclick="pdfToggleDrawer()" title="अनुक्रमणिका">☰<span class="pfn-toc-label"> अनुक्रम</span></button>`:''}
     <div class="pfn-sep"></div>
     <button class="pfn-exit" onclick="pdfToggleFullpage()" title="बाहिर निस्कनुहोस् (Esc)">&#x2715;</button>
   </div>
@@ -1008,8 +1027,9 @@ function _renderPage(num){
     const area=document.getElementById('pca');
     let sc=typeof _pdfZoom==='number'?_pdfZoom:1.5;
     if(_pdfZoom==='fit'&&area){
-      const aw=area.clientWidth-56;
-      const ah=area.clientHeight-56;
+      const cs=getComputedStyle(area);
+      const aw=area.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+      const ah=area.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
       const vp0=page.getViewport({scale:1});
       sc=Math.min(aw/vp0.width, ah/vp0.height, 2.5);
     }
@@ -1042,7 +1062,11 @@ function _tocHighlight(pageNum){
     const el=document.getElementById(`ptoc-${cur.page}`);
     if(el){el.setAttribute('aria-current','true');el.scrollIntoView({block:'nearest',behavior:'smooth'});}
     const del=document.getElementById(`dtoc-${cur.page}`);
-    if(del){del.setAttribute('aria-current','true');del.scrollIntoView({block:'nearest',behavior:'smooth'});}
+    if(del){
+      del.setAttribute('aria-current','true');
+      // Only scroll drawer list when drawer is actually open
+      if(_pdfDrawerOpen) del.scrollIntoView({block:'nearest',behavior:'smooth'});
+    }
   }
 }
 
@@ -1062,7 +1086,9 @@ function pdfToggleFullpage(){
   if(nav) nav.classList.toggle('visible',_pdfFullpage);
   const fbtn=document.getElementById('pfullbtn');
   if(fbtn) fbtn.title=_pdfFullpage?'सामान्य दृश्य (F)':'पूर्ण पर्दा (F)';
-  // Re-render so fit-scale recalculates for the new viewport
+  // Lock body scroll in fullpage so iOS doesn't rubber-band the page
+  document.body.style.overflow=_pdfFullpage?'hidden':'';
+  // Re-render so fit-scale recalculates for the new viewport size
   if(_pdfFullpage) setTimeout(()=>_renderPage(S.pdfPage),50);
   else _renderPage(S.pdfPage);
 }
@@ -1072,6 +1098,11 @@ function pdfDrawerOpen(){
   const o=document.getElementById('pdf-drawer-overlay');
   if(d) d.classList.add('open');
   if(o) o.classList.add('open');
+  // Scroll current article into view (centred so user can see items above/below)
+  setTimeout(()=>{
+    const active=d&&d.querySelector('.pdf-ti[aria-current="true"]');
+    if(active) active.scrollIntoView({block:'center',behavior:'smooth'});
+  },50);
 }
 function pdfDrawerClose(){
   _pdfDrawerOpen=false;
