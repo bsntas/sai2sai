@@ -256,7 +256,7 @@ footer a:hover{text-decoration:underline}
 }
 
 /* ══════════════ PDF READER ══════════════ */
-.pdf-layout{display:grid;grid-template-columns:1fr 272px;height:calc(100vh - 62px);overflow:hidden}
+.pdf-layout{display:grid;grid-template-columns:1fr 300px;height:calc(100vh - 62px);overflow:hidden}
 .pdf-main{grid-column:1}
 .pdf-sidebar{grid-column:2;overflow:hidden;border-left:1px solid var(--line);background:var(--card);display:flex;flex-direction:column}
 .pdf-sb-head{padding:16px 18px 12px;border-bottom:1px solid var(--line);flex-shrink:0}
@@ -342,11 +342,13 @@ footer a:hover{text-decoration:underline}
 .pdf-err .ei{font-size:42px;margin-bottom:14px;opacity:.5}
 
 @media(max-width:800px){
-  .pdf-layout{grid-template-columns:1fr;grid-template-rows:clamp(180px,30vw,240px) 1fr}
-  .pdf-sidebar{grid-column:1;border-left:none;border-bottom:1px solid var(--line)}
+  .pdf-layout{grid-template-columns:1fr;grid-template-rows:1fr clamp(180px,28vw,220px)}
+  .pdf-main{grid-column:1;grid-row:1}
+  .pdf-sidebar{grid-column:1;grid-row:2;border-left:none;border-top:1px solid var(--line)}
+  .pdf-sb-head{display:none}
   .pdf-sb-filter{display:none}
   .pdf-zoom .pdf-zlabel,.pdf-zoom .pdf-fitbtn{display:none}
-  .pdf-sbtoggle,.pdf-crumb{display:none}
+  .pdf-crumb{display:none}
 }
 @media(max-width:480px){
   .pdf-layout{grid-template-rows:180px 1fr}
@@ -936,7 +938,6 @@ function viewPdfReader(){
     <div class="pdf-main">
       <div class="pdf-bar">
         <button class="pdf-back" onclick="go('volume',{vol:${vol.vol}})">← अङ्क विवरण</button>
-        <button class="pdf-sbtoggle" onclick="pdfToggleSidebar()" title="साइडबार लुकाउनुहोस्/देखाउनुहोस्">☰</button>
         <div class="pdf-crumb" id="pcrumb"></div>
         <div class="pdf-pgnav">
           <button class="pdf-pgbtn" id="pprev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ (←)">&#8249;</button>
