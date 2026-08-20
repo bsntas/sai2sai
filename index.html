@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="ओम् अनन्तः — साईदिव्य साईसम्मको वार्षिक स्मारिका। भगवान् श्री सत्य साई बाबाका भक्तहरूका कविता, अनुभव, लेख अनि नियात्राको संग्रह।"/>
+<title>ओम् अनन्तः · sai2sai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4EEDF; --paper2:#EADFC6; --card:#FCF8EE; --ink:#241F1A; --soft:#6B6155;
+  --kumkum:#C1362B; --indigo:#2B3A63; --gold:#A9812F; --line:#DBCFB2;
+  --leaf:#4E7A52; --plum:#7C3E63; --sky:#356089;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Noto Serif Devanagari",serif;font-size:17.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+:focus-visible{outline:2px solid var(--kumkum);outline-offset:3px;border-radius:2px}
+.deva-display{font-family:"Tiro Devanagari Hindi","Noto Serif Devanagari",serif}
+.wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+
+/* ── Header ── */
+header.site{
+  border-bottom:1px solid var(--line);
+  background:rgba(244,238,223,.92);
+  backdrop-filter:blur(8px);
+  position:sticky;top:0;z-index:200;
+}
+.site-in{display:flex;align-items:center;justify-content:space-between;gap:14px;
+  max-width:1140px;margin:0 auto;padding:14px 22px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;background:none;border:none;cursor:pointer;
+  color:inherit;padding:0;font-family:inherit}
+.tilak{width:11px;height:11px;border-radius:50%;background:var(--kumkum);
+  box-shadow:0 0 0 3px rgba(193,54,43,.14);flex-shrink:0}
+.mark{font-family:"Fraunces",serif;font-weight:600;font-size:26px;letter-spacing:.3px}
+.mark .two{color:var(--kumkum);font-style:italic}
+.mark-sub{font-family:"Tiro Devanagari Hindi",serif;font-size:18px;color:var(--indigo);
+  border-left:1px solid var(--line);padding-left:11px;margin-left:2px}
+nav.doors{display:flex;gap:5px;background:var(--paper2);padding:4px;border-radius:100px}
+.door{font-family:"Noto Serif Devanagari",serif;font-size:15px;border:none;
+  background:none;color:var(--soft);padding:8px 18px;border-radius:100px;cursor:pointer;transition:.18s}
+.door[aria-current="true"]{background:var(--ink);color:var(--paper)}
+.door:hover:not([aria-current="true"]){color:var(--ink)}
+
+/* ── Footer ── */
+footer.site{border-top:1px solid var(--line);padding:20px 0;color:var(--soft);font-size:14px}
+footer.site .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+footer a{color:var(--gold);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+/* ── Genre chips ── */
+.chip{display:inline-block;font-size:12.5px;line-height:1;padding:5px 10px 6px;
+  border-radius:100px;letter-spacing:.02em;white-space:nowrap;
+  font-family:"Noto Serif Devanagari",serif;font-weight:500}
+.g-लेख{background:rgba(43,58,99,.10);color:var(--indigo)}
+.g-कविता{background:rgba(193,54,43,.10);color:var(--kumkum)}
+.g-अनुभव{background:rgba(78,122,82,.13);color:var(--leaf)}
+.g-चिन्तन{background:rgba(169,129,47,.15);color:#8a6a24}
+.g-नियात्रा{background:rgba(53,96,137,.12);color:var(--sky)}
+.g-अन्तर्वार्ता{background:rgba(124,62,99,.12);color:var(--plum)}
+.g-सम्पादकीय,.g-प्रकाशकीय{background:rgba(107,97,85,.12);color:var(--soft)}
+
+/* ── Buttons ── */
+.btn{font-family:"Noto Serif Devanagari",serif;font-size:16px;background:var(--kumkum);
+  color:#fff;border:none;padding:12px 26px;border-radius:100px;cursor:pointer;transition:.16s;
+  display:inline-block;text-decoration:none}
+.btn:hover{background:#a72e24}
+.btn-outline{font-family:"Noto Serif Devanagari",serif;font-size:15px;background:none;
+  color:var(--indigo);border:1.5px solid var(--indigo);padding:10px 22px;border-radius:100px;
+  cursor:pointer;transition:.16s;display:inline-block;text-decoration:none}
+.btn-outline:hover{background:var(--indigo);color:#fff}
+.pdfbtn{font-family:"Noto Serif Devanagari",serif;font-size:15px;background:var(--indigo);
+  color:#fff;border:none;padding:10px 22px;border-radius:100px;cursor:pointer;
+  text-decoration:none;display:inline-block}
+.pdfbtn:hover{background:#1e2b4d}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.back{background:none;border:none;color:var(--kumkum);font-family:"Noto Serif Devanagari",serif;
+  font-size:15px;cursor:pointer;padding:4px 0;display:inline-flex;align-items:center;gap:4px}
+.back:hover{text-decoration:underline}
+
+/* ── Animation ── */
+.fade{animation:fadeIn .34s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ══════════════ SHELF ══════════════ */
+.shelf-hero{padding:52px 0 36px}
+.kicker{font-size:13px;letter-spacing:.18em;color:var(--kumkum);margin:0 0 12px;text-transform:uppercase}
+.shelf-hero h1{font-family:"Tiro Devanagari Hindi",serif;font-size:clamp(52px,8vw,96px);
+  line-height:1;margin:0;letter-spacing:.5px}
+.shelf-hero .lead{max-width:56ch;color:var(--soft);margin:18px 0 0;font-size:18.5px}
+
+/* Featured card */
+.feat-card{display:grid;grid-template-columns:200px 1fr;gap:32px;
+  background:var(--card);border:1px solid var(--line);
+  box-shadow:0 30px 70px -40px rgba(36,31,26,.55);padding:28px;
+  align-items:center;margin-bottom:40px}
+.feat-card .cov{width:100%;display:block;border:1px solid var(--line);
+  box-shadow:0 12px 28px -14px rgba(36,31,26,.55)}
+.feat-card h2{font-family:"Tiro Devanagari Hindi",serif;font-size:38px;margin:0 0 6px;line-height:1.05}
+.feat-card .vol-label{font-size:13.5px;letter-spacing:.1em;color:var(--gold);margin:0 0 16px}
+.feat-card .stats{color:var(--soft);font-size:15.5px;margin:0 0 22px}
+
+/* Badges */
+.badge{display:inline-block;font-size:11px;padding:3px 10px;border-radius:100px;
+  letter-spacing:.06em;margin-left:10px;vertical-align:middle;
+  font-family:"Noto Serif Devanagari",serif;font-weight:600}
+.badge-new{background:var(--kumkum);color:#fff}
+.badge-centenary{background:var(--gold);color:#fff}
+
+/* Volume grid */
+.vols-section{padding-bottom:80px}
+.section-label{font-size:12.5px;letter-spacing:.18em;color:var(--gold);
+  border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:24px;text-transform:uppercase}
+.vols-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
+.vol-card{background:none;border:none;cursor:pointer;padding:0;
+  text-align:left;font-family:inherit;color:inherit;display:flex;flex-direction:column}
+.vol-card:hover .vol-thumb{transform:translateY(-4px);box-shadow:0 18px 44px -18px rgba(36,31,26,.55)}
+.vol-thumb{width:100%;aspect-ratio:2/3;background:var(--paper2);border:1px solid var(--line);
+  overflow:hidden;transition:transform .22s,box-shadow .22s;
+  box-shadow:0 6px 22px -12px rgba(36,31,26,.42);position:relative}
+.vol-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.vol-sticker{position:absolute;top:8px;right:8px;font-size:10px;padding:3px 8px;
+  border-radius:100px;font-family:"Noto Serif Devanagari",serif;font-weight:600}
+.vol-sticker-c{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  font-size:10px;padding:3px 10px;border-radius:100px;
+  font-family:"Noto Serif Devanagari",serif;font-weight:600;white-space:nowrap}
+.vol-info-chip{padding:10px 2px 0}
+.vol-info-chip .vi-num{font-family:"Tiro Devanagari Hindi",serif;font-size:18px;color:var(--ink);line-height:1.2}
+.vol-info-chip .vi-year{font-size:13px;color:var(--gold);letter-spacing:.06em}
+.vol-info-chip .vi-tag{font-size:11.5px;color:var(--leaf);margin-top:3px}
+
+/* ══════════════ VOLUME VIEW ══════════════ */
+.back-bar{padding:16px 0 4px}
+.reader{display:grid;grid-template-columns:300px 1fr;gap:40px;
+  padding:6px 0 80px;align-items:start}
+.toc{position:sticky;top:68px;max-height:calc(100vh - 88px);
+  overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.toc .yr{font-family:"Tiro Devanagari Hindi",serif;font-size:52px;line-height:.95}
+.toc .vr{font-size:13px;letter-spacing:.12em;color:var(--gold);margin:4px 0 2px}
+.toc .nm{font-family:"Tiro Devanagari Hindi",serif;font-size:22px;color:var(--indigo);margin:0 0 6px}
+.toc .meta{font-size:14px;color:var(--soft);margin-bottom:14px}
+.toc-actions{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.toc-label{font-size:12px;letter-spacing:.18em;color:var(--gold);
+  border-bottom:1px solid var(--line);padding-bottom:8px;margin:16px 0 4px;text-transform:uppercase}
+.toc-list{list-style:none;margin:0;padding:0}
+.ti{border:none;background:none;width:100%;text-align:left;font-family:inherit;color:inherit;
+  cursor:pointer;padding:9px 10px 10px 12px;display:grid;
+  grid-template-columns:32px 1fr;gap:10px;border-left:2px solid transparent;transition:.14s}
+.ti:hover{background:var(--paper2)}
+.ti[aria-current="true"]{border-left-color:var(--kumkum);background:var(--paper2)}
+.ti .pg{font-family:"Tiro Devanagari Hindi",serif;font-size:15px;color:var(--gold);
+  text-align:right;padding-top:2px}
+.ti .tt{font-size:15.5px;line-height:1.35}
+.ti .au{display:block;font-size:13px;color:var(--soft);margin-top:2px}
+.ti .cw{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+
+/* Colophon */
+.colophon{margin-top:18px;border:1px solid var(--line);background:rgba(234,223,198,.3);
+  padding:14px 16px;font-size:13.5px;color:var(--soft);line-height:1.75}
+.colophon h4{font-family:"Tiro Devanagari Hindi",serif;color:var(--ink);margin:0 0 10px;font-size:17px}
+.colophon b{color:var(--ink);font-weight:500}
+
+/* Article page */
+.page{background:var(--card);border:1px solid var(--line);
+  box-shadow:0 24px 60px -38px rgba(36,31,26,.55);
+  padding:34px clamp(20px,4vw,48px) 42px;min-height:480px}
+.art-head{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px;overflow:hidden}
+.art-pg{float:right;font-family:"Tiro Devanagari Hindi",serif;color:var(--gold);font-size:16px}
+.art-title{font-family:"Tiro Devanagari Hindi",serif;font-size:clamp(26px,4.2vw,44px);
+  line-height:1.12;margin:14px 0 14px;letter-spacing:.3px}
+.art-by{font-size:18px;color:var(--indigo)}
+.art-by b{font-family:"Tiro Devanagari Hindi",serif;font-weight:400}
+.art-place{color:var(--soft);font-size:15px;margin-top:2px}
+
+/* PDF view within article */
+.pdf-view{display:flex;flex-direction:column;align-items:center;gap:16px;
+  padding:36px 0 28px;text-align:center}
+.pdf-icon{font-size:44px;opacity:.4;line-height:1}
+.pdf-note{font-size:15.5px;color:var(--soft);max-width:46ch;line-height:1.65;margin:0}
+
+/* No-content panel */
+.no-articles{padding:40px 32px;background:var(--card);border:1px solid var(--line);
+  box-shadow:0 24px 60px -38px rgba(36,31,26,.55);display:flex;gap:34px;align-items:flex-start}
+.na-cover{flex-shrink:0;width:160px}
+.na-cover img{width:100%;display:block;border:1px solid var(--line);
+  box-shadow:0 8px 20px -12px rgba(36,31,26,.5)}
+.na-body h2{font-family:"Tiro Devanagari Hindi",serif;font-size:34px;margin:0 0 6px;line-height:1.1}
+.na-label{font-size:13.5px;letter-spacing:.1em;color:var(--gold);margin-bottom:4px}
+.na-desc{font-size:16px;color:var(--soft);line-height:1.65;margin:0 0 22px}
+.na-soon{margin-top:28px;padding-top:24px;border-top:1px solid var(--line);
+  display:flex;gap:18px;align-items:flex-start}
+.na-soon .om{font-family:"Tiro Devanagari Hindi",serif;font-size:36px;
+  color:var(--kumkum);opacity:.35;line-height:1;flex-shrink:0}
+.na-soon-text h3{font-family:"Tiro Devanagari Hindi",serif;font-size:22px;color:var(--ink);margin:0 0 6px}
+.na-soon-text p{font-size:15px;color:var(--soft);margin:0;line-height:1.6}
+
+/* Pager */
+.pager{display:flex;justify-content:space-between;gap:14px;
+  margin-top:36px;padding-top:22px;border-top:1px solid var(--line)}
+.pgb{background:none;border:1px solid var(--line);color:var(--ink);
+  font-family:"Noto Serif Devanagari",serif;font-size:14px;
+  padding:10px 16px;border-radius:4px;cursor:pointer;transition:.15s;max-width:48%;text-align:left}
+.pgb:hover:not(:disabled){border-color:var(--kumkum);color:var(--kumkum)}
+.pgb:disabled{opacity:.3;cursor:default}
+.pgb.next{text-align:right}
+.pgb small{display:block;font-size:12px;color:var(--soft)}
+
+/* ══════════════ CONTRIBUTORS ══════════════ */
+.contrib{display:grid;grid-template-columns:280px 1fr;gap:40px;padding:16px 0 80px;align-items:start}
+.az{position:sticky;top:68px}
+.az h2{font-family:"Tiro Devanagari Hindi",serif;font-size:32px;margin:0 0 4px}
+.az .hint{color:var(--soft);font-size:14px;margin:0 0 16px;line-height:1.6}
+.az-list{list-style:none;margin:0;padding:0;
+  max-height:calc(100vh - 260px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.azi{border:none;background:none;width:100%;text-align:left;cursor:pointer;color:inherit;
+  font-family:inherit;padding:10px 0;border-bottom:1px solid var(--line);transition:.14s;
+  display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.azi:hover{padding-left:6px;color:var(--kumkum)}
+.azi[aria-current="true"]{color:var(--kumkum)}
+.azi .nm{font-family:"Tiro Devanagari Hindi",serif;font-size:18px}
+.azi .ct{font-size:12px;color:var(--soft);white-space:nowrap}
+.azi .pl{font-size:12.5px;color:var(--soft);flex-shrink:0;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mala{display:flex;flex-direction:column;gap:4px}
+.who{font-family:"Tiro Devanagari Hindi",serif;font-size:36px;margin:0 0 2px;line-height:1.1}
+.who-pl{color:var(--soft);font-size:15px;margin:0 0 2px}
+.who-n{font-size:14px;color:var(--gold);letter-spacing:.06em;margin:0 0 22px}
+.thread{display:flex;flex-direction:column;gap:12px}
+.bead{background:var(--card);border:1px solid var(--line);padding:16px 20px;
+  text-align:left;cursor:pointer;font-family:inherit;color:inherit;transition:.15s;
+  border-radius:2px;width:100%}
+.bead:hover{border-color:var(--kumkum);box-shadow:0 4px 14px -8px rgba(193,54,43,.28)}
+.bt{font-family:"Tiro Devanagari Hindi",serif;font-size:20px;margin:6px 0 6px;line-height:1.25}
+.bm{font-size:13px;color:var(--soft)}
+
+/* ══════════════ RESPONSIVE ══════════════ */
+@media(max-width:960px){
+  .vols-grid{grid-template-columns:repeat(3,1fr);gap:14px}
+  .reader{grid-template-columns:1fr}
+  .toc{position:static;max-height:none;overflow:visible}
+  .contrib{grid-template-columns:1fr}
+  .az{position:static}
+  .az-list{max-height:280px}
+}
+@media(max-width:640px){
+  .vols-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .feat-card{grid-template-columns:110px 1fr;gap:16px;padding:18px}
+  .feat-card h2{font-size:22px}
+  .mark-sub{display:none}
+  .no-articles{flex-direction:column}
+  .na-cover{width:120px}
+  .shelf-hero{padding:36px 0 24px}
+}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="site-in">
+    <button class="brand" onclick="go('shelf')" aria-label="गृहपृष्ठ">
+      <span class="tilak"></span>
+      <span class="mark">sai<span class="two">2</span>sai</span>
+      <span class="mark-sub">ओम् अनन्तः</span>
+    </button>
+    <nav class="doors" aria-label="मुख्य नेभिगेसन">
+      <button class="door" id="nav-shelf" onclick="go('shelf')">अङ्कहरू</button>
+      <button class="door" id="nav-contrib" onclick="goContrib()">योगदानकर्ता</button>
+    </nav>
+  </div>
+</header>
+
+<main id="app" style="min-height:72vh"></main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>ओम् अनन्तः · साईदिव्य साईसम्म — पुट्टपर्ती, अनन्तपुर</span>
+    <span>वर्ष २०१६ देखि · <a href="http://www.sai2sai.in" target="_blank" rel="noopener">sai2sai.in</a></span>
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════
+   VOLUME 6 ARTICLE DATA (full table of contents)
+   ════════════════════════════════════════════════════ */
+const V6_ITEMS = [
+  {genre:"सम्पादकीय",title:"सम्पादकीय",author:"सम्पादक मण्डल",place:"",page:5,front:true},
+  {genre:"प्रकाशकीय",title:"प्रकाशकीय",author:"प्रकाशक",place:"",page:7,front:true},
+  {genre:"लेख",title:"स्वामीको आशीर्वाद",author:"टिआर शर्मा",place:"दार्जीलिङ",page:9},
+  {genre:"अन्तर्वार्ता",title:"साई सङ्गठनका अथक साधक",author:"विजय मङ्गर",place:"पश्चिम बङ्गाल",page:13},
+  {genre:"चिन्तन",title:"पञ्च डी — अनुशासनको महत्त्व",author:"एचआर भट्टराई",place:"पाकिम, सिक्किम",page:18},
+  {genre:"कविता",title:"साई र मेरो कथा",author:"सृजना रसाइली",place:"सुनसरी, धरान, नेपाल",page:21},
+  {genre:"अनुभव",title:"अन्तर्यामी भगवान्",author:"रञ्जन राई",place:"सोनादा, दार्जीलिङ",page:22},
+  {genre:"कविता",title:"साई आधार",author:"पवित्र राई",place:"खर्साङ",page:25},
+  {genre:"लेख",title:"प्रेमस्वरूप साई",author:"फुपु डोमा लेप्चा",place:"डाली, दार्जीलिङ",page:26},
+  {genre:"कविता",title:"यो हाम्रो जीवन",author:"निखिल गुरुङ",place:"कँजले, बिजनबारी",page:28},
+  {genre:"लेख",title:"मेरा केही अनुभवहरू",author:"मोहन कुमार प्रधान",place:"सिपाहीधुरा चियाबारी",page:29},
+  {genre:"लेख",title:"साई अनुग्रह अनि साई विद्यार्थी",author:"कुन्ती थापा",place:"खर्साङ",page:31},
+  {genre:"कविता",title:"समय",author:"सोम बहादुर लिम्बू",place:"बड़ा पुखरी, दार्जीलिङ",page:33},
+  {genre:"अनुभव",title:"भगवान्ले यसरी सङ्केत गर्नुहुन्छ",author:"मणिकुमार (कमल) दर्नाल",place:"दार्जीलिङ",page:34},
+  {genre:"नियात्रा",title:"अनुभवद्वारा ईश्वरको कृपालाई बुझ्न सकिन्छ",author:"राजु छेत्री",place:"मिलन मोड, सिलगढ़ी",page:36},
+  {genre:"अनुभव",title:"सत् दर्शन",author:"चन्द्रिका भित्रीकोठी",place:"कतवाली बजार, जलपहाड़",page:42},
+  {genre:"लेख",title:"साई यात्रा",author:"सीमा प्रधान",place:"बिजनबारी",page:44},
+  {genre:"चिन्तन",title:"आध्यात्म अनि जीवन",author:'विकाश खवास "शोषित"',place:"लोवर मामरिङ, खर्साङ",page:47},
+  {genre:"कविता",title:"स्वामीको चरणमा",author:"उमङ्ग कटुवाल छेत्री",place:"घुम–जोरबङ्ला, दार्जीलिङ",page:50},
+  {genre:"अनुभव",title:"सर्वान्तर्यामी साई",author:"वर्षा राणा",place:"ब्लुमफिल्ड, दार्जीलिङ",page:51},
+  {genre:"लेख",title:"भगवान्को घरमा ढिलो हुन सक्छ, तर अँध्यारो हुन सक्दैन",author:"साहिल छेत्री",place:"बिजनबारी, दार्जीलिङ",page:54},
+  {genre:"कविता",title:"म त्यहीँ छु",author:"निमेष सुब्बा",place:"बिजनबारी",page:58},
+  {genre:"अनुभव",title:"साई मार्गदर्शक",author:"जस्मिन राई",place:"नव विकास ग्राम, दार्जीलिङ",page:59},
+  {genre:"कविता",title:"साईको महिमा",author:"दीपशिखा शर्मा",place:"देन्ताम, सिक्किम",page:61},
+  {genre:"लेख",title:"साई मित्र",author:"सुशील छेत्री",place:"कँजले, बिजनबारी",page:62},
+  {genre:"कविता",title:"वास्तविकता जीवनको",author:"शिव राई",place:"बतासे, दार्जीलिङ",page:65},
+  {genre:"लेख",title:"स्वामीसितको मेरो जीवनयात्रा",author:"प्रियङ्का प्रधान",place:"दार्जीलिङ",page:66},
+  {genre:"कविता",title:"शान्ति",author:"श्रेया खरेल",place:"बिजनबारी, दार्जीलिङ",page:70},
+  {genre:"अनुभव",title:"ईश्वरको आशीर्वाद",author:"वीणा छेत्री",place:"कालेबुङ",page:71},
+  {genre:"नियात्रा",title:"प्रशान्ति निलयममा मेरो पहिलोपल्ट सेवाको अनुभूति",author:"डी.बी. सुब्बा",place:"रङ्पो, सिक्किम",page:75},
+  {genre:"लेख",title:"सरस्वती माता र आध्यात्मिकता",author:"सुबास भण्डारी",place:"तादोङ, गान्तोक, पूर्व सिक्किम",page:82},
+  {genre:"लेख",title:"स्थित प्रज्ञ",author:"नारायण ढकाल",place:"सिक्किम",page:85},
+  {genre:"कविता",title:"मेरो साई",author:"नवराज राई",place:"तीनधारे",page:89},
+  {genre:"लेख",title:"मृत्यु! परम सत्य (भाग एक)",author:'सुवास छेत्री "भावुक"',place:"खर्साङ",page:90},
+  {genre:"लेख",title:"आध्यात्मिकता अनि सेवा कार्य (भाग दुई)",author:'सुवास छेत्री "भावुक"',place:"खर्साङ",page:92}
+];
+
+/* ════════════════════════════════════════════════════
+   ALL VOLUMES  (add article data as new volumes arrive)
+   ════════════════════════════════════════════════════ */
+const VOLUMES = [
+  {vol:1,  volD:"१",  year:"२०१६", yearEn:2016, date:"२३ नोभेम्बर २०१६", bday:"९१औं जन्मजयन्ती",  name:"ओम् अनन्तः", cover:"covers/v01.jpg", pdf:"pdfs/v01.pdf", pages:null, items:[]},
+  {vol:2,  volD:"२",  year:"२०१७", yearEn:2017, date:"२३ नोभेम्बर २०१७", bday:"९२औं जन्मजयन्ती",  name:"ओम् अनन्तः", cover:"covers/v02.jpg", pdf:"pdfs/v02.pdf", pages:null, items:[]},
+  {vol:3,  volD:"३",  year:"२०१८", yearEn:2018, date:"२३ नोभेम्बर २०१८", bday:"९३औं जन्मजयन्ती",  name:"ओम् अनन्तः", cover:"covers/v03.jpg", pdf:"pdfs/v03.pdf", pages:null, items:[]},
+  {vol:4,  volD:"४",  year:"२०१९", yearEn:2019, date:"२३ नोभेम्बर २०१९", bday:"९४औं जन्मजयन्ती",  name:"ओम् अनन्तः", cover:"covers/v04.jpg", pdf:"pdfs/v04.pdf", pages:null, items:[]},
+  {vol:5,  volD:"५",  year:"२०२०", yearEn:2020, date:"२३ नोभेम्बर २०२०", bday:"९५औं जन्मजयन्ती",  name:"ओम् अनन्तः", cover:"covers/v05.jpg", pdf:"pdfs/v05.pdf", pages:null, items:[]},
+  {vol:6,  volD:"६",  year:"२०२१", yearEn:2021, date:"२३ नोभेम्बर २०२१", bday:"९६औं जन्मजयन्ती",  name:"ओम् अनन्तः", cover:"covers/v06.jpg", pdf:"pdfs/v06.pdf", pages:96,
+    editors:"आदित्य मोक्तान, सुशील छेत्री, मनोहर भूजेल",
+    publishers:"बसन्त प्रधान, निमेष सुब्बा",
+    patrons:"श्रीमती विन्द्या सुब्बा, सुश्री देवी भूजेल",
+    web:"बसन्त शर्मा — www.sai2sai.in",
+    price:"रु. १००",
+    items:V6_ITEMS},
+  {vol:7,  volD:"७",  year:"२०२२", yearEn:2022, date:"२३ नोभेम्बर २०२२", bday:"९७औं जन्मजयन्ती",  name:"ओम् अनन्तः", cover:"covers/v07.jpg", pdf:"pdfs/v07.pdf", pages:null, items:[]},
+  {vol:8,  volD:"८",  year:"२०२३", yearEn:2023, date:"२३ नोभेम्बर २०२३", bday:"९८औं जन्मजयन्ती",  name:"ओम् अनन्तः", cover:"covers/v08.jpg", pdf:"pdfs/v08.pdf", pages:null, items:[]},
+  {vol:9,  volD:"९",  year:"२०२४", yearEn:2024, date:"२३ नोभेम्बर २०२४", bday:"९९औं जन्मजयन्ती",  name:"ओम् अनन्तः", cover:"covers/v09.jpg", pdf:"pdfs/v09.pdf", pages:null, items:[]},
+  {vol:10, volD:"१०", year:"२०२५", yearEn:2025, date:"२३ नोभेम्बर २०२५", bday:"१००औं जन्मजयन्ती", name:"ओम् अनन्तः", cover:"covers/v10.jpg", pdf:"pdfs/v10.pdf", pages:null, items:[], centenary:true}
+];
+
+/* ════════════════════════════════════════════════════
+   STATE
+   ════════════════════════════════════════════════════ */
+let S = {view:'shelf', vol:10, itemId:0, authorIdx:0, showColophon:false};
+
+/* ════════════════════════════════════════════════════
+   HELPERS
+   ════════════════════════════════════════════════════ */
+const D = ['०','१','२','३','४','५','६','७','८','९'];
+function deva(n){ return String(n).replace(/\d/g,d=>D[+d]); }
+
+function chip(g){
+  return `<span class="chip g-${g}">${g}</span>`;
+}
+
+function volByNum(n){ return VOLUMES.find(v=>v.vol===n); }
+
+function byAuthor(items){
+  const m={};
+  items.filter(x=>!x.front).forEach(x=>{
+    if(!m[x.author]) m[x.author]=[];
+    m[x.author].push(x);
+  });
+  return m;
+}
+
+function sortedNames(m){
+  return Object.keys(m).sort((a,b)=>a.localeCompare(b,'ne'));
+}
+
+function placeholderSrc(vol){
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450">
+<rect width="300" height="450" fill="#FCF8EE"/>
+<rect x="8" y="8" width="284" height="434" fill="none" stroke="#DBCFB2" stroke-width="1.5"/>
+<rect x="14" y="14" width="272" height="422" fill="none" stroke="#A9812F" stroke-width="0.6" stroke-dasharray="5,4"/>
+<text x="150" y="178" text-anchor="middle" font-size="80" font-family="serif" fill="#C1362B" opacity="0.45">ॐ</text>
+<text x="150" y="238" text-anchor="middle" font-size="17" font-family="serif" fill="#241F1A" opacity="0.65">ओम् अनन्तः</text>
+<text x="150" y="272" text-anchor="middle" font-size="13" font-family="serif" fill="#A9812F">वर्ष ${vol.volD} · ${vol.year}</text>
+<text x="150" y="305" text-anchor="middle" font-size="11" font-family="serif" fill="#6B6155">साईदिव्य साईसम्म</text>
+<text x="150" y="428" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#C8BBA4">sai2sai.in</text>
+</svg>`;
+  return 'data:image/svg+xml,' + encodeURIComponent(svg);
+}
+
+function coverImg(vol, attrs){
+  const ph = placeholderSrc(vol);
+  return `<img src="${vol.cover}" alt="${vol.name} · वर्ष ${vol.volD}" ${attrs||''} onerror="this.onerror=null;this.src='${ph}'"/>`;
+}
+
+/* ════════════════════════════════════════════════════
+   ROUTING
+   ════════════════════════════════════════════════════ */
+function go(view, params){
+  Object.assign(S, {view}, params||{});
+  if(view==='shelf') S.showColophon=false;
+  if(view==='volume'){
+    if(!('itemId' in (params||{}))) S.itemId=0;
+    S.showColophon=false;
+  }
+  if(view==='contributors'){
+    const vol = volByNum(S.vol);
+    if(vol && vol.items.length){
+      const m = byAuthor(vol.items);
+      const names = sortedNames(m);
+      if(S.authorIdx >= names.length) S.authorIdx=0;
+    }
+  }
+  _updateNav();
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goContrib(){
+  // Find the most recent volume with article data
+  const vol = [...VOLUMES].reverse().find(v=>v.items.length>0) || VOLUMES[VOLUMES.length-1];
+  go('contributors',{vol:vol.vol, authorIdx:0});
+}
+
+function selectAuthor(idx){
+  S.authorIdx = idx;
+  render();
+}
+
+function _updateNav(){
+  document.getElementById('nav-shelf').setAttribute('aria-current', S.view==='shelf'?'true':'false');
+  document.getElementById('nav-contrib').setAttribute('aria-current', S.view==='contributors'?'true':'false');
+}
+
+/* ════════════════════════════════════════════════════
+   VIEW: SHELF
+   ════════════════════════════════════════════════════ */
+function viewShelf(){
+  const latest = VOLUMES[VOLUMES.length-1];
+  const latestItems = latest.items;
+  const latestPieces = latestItems.filter(x=>!x.front).length;
+  const latestContribs = Object.keys(byAuthor(latestItems)).length;
+
+  const featStats = latestItems.length > 0
+    ? `${deva(latestPieces)} रचना · ${deva(latestContribs)} योगदानकर्ता · ${latest.pages?deva(latest.pages)+' पृष्ठ':'—'}`
+    : `${latest.date} · ${latest.bday}`;
+
+  const gridCards = VOLUMES.slice().reverse().map(vol=>{
+    const isLatest = vol.vol===latest.vol;
+    const ph = placeholderSrc(vol);
+    return `<button class="vol-card" onclick="go('volume',{vol:${vol.vol}})" title="${vol.name} · वर्ष ${vol.volD} (${vol.year})">
+      <div class="vol-thumb">
+        <img src="${vol.cover}" alt="वर्ष ${vol.volD}" onerror="this.onerror=null;this.src='${ph}'" style="width:100%;height:100%;object-fit:cover;display:block"/>
+        ${isLatest?`<div class="vol-sticker" style="background:var(--kumkum);color:#fff">नवीनतम</div>`:''}
+        ${vol.centenary?`<div class="vol-sticker-c" style="background:var(--gold);color:#fff">शताब्दी</div>`:''}
+      </div>
+      <div class="vol-info-chip">
+        <div class="vi-num">वर्ष ${vol.volD}</div>
+        <div class="vi-year">${vol.year}</div>
+        ${vol.items.length>0?`<div class="vi-tag">● सूची उपलब्ध</div>`:''}
+      </div>
+    </button>`;
+  }).join('');
+
+  return `<div class="wrap fade">
+  <section class="shelf-hero">
+    <p class="kicker">वार्षिक स्मारिका · साईदिव्य साईसम्म</p>
+    <h1 class="deva-display">ओम् अनन्तः</h1>
+    <p class="lead">भगवान् श्री सत्य साई बाबाका भक्तहरूका रचनाहरू — कविता, अनुभव, लेख अनि नियात्रा — एकै ठाउँमा। वर्ष २०१६ देखि प्रकाशित सबै ${deva(VOLUMES.length)} अङ्कहरू यहाँ संग्रहीत छन्।</p>
+  </section>
+
+  <section style="padding-bottom:44px">
+    <p class="section-label">नवीनतम अङ्क</p>
+    <div class="feat-card">
+      <div>${coverImg(latest,'class="cov"')}</div>
+      <div>
+        <div class="vol-label">वर्ष ${latest.volD} · अङ्क ${deva(latest.vol)} · ${latest.date}</div>
+        <h2 class="deva-display">${latest.name}${latest.centenary?'<span class="badge badge-centenary">शताब्दी</span>':''}</h2>
+        <p class="stats">${featStats}</p>
+        <div class="btn-row">
+          <button class="btn" onclick="go('volume',{vol:${latest.vol}})">अङ्क खोल्नुहोस् →</button>
+          <a class="btn-outline" href="${latest.pdf}" target="_blank" rel="noopener">PDF डाउनलोड</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="vols-section">
+    <p class="section-label">सबै अङ्कहरू — वर्ष १ देखि ${deva(VOLUMES.length)} सम्म</p>
+    <div class="vols-grid">${gridCards}</div>
+  </section>
+  </div>`;
+}
+
+/* ════════════════════════════════════════════════════
+   VIEW: VOLUME
+   ════════════════════════════════════════════════════ */
+function viewVolume(){
+  const vol = volByNum(S.vol) || VOLUMES[VOLUMES.length-1];
+  const items = vol.items;
+  const hasArticles = items.length>0;
+
+  if(hasArticles){
+    const m = byAuthor(items);
+    const pieceCount = items.filter(x=>!x.front).length;
+    const contribCount = Object.keys(m).length;
+    const it = items[S.itemId] || items[0];
+    const prev = S.itemId>0 ? items[S.itemId-1] : null;
+    const next = S.itemId<items.length-1 ? items[S.itemId+1] : null;
+
+    const tocList = items.map((x,i)=>`
+      <li><button class="ti" aria-current="${i===S.itemId}" onclick="go('volume',{vol:${vol.vol},itemId:${i}})">
+        <span class="pg">${x.front?'•':deva(x.page)}</span>
+        <span>
+          <span class="cw">${chip(x.genre)}<span class="tt">${x.title}</span></span>
+          ${!x.front?`<span class="au">${x.author}${x.place?' — '+x.place:''}</span>`:''}
+        </span>
+      </button></li>`).join('');
+
+    const coloHtml = vol.editors ? `<div class="colophon">
+      <h4>यस अङ्कको बारेमा</h4>
+      <div><b>वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)}</b> — ${vol.date} (भगवान्को ${vol.bday})</div>
+      <div><b>कार्यकारी सम्पादक:</b> ${vol.editors}</div>
+      <div><b>प्रकाशक:</b> ${vol.publishers}</div>
+      <div><b>संरक्षक:</b> ${vol.patrons}</div>
+      <div><b>वेब संयोजक:</b> ${vol.web}</div>
+      <div><b>मूल्य / सहयोग राशि:</b> ${vol.price}</div>
+    </div>` : '';
+
+    const artContent = `<div class="art-head">
+        <span class="art-pg">पृष्ठ ${deva(it.page)}</span>
+        ${chip(it.genre)}
+        <h1 class="art-title">${it.title}</h1>
+        ${!it.front?`<div class="art-by"><b>${it.author}</b></div><div class="art-place">${it.place}</div>`:''}
+      </div>
+      <div class="pdf-view">
+        <div class="pdf-icon">📄</div>
+        <p class="pdf-note">यो रचना मूल अङ्कको <b>पृष्ठ ${deva(it.page)}</b> बाट सुरु हुन्छ। पूरा पाठ पढ्न PDF खोल्नुहोस्।</p>
+        <a class="pdfbtn" href="${vol.pdf}#page=${it.page}" target="_blank" rel="noopener">PDF मा खोल्नुहोस् — पृष्ठ ${deva(it.page)}</a>
+      </div>
+      <div class="pager">
+        <button class="pgb" ${prev?'':'disabled'} onclick="go('volume',{vol:${vol.vol},itemId:${S.itemId-1}})">
+          <small>अघिल्लो</small>${prev?prev.title:'—'}
+        </button>
+        <button class="pgb next" ${next?'':'disabled'} onclick="go('volume',{vol:${vol.vol},itemId:${S.itemId+1}})">
+          <small>अर्को</small>${next?next.title:'—'}
+        </button>
+      </div>`;
+
+    return `<div class="wrap fade">
+    <div class="back-bar"><button class="back" onclick="go('shelf')">← सबै अङ्क</button></div>
+    <div class="reader">
+      <aside class="toc">
+        <div class="yr deva-display">${vol.year}</div>
+        <div class="vr">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)}</div>
+        <div class="nm deva-display">${vol.name}</div>
+        <div class="meta">${deva(pieceCount)} रचना · ${deva(contribCount)} योगदानकर्ता${vol.pages?` · ${deva(vol.pages)} पृष्ठ`:''}</div>
+        <div class="toc-actions">
+          <a class="pdfbtn" style="font-size:13px;padding:8px 16px" href="${vol.pdf}" target="_blank" rel="noopener">PDF डाउनलोड</a>
+          <button class="btn-outline" style="font-size:13px;padding:8px 16px" onclick="go('contributors',{vol:${vol.vol},authorIdx:0})">योगदानकर्ता</button>
+        </div>
+        <div class="toc-label">अनुक्रमणिका</div>
+        <ul class="toc-list">${tocList}</ul>
+        <button class="back" style="margin-top:14px" onclick="S.showColophon=!S.showColophon;render()">
+          ${S.showColophon?'▲ लुकाउनुहोस्':'▼ यस अङ्कको बारेमा'}
+        </button>
+        ${S.showColophon?coloHtml:''}
+      </aside>
+      <article class="page" aria-live="polite">${artContent}</article>
+    </div>
+    </div>`;
+  }
+
+  /* ── No article data yet ── */
+  const ph = placeholderSrc(vol);
+  return `<div class="wrap fade">
+  <div class="back-bar"><button class="back" onclick="go('shelf')">← सबै अङ्क</button></div>
+  <div class="no-articles">
+    <div class="na-cover">${coverImg(vol,`style="width:100%;display:block;border:1px solid var(--line);box-shadow:0 8px 20px -12px rgba(36,31,26,.5)"`)}</div>
+    <div class="na-body">
+      <div class="na-label">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)} · ${vol.date}</div>
+      <h2 class="deva-display">${vol.name}${vol.centenary?'<span class="badge badge-centenary" style="font-size:14px">शताब्दी</span>':''}</h2>
+      <p class="na-label" style="margin-top:2px">${vol.bday}</p>
+      <p class="na-desc">भगवान् श्री सत्य साई बाबाका भक्तहरूका रचनाहरूको वार्षिक स्मारिका — साईदिव्य साईसम्म, पुट्टपर्ती।</p>
+      <div class="btn-row">
+        <a class="pdfbtn" href="${vol.pdf}" target="_blank" rel="noopener">PDF डाउनलोड</a>
+      </div>
+      <div class="na-soon">
+        <span class="om deva-display">ॐ</span>
+        <div class="na-soon-text">
+          <h3>अनुक्रमणिका शीघ्र</h3>
+          <p>यस अङ्कका रचनाहरूको सूची र योगदानकर्ताहरूको विवरण छिट्टै थपिनेछ।</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>`;
+}
+
+/* ════════════════════════════════════════════════════
+   VIEW: CONTRIBUTORS
+   ════════════════════════════════════════════════════ */
+function viewContributors(){
+  const vol = volByNum(S.vol) || [...VOLUMES].reverse().find(v=>v.items.length>0);
+
+  if(!vol || !vol.items.length){
+    return `<div class="wrap fade" style="padding:70px 0;text-align:center;color:var(--soft)">
+      <div style="font-size:52px;color:var(--kumkum);opacity:.35;margin-bottom:18px;font-family:'Tiro Devanagari Hindi',serif">ॐ</div>
+      <h2 style="font-family:'Tiro Devanagari Hindi',serif;color:var(--ink);margin:0 0 12px">योगदानकर्ता विवरण उपलब्ध छैन</h2>
+      <p style="max-width:38ch;margin:0 auto;font-size:16px">यस अङ्कको रचना–सूची अझै थपिएको छैन।</p>
+      <button class="btn" style="margin-top:24px" onclick="go('shelf')">← अङ्कहरूमा फर्कनुहोस्</button>
+    </div>`;
+  }
+
+  const m = byAuthor(vol.items);
+  const names = sortedNames(m);
+  if(S.authorIdx>=names.length) S.authorIdx=0;
+  const curName = names[S.authorIdx];
+  const pieces = m[curName]||[];
+
+  const azList = names.map((n,i)=>`
+    <li><button class="azi" aria-current="${i===S.authorIdx}" onclick="selectAuthor(${i})">
+      <span style="min-width:0"><span class="nm">${n}</span><span class="ct"> · ${deva(m[n].length)}</span></span>
+      <span class="pl">${m[n][0].place}</span>
+    </button></li>`).join('');
+
+  const beads = pieces.map(p=>`
+    <button class="bead" onclick="go('volume',{vol:${vol.vol},itemId:${vol.items.indexOf(p)}})">
+      ${chip(p.genre)}
+      <div class="bt">${p.title}</div>
+      <div class="bm">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)} · पृष्ठ ${deva(p.page)} · खोल्नुहोस् →</div>
+    </button>`).join('');
+
+  return `<div class="wrap fade">
+  <div class="back-bar">
+    <button class="back" onclick="go('volume',{vol:${vol.vol}})">← वर्ष ${vol.volD} अङ्कमा फर्कनुहोस्</button>
+  </div>
+  <div class="contrib">
+    <aside class="az">
+      <h2 class="deva-display">योगदानकर्ता</h2>
+      <p class="hint">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)} का ${deva(names.length)} स्रष्टा। नाम छान्नुहोस् — तिनका सबै रचना मालाको धागोमा उनिएर देखिन्छन्।</p>
+      <ul class="az-list">${azList}</ul>
+    </aside>
+    <section class="mala" aria-live="polite">
+      <h3 class="who">${curName}</h3>
+      <p class="who-pl">${pieces[0]?.place||''}</p>
+      <p class="who-n">${deva(pieces.length)} रचना</p>
+      <div class="thread">${beads}</div>
+    </section>
+  </div>
+  </div>`;
+}
+
+/* ════════════════════════════════════════════════════
+   RENDER
+   ════════════════════════════════════════════════════ */
+function render(){
+  document.getElementById('app').innerHTML =
+    S.view==='shelf' ? viewShelf() :
+    S.view==='volume' ? viewVolume() :
+    viewContributors();
+}
+
+/* ════════════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════════════ */
+go('shelf');
+</script>
+</body>
+</html>
