@@ -256,8 +256,9 @@ footer a:hover{text-decoration:underline}
 }
 
 /* ══════════════ PDF READER ══════════════ */
-.pdf-layout{display:grid;grid-template-columns:272px 1fr;height:calc(100vh - 62px);overflow:hidden}
-.pdf-sidebar{overflow:hidden;border-right:1px solid var(--line);background:var(--card);display:flex;flex-direction:column}
+.pdf-layout{display:grid;grid-template-columns:1fr 272px;height:calc(100vh - 62px);overflow:hidden}
+.pdf-main{grid-column:1}
+.pdf-sidebar{grid-column:2;overflow:hidden;border-left:1px solid var(--line);background:var(--card);display:flex;flex-direction:column}
 .pdf-sb-head{padding:16px 18px 12px;border-bottom:1px solid var(--line);flex-shrink:0}
 .pdf-sb-title{font-family:"Tiro Devanagari Hindi",serif;font-size:16px;color:var(--ink);margin:0 0 3px;line-height:1.2}
 .pdf-sb-sub{font-size:13px;color:var(--soft);margin:0}
@@ -317,7 +318,7 @@ footer a:hover{text-decoration:underline}
   background:var(--card);color:var(--soft);cursor:pointer;font-size:13px;
   display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1;flex-shrink:0}
 .pdf-sbtoggle:hover{background:var(--paper2);color:var(--ink)}
-.pdf-layout.sb-hidden{grid-template-columns:0 1fr}
+.pdf-layout.sb-hidden{grid-template-columns:1fr 0}
 .pdf-layout.sb-hidden .pdf-sidebar{display:none}
 
 /* reading progress bar */
@@ -342,7 +343,7 @@ footer a:hover{text-decoration:underline}
 
 @media(max-width:800px){
   .pdf-layout{grid-template-columns:1fr;grid-template-rows:clamp(180px,30vw,240px) 1fr}
-  .pdf-sidebar{border-right:none;border-bottom:1px solid var(--line)}
+  .pdf-sidebar{grid-column:1;border-left:none;border-bottom:1px solid var(--line)}
   .pdf-sb-filter{display:none}
   .pdf-zoom .pdf-zlabel,.pdf-zoom .pdf-fitbtn{display:none}
   .pdf-sbtoggle,.pdf-crumb{display:none}
