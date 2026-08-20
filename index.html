@@ -359,14 +359,22 @@ footer a:hover{text-decoration:underline}
 
 /* ── PDF fullpage mode ── */
 .pdf-layout.fullpage{
-  grid-template-columns:1fr;
+  grid-template-columns:1fr 300px;
   grid-template-rows:1fr;
   position:fixed;inset:0;z-index:300;
   height:100vh;height:100dvh}
-.pdf-layout.fullpage .pdf-sidebar{display:none}
+.pdf-layout.fullpage .pdf-sidebar{display:flex}
 .pdf-layout.fullpage .pdf-bar{display:none}
 .pdf-layout.fullpage .pdf-canvas-area{
   padding:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 80px max(12px,env(safe-area-inset-left,0px))
+}
+/* TOC hidden state in fullpage */
+.pdf-layout.fullpage.sb-hidden{grid-template-columns:1fr}
+.pdf-layout.fullpage.sb-hidden .pdf-sidebar{display:none}
+/* Mobile fullpage: full-width canvas, TOC via drawer overlay */
+@media(max-width:800px){
+  .pdf-layout.fullpage{grid-template-columns:1fr}
+  .pdf-layout.fullpage .pdf-sidebar{display:none}
 }
 .pdf-fullbtn{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);
   background:var(--card);color:var(--soft);cursor:pointer;font-size:14px;
@@ -378,6 +386,10 @@ footer a:hover{text-decoration:underline}
 .pdf-float-nav{position:fixed;
   bottom:max(28px, calc(env(safe-area-inset-bottom, 0px) + 14px));
   left:50%;transform:translateX(-50%);
+  transition:left .28s ease;}
+@media(min-width:801px){
+  .pdf-layout.fullpage:not(.sb-hidden) .pdf-float-nav{left:calc(50% - 150px)}
+}
   display:flex;align-items:center;gap:6px;
   background:rgba(36,31,26,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   border-radius:100px;padding:8px 14px;z-index:310;
@@ -980,7 +992,7 @@ function viewPdfReader(){
     <button class="pfn-btn pfn-zm" id="pfn-zout" onclick="pdfZoomOut()" title="सानो (−)">−</button>
     <button class="pfn-btn pfn-zm" id="pfn-zin" onclick="pdfZoomIn()" title="ठूलो (+)">+</button>
     <button class="pfn-fit" onclick="pdfFit()" title="पृष्ठ अनुसार">FIT</button>
-    ${hasToc?`<div class="pfn-sep"></div><button class="pfn-toc-btn" onclick="pdfToggleDrawer()" title="अनुक्रमणिका">☰<span class="pfn-toc-label"> अनुक्रम</span></button>`:''}
+    ${hasToc?`<div class="pfn-sep"></div><button class="pfn-toc-btn" id="pfn-toc-btn" onclick="pdfFullpageTocToggle()" title="अनुक्रमणिका लुकाउनुहोस्">☰<span class="pfn-toc-label"> लुकाउनुहोस्</span></button>`:''}
     <div class="pfn-sep"></div>
     <button class="pfn-exit" onclick="pdfToggleFullpage()" title="बाहिर निस्कनुहोस् (Esc)">&#x2715;</button>
   </div>
@@ -1166,18 +1178,42 @@ function pdfToggleFullpage(){
   _pdfFullpage=!_pdfFullpage;
   const layout=document.getElementById('pdf-layout');
   if(layout) layout.classList.toggle('fullpage',_pdfFullpage);
+  // Always restore TOC to visible when entering or leaving fullpage
+  _pdfSidebarHidden=false;
+  if(layout) layout.classList.remove('sb-hidden');
+  const btn=document.getElementById('pfn-toc-btn');
+  if(btn){const lbl=btn.querySelector('.pfn-toc-label');
+    btn.title='अनुक्रमणिका लुकाउनुहोस्';if(lbl)lbl.textContent=' लुकाउनुहोस्';}
   const nav=document.getElementById('pdf-float-nav');
   if(nav) nav.classList.toggle('visible',_pdfFullpage);
   const fbtn=document.getElementById('pfullbtn');
   if(fbtn) fbtn.title=_pdfFullpage?'सामान्य दृश्य (F)':'पूर्ण पर्दा (F)';
-  // Lock body scroll in fullpage so iOS doesn't rubber-band the page
   document.body.style.overflow=_pdfFullpage?'hidden':'';
-  // On narrow screens entering fullpage, switch from fit to a readable fixed scale
   if(_pdfFullpage && window.innerWidth<=600 && _pdfZoom==='fit') _pdfZoom=1.2;
   else if(!_pdfFullpage && typeof _pdfZoom==='number' && _pdfZoom===1.2) _pdfZoom='fit';
-  // Re-render so fit-scale recalculates for the new viewport size
   if(_pdfFullpage) setTimeout(()=>_renderPage(S.pdfPage),50);
   else _renderPage(S.pdfPage);
+}
+function pdfFullpageTocToggle(){
+  if(window.innerWidth>800){
+    _pdfSidebarHidden=!_pdfSidebarHidden;
+    const layout=document.getElementById('pdf-layout');
+    if(layout) layout.classList.toggle('sb-hidden',_pdfSidebarHidden);
+    const btn=document.getElementById('pfn-toc-btn');
+    if(btn){
+      const lbl=btn.querySelector('.pfn-toc-label');
+      if(_pdfSidebarHidden){
+        btn.title='अनुक्रमणिका देखाउनुहोस्';
+        if(lbl) lbl.textContent=' अनुक्रम';
+      } else {
+        btn.title='अनुक्रमणिका लुकाउनुहोस्';
+        if(lbl) lbl.textContent=' लुकाउनुहोस्';
+      }
+    }
+    if(_pdfZoom==='fit') setTimeout(()=>_renderPage(S.pdfPage),50);
+  } else {
+    pdfToggleDrawer();
+  }
 }
 function pdfDrawerOpen(){
   _pdfDrawerOpen=true;
