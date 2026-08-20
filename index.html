@@ -256,9 +256,9 @@ footer a:hover{text-decoration:underline}
 }
 
 /* ══════════════ PDF READER ══════════════ */
-.pdf-layout{display:grid;grid-template-columns:1fr 300px;height:calc(100vh - 62px);overflow:hidden}
-.pdf-main{grid-column:1}
-.pdf-sidebar{grid-column:2;overflow:hidden;border-left:1px solid var(--line);background:var(--card);display:flex;flex-direction:column}
+.pdf-layout{display:grid;grid-template-columns:1fr 300px;grid-template-rows:1fr;height:calc(100vh - 62px);overflow:hidden}
+.pdf-main{grid-column:1;grid-row:1}
+.pdf-sidebar{grid-column:2;grid-row:1;overflow:hidden;border-left:1px solid var(--line);background:var(--card);display:flex;flex-direction:column}
 .pdf-sb-head{padding:16px 18px 12px;border-bottom:1px solid var(--line);flex-shrink:0}
 .pdf-sb-title{font-family:"Tiro Devanagari Hindi",serif;font-size:16px;color:var(--ink);margin:0 0 3px;line-height:1.2}
 .pdf-sb-sub{font-size:13px;color:var(--soft);margin:0}
@@ -318,7 +318,7 @@ footer a:hover{text-decoration:underline}
   background:var(--card);color:var(--soft);cursor:pointer;font-size:13px;
   display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1;flex-shrink:0}
 .pdf-sbtoggle:hover{background:var(--paper2);color:var(--ink)}
-.pdf-layout.sb-hidden{grid-template-columns:1fr 0}
+.pdf-layout.sb-hidden{grid-template-columns:1fr}
 .pdf-layout.sb-hidden .pdf-sidebar{display:none}
 
 /* reading progress bar */
@@ -351,7 +351,7 @@ footer a:hover{text-decoration:underline}
   .pdf-crumb{display:none}
 }
 @media(max-width:480px){
-  .pdf-layout{grid-template-rows:180px 1fr}
+  .pdf-layout{grid-template-rows:1fr 180px}
   .pdf-bar{padding:7px 10px;gap:5px}
   .pdf-canvas-area{padding:14px 6px}
   .pdf-fullbtn{width:34px;height:34px}
@@ -386,15 +386,15 @@ footer a:hover{text-decoration:underline}
 .pdf-float-nav{position:fixed;
   bottom:max(28px, calc(env(safe-area-inset-bottom, 0px) + 14px));
   left:50%;transform:translateX(-50%);
-  transition:left .28s ease;}
-@media(min-width:801px){
-  .pdf-layout.fullpage:not(.sb-hidden) .pdf-float-nav{left:calc(50% - 150px)}
-}
   display:flex;align-items:center;gap:6px;
   background:rgba(36,31,26,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   border-radius:100px;padding:8px 14px;z-index:310;
-  opacity:0;pointer-events:none;transition:opacity .25s;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s, left .28s ease;
   max-width:calc(100vw - 24px);overflow:hidden}
+@media(min-width:801px){
+  .pdf-layout.fullpage:not(.sb-hidden) .pdf-float-nav{left:calc(50% - 150px)}
+}
 .pdf-float-nav.visible{opacity:1;pointer-events:auto}
 .pfn-btn{width:34px;height:34px;border-radius:50%;border:none;
   background:rgba(255,255,255,.12);color:#f0e8d8;cursor:pointer;
