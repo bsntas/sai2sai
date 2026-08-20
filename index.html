@@ -327,6 +327,58 @@ footer a:hover{text-decoration:underline}
   .pdf-bar{padding:7px 10px;gap:5px}
   .pdf-canvas-area{padding:16px 8px}
 }
+
+/* ── PDF fullpage mode ── */
+.pdf-layout.fullpage{grid-template-columns:1fr;position:fixed;inset:0;z-index:300;height:100dvh}
+.pdf-layout.fullpage .pdf-sidebar{display:none}
+.pdf-layout.fullpage .pdf-bar{display:none}
+.pdf-layout.fullpage .pdf-canvas-area{padding:12px}
+.pdf-fullbtn{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);
+  background:var(--card);color:var(--soft);cursor:pointer;font-size:14px;
+  display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1;
+  margin-left:2px;flex-shrink:0}
+.pdf-fullbtn:hover{background:var(--paper2);color:var(--ink)}
+
+/* Float nav pill (shown only in fullpage) */
+.pdf-float-nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:6px;
+  background:rgba(36,31,26,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-radius:100px;padding:8px 14px;z-index:310;
+  opacity:0;pointer-events:none;transition:opacity .25s}
+.pdf-float-nav.visible{opacity:1;pointer-events:auto}
+.pfn-btn{width:34px;height:34px;border-radius:50%;border:none;
+  background:rgba(255,255,255,.12);color:#f0e8d8;cursor:pointer;
+  font-size:18px;display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1}
+.pfn-btn:hover:not(:disabled){background:rgba(255,255,255,.24)}
+.pfn-btn:disabled{opacity:.28;cursor:default}
+.pfn-input{width:42px;text-align:center;background:rgba(255,255,255,.1);
+  color:#f0e8d8;border:1px solid rgba(255,255,255,.2);border-radius:8px;
+  padding:5px 4px;font-size:14px;font-family:"Noto Serif Devanagari",serif}
+.pfn-of{font-size:13px;color:rgba(240,232,216,.7);white-space:nowrap}
+.pfn-sep{width:1px;height:20px;background:rgba(255,255,255,.18);margin:0 4px}
+.pfn-toc-btn{font-size:13px;color:rgba(240,232,216,.85);background:none;border:none;
+  cursor:pointer;padding:4px 10px;border-radius:20px;font-family:"Noto Serif Devanagari",serif;
+  transition:.15s;white-space:nowrap}
+.pfn-toc-btn:hover{background:rgba(255,255,255,.14)}
+.pfn-exit{font-size:18px;color:rgba(240,232,216,.7);background:none;border:none;
+  cursor:pointer;padding:2px 4px;border-radius:20px;transition:.15s;line-height:1}
+.pfn-exit:hover{color:#f0e8d8}
+
+/* TOC drawer */
+.pdf-toc-drawer{position:fixed;top:0;right:0;width:min(340px,90vw);height:100dvh;
+  background:var(--card);border-left:1px solid var(--line);
+  z-index:320;transform:translateX(100%);transition:transform .28s cubic-bezier(.25,.8,.25,1);
+  display:flex;flex-direction:column;overflow:hidden}
+.pdf-toc-drawer.open{transform:none}
+.pdf-drawer-head{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border-bottom:1px solid var(--line);flex-shrink:0}
+.pdf-drawer-title{font-family:"Tiro Devanagari Hindi",serif;font-size:16px;margin:0;color:var(--ink)}
+.pdf-drawer-close{background:none;border:none;cursor:pointer;font-size:22px;line-height:1;
+  color:var(--soft);padding:4px;border-radius:6px;transition:.15s}
+.pdf-drawer-close:hover{color:var(--ink)}
+.pdf-drawer-overlay{position:fixed;inset:0;background:rgba(36,31,26,.4);
+  z-index:315;opacity:0;pointer-events:none;transition:opacity .25s}
+.pdf-drawer-overlay.open{opacity:1;pointer-events:auto}
 </style>
 </head>
 <body>
@@ -354,6 +406,38 @@ footer a:hover{text-decoration:underline}
 </footer>
 
 <script>
+/* ════════════════════════════════════════════════════
+   VOLUME 1 ARTICLE DATA (full table of contents)
+   ════════════════════════════════════════════════════ */
+const V1_ITEMS = [
+  {genre:"सम्पादकीय",title:"सम्पादकीय",author:"सम्पादक मण्डली",place:"",page:5,front:true},
+  {genre:"प्रकाशकीय",title:"प्रकाशकीय",author:"वसन्त प्रधान",place:"",page:6,front:true},
+  {genre:"अनुभव",title:"भगवान्सित साढे चार दशकसम्मको यात्रा",author:"कृष्णसिंह मोक्तान",place:"अवकाशप्राप्त आइजी (जेल), पश्चिम बंगाल",page:9},
+  {genre:"लेख",title:"साई-सान्निध्यमा नारायण कस्तुरी",author:"विन्द्या सुब्बा",place:"रोपवे, दार्जीलिङ",page:18},
+  {genre:"चिन्तन",title:"विचित्र सृष्टिको अझ विचित्र मानव",author:"हरि शर्मा पराजुली",place:"सिलगढी",page:24},
+  {genre:"अनुभव",title:"१९७८",author:"विवेक केशर पाण्डे",place:"कञ्चन सिनेमा कम्प्लेक्स, कालेबुङ",page:28},
+  {genre:"लेख",title:"विद्यार्थी विद्याबोध अनि शिक्षक-शिक्षिकाको महत्त्व",author:"प्रज्ञा प्रधान",place:"शिक्षिका, श्रीमती ईश्वरम्मा हाई स्कूल, पुट्टपर्ति",page:31},
+  {genre:"अनुभव",title:"साई दृष्टिदाता",author:"दीपनारायण प्रधान",place:"बिजनबारी, दार्जीलिङ",page:35},
+  {genre:"अनुभव",title:"सम्झनाको तरङ्गमा",author:"वेदान्त मंगर",place:"प्रशान्ति निलयम (विद्यार्थी)",page:37},
+  {genre:"अनुभव",title:"स्वामी साङ्से अनि साई विद्यार्थीको भूमिका",author:"सनिक थापा",place:"पुवोङ बस्ती, दार्जीलिङ",page:39},
+  {genre:"अनुभव",title:"स्वर्गिक साम्राज्य",author:"सुशील छेत्री",place:"बिजनबारी, दार्जीलिङ",page:44},
+  {genre:"चिन्तन",title:"भित्री 'म'",author:"सन्दीप प्रधान",place:"कालेबुङ, हाल – पूणे (महाराष्ट्र)",page:47},
+  {genre:"अनुभव",title:"साई आमा — सम्पूर्ण प्रेम",author:"कमल जोशी",place:"नेपाल",page:51},
+  {genre:"लेख",title:"भजन गायन अनि उत्तरदायित्व",author:"अजनिश राई",place:"दार्जीलिङ",page:54},
+  {genre:"अनुभव",title:"दिव्य सङ्केत",author:"अनुरोध देवकोटा",place:"पुलचोक, ललितपुर, नेपाल",page:56},
+  {genre:"अनुभव",title:"साईको नाममा चमत्कार",author:"निखिल सुनाम",place:"तकभर, दार्जीलिङ",page:58},
+  {genre:"नियात्रा",title:"घर त्यहीँ जहाँ हृदय हुँदछ",author:"विकास लामा",place:"दार्जीलिङ, हाल – भेङ्कोभर (क्यानाडा)",page:59},
+  {genre:"कविता",title:"अक्षरहरू शान्तिको कामनामा",author:"मनोहर भूजेल",place:"मामरिङ, खरसाङ",page:62},
+  {genre:"अन्तर्वार्ता",title:"साई सान्निध्य",author:"वसन्त प्रधान",place:"वार्ताकार",page:64},
+  {genre:"चिन्तन",title:"जप — ध्यानबिना संयोग नही",author:"किरण स्याङदेन",place:"दार्जीलिङ",page:70},
+  {genre:"लेख",title:"मातृभाषा अनि मातृभूमिको महत्त्व",author:"अर्जुन शर्मा",place:"गेजिङ, सिक्किम",page:73},
+  {genre:"लेख",title:"श्री सत्य साई ग्राम एकीकृत प्रकल्प — पैनाकुमारी",author:"अनुप प्रधान",place:"दक्षिण दार्जीलिङ जिल्ला",page:75},
+  {genre:"अनुभव",title:"भगवान् बाबाका कार्यहरूको चमत्कारका अनुभवहरू",author:"प्रकाशमणि प्रधान",place:"तीनधारे",page:81},
+  {genre:"कविता",title:"सृष्टिकर्ता",author:"सफलमणि प्रधान",place:"कैंजले, बिजनबारी, दार्जीलिङ",page:85},
+  {genre:"कविता",title:"कृतज्ञता हजूरप्रति",author:"प्रणय सुब्बा",place:"कालेबुङ, हाल – नई दिल्ली",page:87},
+  {genre:"कविता",title:"महाप्रयाण",author:"सूरज रोसूरि",place:"सिलगढी",page:90}
+];
+
 /* ════════════════════════════════════════════════════
    VOLUME 6 ARTICLE DATA (full table of contents)
    ════════════════════════════════════════════════════ */
@@ -399,7 +483,12 @@ const V6_ITEMS = [
    ALL VOLUMES  (add article data as new volumes arrive)
    ════════════════════════════════════════════════════ */
 const VOLUMES = [
-  {vol:1,  volD:"१",  year:"२०१६", yearEn:2016, date:"२३ नोभेम्बर २०१६", bday:"९१औं जन्मजयन्ती",  name:"ओम्",             cover:"covers/v01.jpg", pdf:"pdfs/v01.pdf", pages:null, items:[]},
+  {vol:1,  volD:"१",  year:"२०१६", yearEn:2016, date:"२३ नोभेम्बर २०१६", bday:"९१औं जन्मजयन्ती",  name:"ओम्",             cover:"covers/v01.jpg", pdf:"pdfs/v01.pdf", pages:96,
+    editors:"कृष्णसिंह मोक्तान, विन्द्या सुब्बा, हरि शर्मा पराजुली, विवेक केशर पाण्डे",
+    publishers:"वसन्त प्रधान, आदित्य मोक्तान",
+    patrons:"सुश्री देवी भूजेल",
+    price:"रु. ८०",
+    items:V1_ITEMS},
   {vol:2,  volD:"२",  year:"२०१७", yearEn:2017, date:"२३ नोभेम्बर २०१७", bday:"९२औं जन्मजयन्ती",  name:"ओम् स्वर्णभूमि",  cover:"covers/v02.jpg", pdf:"pdfs/v02.pdf", pages:null, items:[]},
   {vol:3,  volD:"३",  year:"२०१८", yearEn:2018, date:"२३ नोभेम्बर २०१८", bday:"९३औं जन्मजयन्ती",  name:"ओम् प्रतिध्वनि", cover:"covers/v03.jpg", pdf:"pdfs/v03.pdf", pages:null, items:[]},
   {vol:4,  volD:"४",  year:"२०१९", yearEn:2019, date:"२३ नोभेम्बर २०१९", bday:"९४औं जन्मजयन्ती",  name:"ओम् प्रेमामृत",  cover:"covers/v04.jpg", pdf:"pdfs/v04.pdf", pages:null, items:[]},
@@ -425,6 +514,7 @@ let S = {view:'shelf', vol:10, itemId:0, authorIdx:0, showColophon:false, pdfPag
 /* PDF.js runtime state (lives outside S — heavy objects, not serialisable) */
 let _pdf=null, _pdfRendering=false, _pdfPending=null;
 let _pdfZoom='fit', _pdfTotal=0, _pdfForVol=null;
+let _pdfFullpage=false, _pdfDrawerOpen=false;
 
 /* ════════════════════════════════════════════════════
    HELPERS
@@ -484,6 +574,7 @@ function go(view, params){
   }
   if(view==='pdf'){
     if(!('pdfPage' in (params||{}))) S.pdfPage=1;
+    _pdfFullpage=false; _pdfDrawerOpen=false;
     document.addEventListener('keydown',_pdfKey);
   }
   if(view==='contributors'){
@@ -746,27 +837,35 @@ function viewPdfReader(){
   const filterOpts = `<option value="">— सबै योगदानकर्ता —</option>`
     + authors.map(a=>`<option value="${a}">${a}</option>`).join('');
 
-  // Build TOC list (all items by genre groups)
+  // Build sidebar TOC (id="ptoc-{page}")
   let tocRows = '';
+  // Build drawer TOC (id="dtoc-{page}")
+  let drawerRows = '';
   if(items.length){
     const genres = [...new Set(items.map(x=>x.genre))];
     genres.forEach(g => {
       tocRows += `<li class="pdf-tg">${g}</li>`;
+      drawerRows += `<li class="pdf-tg">${g}</li>`;
       items.filter(x=>x.genre===g).forEach(it => {
-        tocRows += `<li><button class="pdf-ti" id="ptoc-${it.page}" data-pg="${it.page}"
-          onclick="pdfJump(${it.page})" oncontextmenu="return false">
+        const row = (idPrefix) => `<li><button class="pdf-ti" id="${idPrefix}-${it.page}" data-pg="${it.page}"
+          onclick="${idPrefix==='dtoc'?'pdfDrawerJump':'pdfJump'}(${it.page})" oncontextmenu="return false">
           <div class="pdf-ti-body">
             <div class="pdf-ti-title">${it.title}</div>
             <div class="pdf-ti-auth">${it.author}${it.place?' · '+it.place:''}</div>
           </div>
           <span class="pdf-ti-pg">${deva(it.page)}</span>
         </button></li>`;
+        tocRows += row('ptoc');
+        drawerRows += row('dtoc');
       });
     });
   } else {
-    tocRows = `<li style="padding:18px 16px;font-size:14px;color:var(--soft)">
+    const empty = `<li style="padding:18px 16px;font-size:14px;color:var(--soft)">
       यस अङ्कको विषय–सूची अझै थपिएको छैन।<br>पृष्ठ नेभिगेसन प्रयोग गर्नुहोस्।</li>`;
+    tocRows = empty; drawerRows = empty;
   }
+
+  const hasToc = items.length > 0;
 
   return `<div class="pdf-layout" id="pdf-layout">
     <nav class="pdf-sidebar" aria-label="अनुक्रमणिका">
@@ -774,7 +873,7 @@ function viewPdfReader(){
         <p class="pdf-sb-title deva-display">${vol.name}</p>
         <p class="pdf-sb-sub">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)} · ${vol.year}</p>
       </div>
-      ${items.length>1?`<div class="pdf-sb-filter">
+      ${hasToc?`<div class="pdf-sb-filter">
         <select onchange="pdfFilterAuthor(this.value)" aria-label="लेखक अनुसार खोज्नुहोस्">${filterOpts}</select>
       </div>`:''}
       <ul class="pdf-toc" id="pdf-toc">${tocRows}</ul>
@@ -797,6 +896,7 @@ function viewPdfReader(){
           <button class="pdf-zbtn" onclick="pdfZoomIn()" title="ठूलो">+</button>
           <button class="pdf-zbtn pdf-fitbtn" onclick="pdfFit()" title="पृष्ठ अनुसार">↔ FIT</button>
         </div>
+        <button class="pdf-fullbtn" id="pfullbtn" onclick="pdfToggleFullpage()" title="पूर्ण पर्दा (F)">⛶</button>
       </div>
       <div class="pdf-canvas-area" id="pca" oncontextmenu="return false">
         <div class="pdf-loading" id="ploading">
@@ -808,7 +908,30 @@ function viewPdfReader(){
         </div>
       </div>
     </div>
-  </div>`;
+  </div>
+
+  <!-- Float nav (fullpage mode) -->
+  <div class="pdf-float-nav" id="pdf-float-nav">
+    <button class="pfn-btn" id="pfn-prev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ">&#8249;</button>
+    <input class="pfn-input" id="pfn-pg" type="number" min="1" value="1"
+      onchange="pdfJump(+this.value)" onkeydown="if(event.key==='Enter')pdfJump(+this.value)"
+      aria-label="पृष्ठ सङ्ख्या">
+    <span class="pfn-of">/ <span id="pfn-total">—</span></span>
+    <button class="pfn-btn" id="pfn-next" onclick="pdfNext()" disabled title="अर्को पृष्ठ">&#8250;</button>
+    ${hasToc?`<div class="pfn-sep"></div><button class="pfn-toc-btn" onclick="pdfToggleDrawer()">☰ अनुक्रम</button>`:''}
+    <div class="pfn-sep"></div>
+    <button class="pfn-exit" onclick="pdfToggleFullpage()" title="बाहिर निस्कनुहोस् (Esc)">&#x2715;</button>
+  </div>
+
+  <!-- Slide-in TOC drawer (fullpage mode) -->
+  <div class="pdf-toc-drawer" id="pdf-toc-drawer" aria-label="अनुक्रमणिका">
+    <div class="pdf-drawer-head">
+      <p class="pdf-drawer-title">${vol.name} — अनुक्रमणिका</p>
+      <button class="pdf-drawer-close" onclick="pdfDrawerClose()" aria-label="बन्द गर्नुहोस्">&#x00D7;</button>
+    </div>
+    <ul class="pdf-toc" id="pdf-dtoc">${drawerRows}</ul>
+  </div>
+  <div class="pdf-drawer-overlay" id="pdf-drawer-overlay" onclick="pdfDrawerClose()"></div>`;
 }
 
 /* ── PDF.js loader (lazy, once) ── */
@@ -849,6 +972,12 @@ function _initPdfReader(){
 function _pdfApplyTotal(){
   const el=document.getElementById('ptotal');
   if(el) el.textContent=deva(_pdfTotal);
+  const fel=document.getElementById('pfn-total');
+  if(fel) fel.textContent=deva(_pdfTotal);
+  const fip=document.getElementById('pfn-pg');
+  if(fip) fip.max=_pdfTotal;
+  const sip=document.getElementById('ppg');
+  if(sip) sip.max=_pdfTotal;
 }
 
 function _pdfError(msg){
@@ -867,6 +996,12 @@ function _renderPage(num){
   if(pg) pg.value=num;
   if(pb) pb.disabled=num<=1;
   if(nb) nb.disabled=num>=_pdfTotal;
+  const fpg=document.getElementById('pfn-pg');
+  const fpb=document.getElementById('pfn-prev');
+  const fnb=document.getElementById('pfn-next');
+  if(fpg) fpg.value=num;
+  if(fpb) fpb.disabled=num<=1;
+  if(fnb) fnb.disabled=num>=_pdfTotal;
   _pdfRendering=true;
   _pdf.getPage(num).then(page=>{
     // Compute scale
@@ -906,6 +1041,8 @@ function _tocHighlight(pageNum){
   if(cur){
     const el=document.getElementById(`ptoc-${cur.page}`);
     if(el){el.setAttribute('aria-current','true');el.scrollIntoView({block:'nearest',behavior:'smooth'});}
+    const del=document.getElementById(`dtoc-${cur.page}`);
+    if(del){del.setAttribute('aria-current','true');del.scrollIntoView({block:'nearest',behavior:'smooth'});}
   }
 }
 
@@ -916,6 +1053,35 @@ function pdfNext(){ if(S.pdfPage<_pdfTotal) _renderPage(S.pdfPage+1); }
 function pdfZoomIn(){ _pdfZoom=typeof _pdfZoom==='number'?Math.min(_pdfZoom+.2,3):1.7; _renderPage(S.pdfPage); }
 function pdfZoomOut(){ _pdfZoom=typeof _pdfZoom==='number'?Math.max(_pdfZoom-.2,.4):1.0; _renderPage(S.pdfPage); }
 function pdfFit(){ _pdfZoom='fit'; _renderPage(S.pdfPage); }
+
+function pdfToggleFullpage(){
+  _pdfFullpage=!_pdfFullpage;
+  const layout=document.getElementById('pdf-layout');
+  if(layout) layout.classList.toggle('fullpage',_pdfFullpage);
+  const nav=document.getElementById('pdf-float-nav');
+  if(nav) nav.classList.toggle('visible',_pdfFullpage);
+  const fbtn=document.getElementById('pfullbtn');
+  if(fbtn) fbtn.title=_pdfFullpage?'सामान्य दृश्य (F)':'पूर्ण पर्दा (F)';
+  // Re-render so fit-scale recalculates for the new viewport
+  if(_pdfFullpage) setTimeout(()=>_renderPage(S.pdfPage),50);
+  else _renderPage(S.pdfPage);
+}
+function pdfDrawerOpen(){
+  _pdfDrawerOpen=true;
+  const d=document.getElementById('pdf-toc-drawer');
+  const o=document.getElementById('pdf-drawer-overlay');
+  if(d) d.classList.add('open');
+  if(o) o.classList.add('open');
+}
+function pdfDrawerClose(){
+  _pdfDrawerOpen=false;
+  const d=document.getElementById('pdf-toc-drawer');
+  const o=document.getElementById('pdf-drawer-overlay');
+  if(d) d.classList.remove('open');
+  if(o) o.classList.remove('open');
+}
+function pdfToggleDrawer(){ _pdfDrawerOpen?pdfDrawerClose():pdfDrawerOpen(); }
+function pdfDrawerJump(n){ pdfDrawerClose(); pdfJump(n); }
 
 function pdfFilterAuthor(author){
   const items=document.querySelectorAll('.pdf-ti');
@@ -945,6 +1111,12 @@ function _pdfKey(e){
   if(['ArrowRight','ArrowDown','PageDown'].includes(e.key)){ e.preventDefault(); pdfNext(); }
   if(e.key==='Home'){ e.preventDefault(); pdfJump(1); }
   if(e.key==='End'){ e.preventDefault(); pdfJump(_pdfTotal); }
+  if(e.key==='Escape'){
+    e.preventDefault();
+    if(_pdfDrawerOpen){ pdfDrawerClose(); }
+    else if(_pdfFullpage){ pdfToggleFullpage(); }
+  }
+  if(e.key==='f'||e.key==='F'){ e.preventDefault(); pdfToggleFullpage(); }
 }
 
 /* ════════════════════════════════════════════════════
