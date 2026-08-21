@@ -515,6 +515,34 @@ const V1_ITEMS = [
 ];
 
 /* ════════════════════════════════════════════════════
+   VOLUME 5 ARTICLE DATA (full table of contents)
+   ════════════════════════════════════════════════════ */
+const V5_ITEMS = [
+  {genre:"सम्पादकीय", title:"सम्पादकीय", author:"हरि शर्मा पराजुली, सुशील छेत्री", place:"", page:5, front:true},
+  {genre:"भजन", title:"साई तिमी", author:"योगेश मोक्तान", place:"तकदाह चियाबारी, दार्जीलिङ", page:6, front:true},
+  {genre:"प्रकाशकीय", title:"प्रकाशकीय", author:"बसन्त प्रधान, आदित्य मोकान", place:"", page:7, front:true},
+  {genre:"लेख", title:"वेद अनि वर्तमान युग", author:"नरेन्द्य घिमिरे", place:"", page:8},
+  {genre:"अन्तर्वार्ता", title:"साई गङ्गोत्री कृष्णसिंह मोक्तानसँग अन्तरङ्ग कुराकानी", author:"कृष्णसिंह मोक्तान", place:"दार्जीलिङ", page:12},
+  {genre:"लेख", title:"हाम्रो सौभाग्य", author:"विजय मङ्गर", place:"", page:23},
+  {genre:"कथा", title:"कल्याणी", author:"विन्द्या सुब्बा", place:"दार्जीलिङ", page:27},
+  {genre:"लेख", title:"ईश्वर पूर्णताको प्रतीक", author:"सबिता थापा 'सङ्कल्प'", place:"दार्जीलिङ", page:33},
+  {genre:"अनुभव", title:"विश्वव्यापी महामारीमा स्वामीसँगको यात्रा", author:"आकृति शर्मा", place:"बिजनबारी, दार्जीलिङ", page:38},
+  {genre:"कविता", title:"गीता ज्ञान", author:"बुद्ध पाखरिन", place:"दार्जीलिङ", page:40},
+  {genre:"लेख", title:"स्वामीसितको मेरो जीवन", author:"डी.बी. सुब्बा", place:"रङ्पो, सिक्किम", page:41},
+  {genre:"कविता", title:"दैव साथी साई", author:"मिण्डुप तामाङ", place:"नागरी फार्म चियाबारी", page:46},
+  {genre:"लेख", title:"आश्वासन", author:"माधवी राई", place:"हरिसङ, लेबोङ, दार्जीलिङ", page:47},
+  {genre:"अन्तर्वार्ता", title:"श्रीमती विष्णुमाया गुरुङसँग कुराकानी", author:"श्रीमती विष्णुमाया गुरुङ", place:"धुरा चियाबारी, दार्जीलिङ", page:49},
+  {genre:"अनुभव", title:"साई सान्निध्यतिर", author:"मोहन ठकुरी", place:"मङ्पु, दार्जीलिङ", page:55},
+  {genre:"लेख", title:"साई दृष्टिदाता", author:"लक्ष्मण भण्डारी", place:"रेलिङ, दार्जीलिङ", page:59},
+  {genre:"लेख", title:"पत्नीव्रता अनि परिवारव्रता छोटा राङ्गारून निवासी श्री गङ्गा राईको जीवनी", author:"सरस्वती शर्मा छेत्री", place:"छोटा राङ्गारून चियाबारी, दार्जीलिङ", page:64},
+  {genre:"लेख", title:"मेरो आध्यात्मिक पाठशाला श्री सत्य साई समिति", author:"मदन कुमार प्रधान", place:"तीनधारे", page:69},
+  {genre:"लेख", title:"सङ्गीतको भाषा", author:"प्रज्ञा प्रधान", place:"पुट्पर्ती", page:74},
+  {genre:"लेख", title:"सर्वव्यापी साई", author:"आयुष राई", place:"दार्जीलिङ", page:78},
+  {genre:"लेख", title:"स्वामी एक असल शिक्षक", author:"परीक्षित छेत्री", place:"धजे चियाबारी", page:81},
+  {genre:"समाचार", title:"साई समाचार", author:"", place:"", page:83, front:true},
+];
+
+/* ════════════════════════════════════════════════════
    VOLUME 6 ARTICLE DATA (full table of contents)
    ════════════════════════════════════════════════════ */
 const V6_ITEMS = [
@@ -699,7 +727,13 @@ const VOLUMES = [
   {vol:2,  volD:"२",  year:"२०१७", yearEn:2017, date:"२३ नोभेम्बर २०१७", bday:"९२औं जन्मजयन्ती",  name:"ओम् स्वर्णभूमि",  cover:"covers/v02.jpg", pdf:"pdfs/v02.pdf", pages:null, items:[]},
   {vol:3,  volD:"३",  year:"२०१८", yearEn:2018, date:"२३ नोभेम्बर २०१८", bday:"९३औं जन्मजयन्ती",  name:"ओम् प्रतिध्वनि", cover:"covers/v03.jpg", pdf:"pdfs/v03.pdf", pages:null, items:[]},
   {vol:4,  volD:"४",  year:"२०१९", yearEn:2019, date:"२३ नोभेम्बर २०१९", bday:"९४औं जन्मजयन्ती",  name:"ओम् प्रेमामृत",  cover:"covers/v04.jpg", pdf:"pdfs/v04.pdf", pages:null, items:[]},
-  {vol:5,  volD:"५",  year:"२०२०", yearEn:2020, date:"२३ नोभेम्बर २०२०", bday:"९५औं जन्मजयन्ती",  name:"ओम् सारथि",      cover:"covers/v05.jpg", pdf:"pdfs/v05.pdf", pages:null, items:[]},
+  {vol:5,  volD:"५",  year:"२०२०", yearEn:2020, date:"२३ नोभेम्बर २०२०", bday:"९५औं जन्मजयन्ती",  name:"ओम् सारथि",      cover:"covers/v05.jpg", pdf:"pdfs/v05.pdf", pages:95,
+    editors:"कृष्णसिंह मोक्तान, विन्द्या सुब्बा, हरि शर्मा, विवेक केशर पाण्डे, अर्जुन शर्मा",
+    publishers:"बसन्त प्रधान, आदित्य मोकान",
+    patrons:"सुश्री देवी भूजेल",
+    price:"रु. ७०",
+    web:"www.sai2sai.in",
+    items:V5_ITEMS},
   {vol:6,  volD:"६",  year:"२०२१", yearEn:2021, date:"२३ नोभेम्बर २०२१", bday:"९६औं जन्मजयन्ती",  name:"ओम् अनन्तः",    cover:"covers/v06.jpg", pdf:"pdfs/v06.pdf", pages:96,
     editors:"आदित्य मोक्तान, सुशील छेत्री, मनोहर भूजेल",
     publishers:"बसन्त प्रधान, निमेष सुब्बा",
