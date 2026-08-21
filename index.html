@@ -515,6 +515,42 @@ const V1_ITEMS = [
 ];
 
 /* ════════════════════════════════════════════════════
+   VOLUME 4 ARTICLE DATA (full table of contents)
+   ════════════════════════════════════════════════════ */
+const V4_ITEMS = [
+  {genre:"सम्पादकीय", title:"सम्पादकीय", author:"विन्द्या सुब्बा", place:"", page:5, front:true},
+  {genre:"प्रकाशकीय", title:"प्रकाशकीय", author:"आदित्य मोक्तान", place:"", page:7, front:true},
+  {genre:"अन्तर्वार्ता", title:"साई सान्निध्य", author:"डा. कुमार प्रधान", place:"दार्जीलिङ", page:10},
+  {genre:"कविता", title:"आमाको माया", author:"निखिल गुरुङ", place:"कैंजले बिजनबारी", page:25},
+  {genre:"लेख", title:"श्रीकृष्णले किन आपनो शिरमा मयूरको प्वाँख सिउरे? अनि किन उनले बाँसुरी बजाउन छोड़े?", author:"चन्द्र शर्मा", place:"खरसाङ", page:26},
+  {genre:"कविता", title:"ठेगाना", author:"अमृत खड्का", place:"बुटवल, नेपाल", page:28},
+  {genre:"लेख", title:"सेवा अनि हामी", author:"सूरज गुरुङ", place:"तीनधारे", page:29},
+  {genre:"कविता", title:"सुन्दर सत्य साई", author:"मिण्डुप तामाङ", place:"नागरी बिजनबारी", page:30},
+  {genre:"लेख", title:"विघ्नहर्ता साई", author:"पालजोर तामाङ", place:"कालेबुङ", page:31},
+  {genre:"नाटक", title:"नारी तिम्रो जय होस्!", author:"विन्द्या सुब्बा", place:"दार्जीलिङ", page:33},
+  {genre:"कविता", title:"माता ईश्वरम्मा", author:"सुकदेव गुरुङ", place:"जयगाउँ", page:39},
+  {genre:"लेख", title:"साईको परिबन्द", author:"जोडन तामाङ", place:"कालेबुङ", page:40},
+  {genre:"अन्तर्वार्ता", title:"डाक्टर अफ डाक्टर्स्", author:"डा. धनकेशर छेत्री", place:"दार्जीलिङ", page:42},
+  {genre:"कविता", title:"धर्तीलाई स्वर्ग बनाऔं", author:"सुमिरण गुरुङ", place:"दार्जीलिङ", page:48},
+  {genre:"कविता", title:"अस्तित्व", author:"अभिषेक गुरागाईं", place:"दार्जीलिङ", page:49},
+  {genre:"लेख", title:"मानेभन्दा बचाउने ठूलो", author:"छोगेल भूटिया", place:"दार्जीलिङ", page:50},
+  {genre:"लेख", title:"साई अनि आई (म)", author:"नोर्की यल्मो", place:"आलुबारी, दार्जीलिङ", page:52},
+  {genre:"कविता", title:"संस्कृति", author:"विनय लिम्बू", place:"बिजनबारी", page:55},
+  {genre:"लेख", title:"भगवान् बाबा र निरामिष भोजन", author:"प्रकाशमणि प्रधान", place:"तीनधारे", page:56},
+  {genre:"लेख", title:"साईतर्फ मेरो एक कदम", author:"जिग्मे लेप्चा", place:"डाली, दार्जीलिङ", page:59},
+  {genre:"कविता", title:"गीत साईको देशमा", author:"प्रवन यल्मो", place:"तकदा क्याण्ट", page:61},
+  {genre:"लेख", title:"यसरी बित्छ दिन स्वामीको कार्यशालामा", author:"प्रशान्त राई", place:"लञ्चु, दार्जीलिङ", page:62},
+  {genre:"कविता", title:"साई दर्पण", author:"सयल बसेल", place:"दार्जीलिङ", page:65},
+  {genre:"लेख", title:"साईसँगको यात्रा", author:"आशिष छेत्री", place:"लेबोड, दार्जीलिङ", page:66},
+  {genre:"कविता", title:"आह्वान", author:"निमेश सुब्बा", place:"बिजनबारी", page:68},
+  {genre:"लेख", title:"हाम्रो यात्रा साईदेखि साईसम्म...", author:"कमल भट्टराई", place:"बाँसबोटे, दार्जीलिङ", page:69},
+  {genre:"कविता", title:"तिमी नै म हुँ म नै तिमीं", author:"पेम्बा शेर्पा", place:"तकदा क्याण्ट", page:73},
+  {genre:"कविता", title:"ए हावा!", author:"शिव राई (खमवाली)", place:"घूम, दार्जीलिङ", page:74},
+  {genre:"कविता", title:"आत्मानुभूति प्रक्षेपण", author:"बद्ध पाखरिन", place:"घूम, दार्जीलिङ", page:76},
+  {genre:"समाचार", title:"साई समाचार", author:"", place:"", page:79, front:true}
+];
+
+/* ════════════════════════════════════════════════════
    VOLUME 5 ARTICLE DATA (full table of contents)
    ════════════════════════════════════════════════════ */
 const V5_ITEMS = [
@@ -726,7 +762,13 @@ const VOLUMES = [
     items:V1_ITEMS},
   {vol:2,  volD:"२",  year:"२०१७", yearEn:2017, date:"२३ नोभेम्बर २०१७", bday:"९२औं जन्मजयन्ती",  name:"ओम् स्वर्णभूमि",  cover:"covers/v02.jpg", pdf:"pdfs/v02.pdf", pages:null, items:[]},
   {vol:3,  volD:"३",  year:"२०१८", yearEn:2018, date:"२३ नोभेम्बर २०१८", bday:"९३औं जन्मजयन्ती",  name:"ओम् प्रतिध्वनि", cover:"covers/v03.jpg", pdf:"pdfs/v03.pdf", pages:null, items:[]},
-  {vol:4,  volD:"४",  year:"२०१९", yearEn:2019, date:"२३ नोभेम्बर २०१९", bday:"९४औं जन्मजयन्ती",  name:"ओम् प्रेमामृत",  cover:"covers/v04.jpg", pdf:"pdfs/v04.pdf", pages:null, items:[]},
+  {vol:4,  volD:"४",  year:"२०१९", yearEn:2019, date:"२३ नोभेम्बर २०१९", bday:"९४औं जन्मजयन्ती",  name:"ओम् प्रेमामृत",  cover:"covers/v04.jpg", pdf:"pdfs/v04.pdf", pages:95,
+    editors:"कृष्णसिंह मोक्तान, विन्द्या सुब्बा, हरि शर्मा, विवेक केशर पाण्डे, अर्जुन शर्मा",
+    publishers:"वसन्त प्रधान, आदित्य मोक्तान",
+    patrons:"सुश्री देवी भूजेल",
+    price:"रु. ८०",
+    web:"saidekhisaisamma.org",
+    items:V4_ITEMS},
   {vol:5,  volD:"५",  year:"२०२०", yearEn:2020, date:"२३ नोभेम्बर २०२०", bday:"९५औं जन्मजयन्ती",  name:"ओम् सारथि",      cover:"covers/v05.jpg", pdf:"pdfs/v05.pdf", pages:95,
     editors:"कृष्णसिंह मोक्तान, विन्द्या सुब्बा, हरि शर्मा, विवेक केशर पाण्डे, अर्जुन शर्मा",
     publishers:"बसन्त प्रधान, आदित्य मोकान",
