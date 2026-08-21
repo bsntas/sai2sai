@@ -644,6 +644,7 @@ function coverImg(vol, attrs){
    ROUTING
    ════════════════════════════════════════════════════ */
 function go(view, params){
+  const prevView = S.view, prevVol = S.vol;
   // Remove PDF keyboard listener when leaving pdf view; restore body scroll
   if(S.view==='pdf' && view!=='pdf'){
     document.removeEventListener('keydown',_pdfKey);
@@ -672,10 +673,10 @@ function go(view, params){
   _updateNav();
   render();
   if(view!=='pdf'){
-    if(view==='volume'){
+    if(view==='volume' && prevView==='volume' && S.vol===prevVol){
+      // next/prev within same volume: scroll article into view
       const art = document.querySelector('article.page');
       if(art) art.scrollIntoView({behavior:'smooth', block:'start'});
-      else window.scrollTo({top:0, behavior:'smooth'});
     } else {
       window.scrollTo({top:0, behavior:'smooth'});
     }
