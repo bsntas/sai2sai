@@ -840,7 +840,7 @@ const VOLUMES = [
     patrons:"सुश्री देवी भूजेल",
     price:"रु. ८०",
     items:V1_ITEMS},
-  {vol:2,  volD:"२",  year:"२०१७", yearEn:2017, date:"२३ नोभेम्बर २०१७", bday:"९२औं जन्मजयन्ती",  name:"ओम् स्वर्णभूमि",  cover:"covers/v02.jpg", pdf:"pdfs/v02.pdf", pages:94,
+  {vol:2,  volD:"२",  year:"२०१७", yearEn:2017, date:"२३ नोभेम्बर २०१७", bday:"९२औं जन्मजयन्ती",  name:"ओम् स्वर्णभूमि",  cover:"covers/v02.jpg", pdf:"pdfs/v02.pdf", pages:94, pageOffset:1,
     editors:"कृष्णसिंह मोक्तान, विन्द्या सुब्बा, हरि शर्मा, विवेक केशर पाण्डे, अर्जुन शर्मा, मनोहर भूजेल, सुशील छेत्री",
     publishers:"वसन्त प्रधान, आदित्य मोक्तान",
     patrons:"सुश्री देवी भूजेल",
@@ -1202,7 +1202,7 @@ function viewVolume(){
       <div class="pdf-view">
         <div class="pdf-icon">${icon('file-pdf')}</div>
         <p class="pdf-note">यो रचना मूल अङ्कको <b>पृष्ठ ${deva(it.page)}</b> बाट सुरु हुन्छ। पूरा पाठ पढ्न PDF रिडरमा खोल्नुहोस्।</p>
-        <button class="pdfbtn" onclick="go('pdf',{vol:${vol.vol},pdfPage:${it.page}})">PDF रिडरमा खोल्नुहोस् — पृष्ठ ${deva(it.page)} ${icon('arrow-right')}</button>
+        <button class="pdfbtn" onclick="go('pdf',{vol:${vol.vol},pdfPage:${it.page+(vol.pageOffset||0)}})">PDF रिडरमा खोल्नुहोस् — पृष्ठ ${deva(it.page)} ${icon('arrow-right')}</button>
       </div>
       <div class="pager">
         <button class="pgb" ${prev?'':'disabled'} onclick="go('volume',{vol:${vol.vol},itemId:${S.itemId-1}})">
@@ -1335,6 +1335,7 @@ function viewPdfReader(){
   let tocRows = '';
   // Build drawer TOC (id="dtoc-{page}")
   let drawerRows = '';
+  const _pgOffset = vol.pageOffset||0;
   if(items.length){
     const genres = [...new Set(items.map(x=>x.genre))];
     genres.forEach(g => {
@@ -1342,7 +1343,7 @@ function viewPdfReader(){
       drawerRows += `<li class="pdf-tg">${g}</li>`;
       items.filter(x=>x.genre===g).forEach(it => {
         const row = (idPrefix) => `<li><button class="pdf-ti" id="${idPrefix}-${it.page}" data-pg="${it.page}"
-          onclick="${idPrefix==='dtoc'?'pdfDrawerJump':'pdfJump'}(${it.page})" oncontextmenu="return false">
+          onclick="${idPrefix==='dtoc'?'pdfDrawerJump':'pdfJump'}(${it.page+_pgOffset})" oncontextmenu="return false">
           <div class="pdf-ti-body">
             <div class="pdf-ti-title">${it.title}</div>
             <div class="pdf-ti-auth">${it.author}${it.place?' · '+it.place:''}</div>
@@ -1572,8 +1573,9 @@ function _tocHighlight(pageNum){
   const vol=volByNum(S.vol);
   if(!vol||!vol.items.length) return;
   const items=vol.items.filter(x=>!x.front);
+  const offset=vol.pageOffset||0;
   let cur=null;
-  for(let i=items.length-1;i>=0;i--){ if(items[i].page<=pageNum){cur=items[i];break;} }
+  for(let i=items.length-1;i>=0;i--){ if(items[i].page+offset<=pageNum){cur=items[i];break;} }
   const crumb=document.getElementById('pcrumb');
   if(crumb) crumb.innerHTML=cur
     ?`<span class="pdf-crumb-genre">${cur.genre}</span>${cur.title}`:'';
