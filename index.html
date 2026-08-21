@@ -659,6 +659,7 @@ function go(view, params){
     if(!('pdfPage' in (params||{}))) S.pdfPage=1;
     _pdfFullpage=false; _pdfDrawerOpen=false;
     document.addEventListener('keydown',_pdfKey);
+    window.scrollTo({top:0, behavior:'instant'});
   }
   if(view==='contributors'){
     const vol = volByNum(S.vol);
@@ -1383,6 +1384,7 @@ function _applyParsed(parsed){
   if(parsed.view==='pdf' && prev!=='pdf'){
     _pdfFullpage=false; _pdfDrawerOpen=false;
     document.addEventListener('keydown',_pdfKey);
+    window.scrollTo({top:0, behavior:'instant'});
   }
   if(parsed.view==='volume' && !('itemId' in parsed)) parsed.itemId=0;
   if(parsed.view==='shelf') parsed.showColophon=false;
