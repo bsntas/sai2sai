@@ -293,7 +293,8 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .pdf-pgbtn{width:30px;height:30px;border-radius:7px;border:1px solid var(--line);
   background:var(--card);color:var(--ink);cursor:pointer;font-size:17px;
   display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1}
-.pdf-pgbtn:hover:not(:disabled){background:var(--indigo);color:#fff;border-color:var(--indigo)}
+@media(hover:hover){.pdf-pgbtn:hover:not(:disabled){background:var(--indigo);color:#fff;border-color:var(--indigo)}}
+.pdf-pgbtn:active:not(:disabled){background:var(--indigo);color:#fff;border-color:var(--indigo)}
 .pdf-pgbtn:disabled{opacity:.28;cursor:default}
 .pdf-pginput{width:46px;text-align:center;border:1px solid var(--line);border-radius:6px;
   padding:5px 4px;font-size:14px;background:var(--paper);color:var(--ink);
@@ -303,7 +304,8 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .pdf-zbtn{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);
   background:var(--card);color:var(--ink);cursor:pointer;font-size:15px;
   display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1}
-.pdf-zbtn:hover{background:var(--paper2)}
+@media(hover:hover){.pdf-zbtn:hover{background:var(--paper2)}}
+.pdf-zbtn:active{background:var(--paper2)}
 .pdf-zlabel{font-size:12.5px;color:var(--soft);min-width:38px;text-align:center}
 .pdf-fitbtn{font-size:11px;padding:0 8px;width:auto;letter-spacing:.04em}
 .pdf-zbtn:disabled{opacity:.28;cursor:default}
@@ -401,7 +403,8 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .pfn-btn{width:34px;height:34px;border-radius:50%;border:none;
   background:rgba(255,255,255,.12);color:#f0e8d8;cursor:pointer;
   font-size:18px;display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1}
-.pfn-btn:hover:not(:disabled){background:rgba(255,255,255,.24)}
+@media(hover:hover){.pfn-btn:hover:not(:disabled){background:rgba(255,255,255,.24)}}
+.pfn-btn:active:not(:disabled){background:rgba(255,255,255,.24)}
 .pfn-btn:disabled{opacity:.28;cursor:default}
 .pfn-input{width:42px;text-align:center;background:rgba(255,255,255,.1);
   color:#f0e8d8;border:1px solid rgba(255,255,255,.2);border-radius:8px;
@@ -1244,6 +1247,16 @@ function _renderPage(num){
   });
 }
 
+function _scrollTocEl(el, containerId){
+  const container=document.getElementById(containerId);
+  if(!el||!container) return;
+  const eRect=el.getBoundingClientRect();
+  const cRect=container.getBoundingClientRect();
+  if(eRect.top<cRect.top||eRect.bottom>cRect.bottom){
+    container.scrollTop+=eRect.top-cRect.top-(cRect.height-eRect.height)/2;
+  }
+}
+
 function _tocHighlight(pageNum){
   const vol=volByNum(S.vol);
   if(!vol||!vol.items.length) return;
@@ -1256,12 +1269,11 @@ function _tocHighlight(pageNum){
   document.querySelectorAll('.pdf-ti').forEach(el=>el.setAttribute('aria-current','false'));
   if(cur){
     const el=document.getElementById(`ptoc-${cur.page}`);
-    if(el){el.setAttribute('aria-current','true');el.scrollIntoView({block:'nearest',behavior:'smooth'});}
+    if(el){ el.setAttribute('aria-current','true'); _scrollTocEl(el,'pdf-toc'); }
     const del=document.getElementById(`dtoc-${cur.page}`);
     if(del){
       del.setAttribute('aria-current','true');
-      // Only scroll drawer list when drawer is actually open
-      if(_pdfDrawerOpen) del.scrollIntoView({block:'nearest',behavior:'smooth'});
+      if(_pdfDrawerOpen) _scrollTocEl(del,'pdf-dtoc');
     }
   }
 }
