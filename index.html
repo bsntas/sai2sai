@@ -67,16 +67,17 @@ footer a:hover{text-decoration:underline}
 /* ── Buttons ── */
 .btn{font-family:"Noto Serif Devanagari",serif;font-size:16px;background:var(--kumkum);
   color:#fff;border:none;padding:12px 26px;border-radius:100px;cursor:pointer;transition:.16s;
-  display:inline-block;text-decoration:none}
+  display:inline-flex;align-items:center;gap:7px;text-decoration:none}
 .btn:hover{background:#a72e24}
 .btn-outline{font-family:"Noto Serif Devanagari",serif;font-size:15px;background:none;
   color:var(--indigo);border:1.5px solid var(--indigo);padding:10px 22px;border-radius:100px;
-  cursor:pointer;transition:.16s;display:inline-block;text-decoration:none}
+  cursor:pointer;transition:.16s;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
 .btn-outline:hover{background:var(--indigo);color:#fff}
 .pdfbtn{font-family:"Noto Serif Devanagari",serif;font-size:15px;background:var(--indigo);
   color:#fff;border:none;padding:10px 22px;border-radius:100px;cursor:pointer;
-  text-decoration:none;display:inline-block}
+  text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .pdfbtn:hover{background:#1e2b4d}
+button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .btn-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .back{background:none;border:none;color:var(--kumkum);font-family:"Noto Serif Devanagari",serif;
   font-size:15px;cursor:pointer;padding:4px 0;display:inline-flex;align-items:center;gap:4px}
@@ -179,7 +180,7 @@ footer a:hover{text-decoration:underline}
 /* PDF view within article */
 .pdf-view{display:flex;flex-direction:column;align-items:center;gap:16px;
   padding:36px 0 28px;text-align:center}
-.pdf-icon{font-size:44px;opacity:.4;line-height:1}
+.pdf-icon{opacity:.45;line-height:1;display:flex;justify-content:center;color:var(--kumkum)}
 .pdf-note{font-size:15.5px;color:var(--soft);max-width:46ch;line-height:1.65;margin:0}
 
 /* No-content panel */
@@ -285,7 +286,8 @@ footer a:hover{text-decoration:underline}
   border-bottom:1px solid var(--line);background:var(--card);flex-shrink:0;flex-wrap:wrap}
 .pdf-back{background:none;border:1px solid var(--line);color:var(--soft);
   font-size:13.5px;padding:5px 12px;border-radius:6px;cursor:pointer;
-  font-family:"Noto Serif Devanagari",serif;transition:.15s;white-space:nowrap}
+  font-family:"Noto Serif Devanagari",serif;transition:.15s;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:5px}
 .pdf-back:hover{border-color:var(--ink);color:var(--ink)}
 .pdf-pgnav{display:flex;align-items:center;gap:5px;margin-left:auto}
 .pdf-pgbtn{width:30px;height:30px;border-radius:7px;border:1px solid var(--line);
@@ -641,6 +643,28 @@ function coverImg(vol, attrs){
 }
 
 /* ════════════════════════════════════════════════════
+   SVG ICONS
+   ════════════════════════════════════════════════════ */
+const ICONS={
+'arrow-left':`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>`,
+'arrow-right':`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg>`,
+'chevron-left':`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>`,
+'chevron-right':`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>`,
+'chevron-up':`<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>`,
+'chevron-down':`<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>`,
+'minus':`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+'plus':`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+'expand':`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>`,
+'compress':`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="3" y2="21"/><line x1="21" y1="3" x2="14" y2="10"/></svg>`,
+'menu':`<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>`,
+'x':`<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+'file-pdf':`<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`,
+'link':`<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
+'check':`<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`,
+};
+function icon(n){ return ICONS[n]||''; }
+
+/* ════════════════════════════════════════════════════
    ROUTING
    ════════════════════════════════════════════════════ */
 function go(view, params){
@@ -750,10 +774,10 @@ async function copyPermalink(e, hash){
   const btn = e.currentTarget;
   try {
     await navigator.clipboard.writeText(url);
-    const orig = btn.textContent;
-    btn.textContent = '✓';
+    const orig = btn.innerHTML;
+    btn.innerHTML = icon('check');
     btn.classList.add('perma-copied');
-    setTimeout(()=>{ btn.textContent=orig; btn.classList.remove('perma-copied'); }, 1600);
+    setTimeout(()=>{ btn.innerHTML=orig; btn.classList.remove('perma-copied'); }, 1600);
   } catch(_){}
 }
 
@@ -803,7 +827,7 @@ function viewShelf(){
         <h2 class="deva-display">${latest.name}${latest.centenary?'<span class="badge badge-centenary">शताब्दी</span>':''}</h2>
         <p class="stats">${featStats}</p>
         <div class="btn-row">
-          <button class="btn" onclick="go('volume',{vol:${latest.vol}})">अङ्क खोल्नुहोस् →</button>
+          <button class="btn" onclick="go('volume',{vol:${latest.vol}})">अङ्क खोल्नुहोस् ${icon('arrow-right')}</button>
           <button class="btn-outline" onclick="go('pdf',{vol:${latest.vol},pdfPage:1})">PDF पढ्नुहोस्</button>
         </div>
       </div>
@@ -855,44 +879,44 @@ function viewVolume(){
     const artContent = `<div class="art-head">
         <span class="art-pg">पृष्ठ ${deva(it.page)}</span>
         ${chip(it.genre)}
-        <h1 class="art-title">${it.title}${!it.front?`<a href="${artHash}" class="art-perma" onclick="copyPermalink(event,'${artHash}')" title="रचनाको पर्मालिङ्क">🔗</a>`:''}</h1>
+        <h1 class="art-title">${it.title}${!it.front?`<a href="${artHash}" class="art-perma" onclick="copyPermalink(event,'${artHash}')" title="रचनाको पर्मालिङ्क">${icon('link')}</a>`:''}</h1>
         ${!it.front?`<div class="art-by"><b>${it.author}</b></div><div class="art-place">${it.place}</div>`:''}
       </div>
       <div class="pdf-view">
-        <div class="pdf-icon">📄</div>
+        <div class="pdf-icon">${icon('file-pdf')}</div>
         <p class="pdf-note">यो रचना मूल अङ्कको <b>पृष्ठ ${deva(it.page)}</b> बाट सुरु हुन्छ। पूरा पाठ पढ्न PDF रिडरमा खोल्नुहोस्।</p>
-        <button class="pdfbtn" onclick="go('pdf',{vol:${vol.vol},pdfPage:${it.page}})">PDF रिडरमा खोल्नुहोस् — पृष्ठ ${deva(it.page)} →</button>
+        <button class="pdfbtn" onclick="go('pdf',{vol:${vol.vol},pdfPage:${it.page}})">PDF रिडरमा खोल्नुहोस् — पृष्ठ ${deva(it.page)} ${icon('arrow-right')}</button>
       </div>
       <div class="pager">
         <button class="pgb" ${prev?'':'disabled'} onclick="go('volume',{vol:${vol.vol},itemId:${S.itemId-1}})">
-          <small>अघिल्लो</small>${prev?prev.title:'—'}
+          <small>${icon('chevron-left')} अघिल्लो</small>${prev?prev.title:'—'}
         </button>
         <button class="pgb next" ${next?'':'disabled'} onclick="go('volume',{vol:${vol.vol},itemId:${S.itemId+1}})">
-          <small>अर्को</small>${next?next.title:'—'}
+          <small>अर्को ${icon('chevron-right')}</small>${next?next.title:'—'}
         </button>
       </div>`;
 
     const volHash = `#v${vol.vol}`;
     const artHash = `#v${vol.vol}/a${S.itemId}`;
     return `<div class="wrap fade">
-    <div class="back-bar"><button class="back" onclick="go('shelf')">← सबै अङ्क</button></div>
+    <div class="back-bar"><button class="back" onclick="go('shelf')">${icon('arrow-left')} सबै अङ्क</button></div>
     <div class="reader">
       <aside class="toc">
         <div class="yr deva-display">${vol.year}</div>
         <div class="vr">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)}</div>
         <div class="nm-wrap">
           <div class="nm deva-display">${vol.name}</div>
-          <a href="${volHash}" class="perma" onclick="copyPermalink(event,'${volHash}')" title="यस अङ्कको पर्मालिङ्क">🔗</a>
+          <a href="${volHash}" class="perma" onclick="copyPermalink(event,'${volHash}')" title="यस अङ्कको पर्मालिङ्क">${icon('link')}</a>
         </div>
         <div class="meta">${deva(pieceCount)} रचना · ${deva(contribCount)} योगदानकर्ता${vol.pages?` · ${deva(vol.pages)} पृष्ठ`:''}</div>
         <div class="toc-actions">
-          <button class="pdfbtn" style="font-size:13px;padding:8px 16px" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् →</button>
+          <button class="pdfbtn" style="font-size:13px;padding:8px 16px" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् ${icon('arrow-right')}</button>
           <button class="btn-outline" style="font-size:13px;padding:8px 16px" onclick="go('contributors',{vol:${vol.vol},authorIdx:0})">योगदानकर्ता</button>
         </div>
         <div class="toc-label">अनुक्रमणिका</div>
         <ul class="toc-list">${tocList}</ul>
         <button class="back" style="margin-top:14px" onclick="S.showColophon=!S.showColophon;render()">
-          ${S.showColophon?'▲ लुकाउनुहोस्':'▼ यस अङ्कको बारेमा'}
+          ${S.showColophon?`${icon('chevron-up')} लुकाउनुहोस्`:`${icon('chevron-down')} यस अङ्कको बारेमा`}
         </button>
         ${S.showColophon?coloHtml:''}
       </aside>
@@ -904,7 +928,7 @@ function viewVolume(){
   /* ── No article data yet ── */
   const ph = placeholderSrc(vol);
   return `<div class="wrap fade">
-  <div class="back-bar"><button class="back" onclick="go('shelf')">← सबै अङ्क</button></div>
+  <div class="back-bar"><button class="back" onclick="go('shelf')">${icon('arrow-left')} सबै अङ्क</button></div>
   <div class="no-articles">
     <div class="na-cover">${coverImg(vol,`style="width:100%;display:block;border:1px solid var(--line);box-shadow:0 8px 20px -12px rgba(36,31,26,.5)"`)}</div>
     <div class="na-body">
@@ -913,7 +937,7 @@ function viewVolume(){
       <p class="na-label" style="margin-top:2px">${vol.bday}</p>
       <p class="na-desc">भगवान् श्री सत्य साई बाबाका भक्तहरूका रचनाहरूको वार्षिक स्मारिका — साई देखि साई सम्म, पुट्टपर्ती।</p>
       <div class="btn-row">
-        <button class="pdfbtn" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् →</button>
+        <button class="pdfbtn" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् ${icon('arrow-right')}</button>
       </div>
       <div class="na-soon">
         <span class="om deva-display">ॐ</span>
@@ -938,7 +962,7 @@ function viewContributors(){
       <div style="font-size:52px;color:var(--kumkum);opacity:.35;margin-bottom:18px;font-family:'Tiro Devanagari Hindi',serif">ॐ</div>
       <h2 style="font-family:'Tiro Devanagari Hindi',serif;color:var(--ink);margin:0 0 12px">योगदानकर्ता विवरण उपलब्ध छैन</h2>
       <p style="max-width:38ch;margin:0 auto;font-size:16px">यस अङ्कको रचना–सूची अझै थपिएको छैन।</p>
-      <button class="btn" style="margin-top:24px" onclick="go('shelf')">← अङ्कहरूमा फर्कनुहोस्</button>
+      <button class="btn" style="margin-top:24px" onclick="go('shelf')">${icon('arrow-left')} अङ्कहरूमा फर्कनुहोस्</button>
     </div>`;
   }
 
@@ -958,12 +982,12 @@ function viewContributors(){
     <button class="bead" onclick="go('volume',{vol:${vol.vol},itemId:${vol.items.indexOf(p)}})">
       ${chip(p.genre)}
       <div class="bt">${p.title}</div>
-      <div class="bm">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)} · पृष्ठ ${deva(p.page)} · खोल्नुहोस् →</div>
+      <div class="bm">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)} · पृष्ठ ${deva(p.page)} · खोल्नुहोस् ${icon('arrow-right')}</div>
     </button>`).join('');
 
   return `<div class="wrap fade">
   <div class="back-bar">
-    <button class="back" onclick="go('volume',{vol:${vol.vol}})">← वर्ष ${vol.volD} अङ्कमा फर्कनुहोस्</button>
+    <button class="back" onclick="go('volume',{vol:${vol.vol}})">${icon('arrow-left')} वर्ष ${vol.volD} अङ्कमा फर्कनुहोस्</button>
   </div>
   <div class="contrib">
     <aside class="az">
@@ -1037,23 +1061,23 @@ function viewPdfReader(){
 
     <div class="pdf-main">
       <div class="pdf-bar">
-        <button class="pdf-back" onclick="go('volume',{vol:${vol.vol}})">← अङ्क विवरण</button>
+        <button class="pdf-back" onclick="go('volume',{vol:${vol.vol}})">${icon('arrow-left')} अङ्क विवरण</button>
         <div class="pdf-crumb" id="pcrumb"></div>
         <div class="pdf-pgnav">
-          <button class="pdf-pgbtn" id="pprev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ (←)">&#8249;</button>
+          <button class="pdf-pgbtn" id="pprev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ (←)">${icon('chevron-left')}</button>
           <input class="pdf-pginput" id="ppg" type="number" min="1" value="1"
             onchange="pdfJump(+this.value)" onkeydown="if(event.key==='Enter')pdfJump(+this.value)"
             aria-label="पृष्ठ सङ्ख्या">
           <span class="pdf-pgtotal">/ <span id="ptotal">—</span></span>
-          <button class="pdf-pgbtn" id="pnext" onclick="pdfNext()" disabled title="अर्को पृष्ठ (→)">&#8250;</button>
+          <button class="pdf-pgbtn" id="pnext" onclick="pdfNext()" disabled title="अर्को पृष्ठ (→)">${icon('chevron-right')}</button>
         </div>
         <div class="pdf-zoom">
-          <button class="pdf-zbtn" id="pzout" onclick="pdfZoomOut()" title="सानो (−)">−</button>
+          <button class="pdf-zbtn" id="pzout" onclick="pdfZoomOut()" title="सानो (−)">${icon('minus')}</button>
           <span class="pdf-zlabel" id="pzlbl">—</span>
-          <button class="pdf-zbtn" id="pzin" onclick="pdfZoomIn()" title="ठूलो (+)">+</button>
-          <button class="pdf-zbtn pdf-fitbtn" onclick="pdfFit()" title="पृष्ठमा मिलाउनुहोस्">↔ FIT</button>
+          <button class="pdf-zbtn" id="pzin" onclick="pdfZoomIn()" title="ठूलो (+)">${icon('plus')}</button>
+          <button class="pdf-zbtn pdf-fitbtn" onclick="pdfFit()" title="पृष्ठमा मिलाउनुहोस्">${icon('expand')} FIT</button>
         </div>
-        <button class="pdf-fullbtn" id="pfullbtn" onclick="pdfToggleFullpage()" title="पूर्ण पर्दा (F)">⛶</button>
+        <button class="pdf-fullbtn" id="pfullbtn" onclick="pdfToggleFullpage()" title="पूर्ण पर्दा (F)">${icon('expand')}</button>
       </div>
       <div class="pdf-progress"><div class="pdf-progress-bar" id="pprogress"></div></div>
       <div class="pdf-canvas-area" id="pca" oncontextmenu="return false">
@@ -1070,26 +1094,26 @@ function viewPdfReader(){
 
   <!-- Float nav (fullpage mode) -->
   <div class="pdf-float-nav" id="pdf-float-nav">
-    <button class="pfn-btn" id="pfn-prev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ">&#8249;</button>
+    <button class="pfn-btn" id="pfn-prev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ">${icon('chevron-left')}</button>
     <input class="pfn-input" id="pfn-pg" type="number" min="1" value="1"
       onchange="pdfJump(+this.value)" onkeydown="if(event.key==='Enter')pdfJump(+this.value)"
       aria-label="पृष्ठ सङ्ख्या">
     <span class="pfn-of">/ <span id="pfn-total">—</span></span>
-    <button class="pfn-btn" id="pfn-next" onclick="pdfNext()" disabled title="अर्को पृष्ठ">&#8250;</button>
+    <button class="pfn-btn" id="pfn-next" onclick="pdfNext()" disabled title="अर्को पृष्ठ">${icon('chevron-right')}</button>
     <div class="pfn-sep"></div>
-    <button class="pfn-btn pfn-zm" id="pfn-zout" onclick="pdfZoomOut()" title="सानो (−)">−</button>
-    <button class="pfn-btn pfn-zm" id="pfn-zin" onclick="pdfZoomIn()" title="ठूलो (+)">+</button>
-    <button class="pfn-fit" onclick="pdfFit()" title="पृष्ठ अनुसार">FIT</button>
-    ${hasToc?`<div class="pfn-sep"></div><button class="pfn-toc-btn" id="pfn-toc-btn" onclick="pdfFullpageTocToggle()" title="अनुक्रमणिका लुकाउनुहोस्">☰<span class="pfn-toc-label"> लुकाउनुहोस्</span></button>`:''}
+    <button class="pfn-btn pfn-zm" id="pfn-zout" onclick="pdfZoomOut()" title="सानो (−)">${icon('minus')}</button>
+    <button class="pfn-btn pfn-zm" id="pfn-zin" onclick="pdfZoomIn()" title="ठूलो (+)">${icon('plus')}</button>
+    <button class="pfn-fit" onclick="pdfFit()" title="पृष्ठ अनुसार">${icon('expand')} FIT</button>
+    ${hasToc?`<div class="pfn-sep"></div><button class="pfn-toc-btn" id="pfn-toc-btn" onclick="pdfFullpageTocToggle()" title="अनुक्रमणिका लुकाउनुहोस्">${icon('menu')}<span class="pfn-toc-label"> लुकाउनुहोस्</span></button>`:''}
     <div class="pfn-sep"></div>
-    <button class="pfn-exit" onclick="pdfToggleFullpage()" title="बाहिर निस्कनुहोस् (Esc)">&#x2715;</button>
+    <button class="pfn-exit" onclick="pdfToggleFullpage()" title="बाहिर निस्कनुहोस् (Esc)">${icon('x')}</button>
   </div>
 
   <!-- Slide-in TOC drawer (fullpage mode) -->
   <div class="pdf-toc-drawer" id="pdf-toc-drawer" aria-label="अनुक्रमणिका">
     <div class="pdf-drawer-head">
       <p class="pdf-drawer-title">${vol.name} — अनुक्रमणिका</p>
-      <button class="pdf-drawer-close" onclick="pdfDrawerClose()" aria-label="बन्द गर्नुहोस्">&#x00D7;</button>
+      <button class="pdf-drawer-close" onclick="pdfDrawerClose()" aria-label="बन्द गर्नुहोस्">${icon('x')}</button>
     </div>
     <ul class="pdf-toc" id="pdf-dtoc">${drawerRows}</ul>
   </div>
@@ -1275,7 +1299,7 @@ function pdfToggleFullpage(){
   const nav=document.getElementById('pdf-float-nav');
   if(nav) nav.classList.toggle('visible',_pdfFullpage);
   const fbtn=document.getElementById('pfullbtn');
-  if(fbtn) fbtn.title=_pdfFullpage?'सामान्य दृश्य (F)':'पूर्ण पर्दा (F)';
+  if(fbtn){ fbtn.title=_pdfFullpage?'सामान्य दृश्य (F)':'पूर्ण पर्दा (F)'; fbtn.innerHTML=icon(_pdfFullpage?'compress':'expand'); }
   document.body.style.overflow=_pdfFullpage?'hidden':'';
   if(_pdfFullpage){ _pdfZoom='fit'; setTimeout(()=>_renderPage(S.pdfPage),50); }
   else _renderPage(S.pdfPage);
