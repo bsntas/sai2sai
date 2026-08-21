@@ -515,6 +515,46 @@ const V1_ITEMS = [
 ];
 
 /* ════════════════════════════════════════════════════
+   VOLUME 2 ARTICLE DATA (full table of contents)
+   ════════════════════════════════════════════════════ */
+const V2_ITEMS = [
+  {genre:"सम्पादकीय", title:"सम्पादकीय", author:"", place:"", page:6, front:true},
+  {genre:"प्रकाशकीय", title:"प्रकाशकीय", author:"आदित्य मोक्तान", place:"", page:7, front:true},
+  {genre:"लेख", title:"भगवानसितको दिव्य स्मृति अनि संस्मरण", author:"कृष्ण सिंह मोक्तान", place:"", page:9},
+  {genre:"लेख", title:"कृष्ण-कीर्ति", author:"मोहन ठकुरी", place:"महपु, दार्जीलिङ", page:13},
+  {genre:"लेख", title:"केही आध्यात्मिक कुराहरू", author:"हरि शर्मा", place:"", page:16},
+  {genre:"लेख", title:"धर्म र आध्यात्म", author:"विवेक केशर पाण्डे", place:"", page:20},
+  {genre:"लेख", title:"एक्काइस ओमकार साधना", author:"शम्भु सुब्बा", place:"", page:25},
+  {genre:"लेख", title:"अन्तज्ञान", author:"टी.आर. शर्मा", place:"", page:34},
+  {genre:"अन्तर्वार्ता", title:"सत्यम्-शिवम्-सुन्दरम्", author:"बसन्त प्रधान", place:"", page:36},
+  {genre:"लेख", title:"साई सेवाका चार शहीदप्रति श्रद्धाञ्जली", author:"सविता सङ्कल्प", place:"", page:45},
+  {genre:"लेख", title:"साई साञ्निध्य-दुई", author:"देवी भूजेल", place:"पुट्टपर्ती", page:49},
+  {genre:"लेख", title:"सर्वञ्ज सर्वव्यापी साई", author:"अर्जुन शर्मा", place:"सिक्किम", page:52},
+  {genre:"लेख", title:"साँचो साथी", author:"आयुसा साही", place:"काठमाण्डौं", page:54},
+  {genre:"लेख", title:"ड्रिम क्याचर", author:"प्रियंका प्रधान", place:"दार्जीलिङ", page:56},
+  {genre:"लेख", title:"स्वामी : मेरी अनन्त आमा", author:"सौरभ आनन्द गुरुङ", place:"दार्जीलिङ", page:58},
+  {genre:"लेख", title:"साई मार्गदर्शक", author:"सुशील छेत्री", place:"दार्जीलिङ", page:59},
+  {genre:"लेख", title:"भगवान मनमा बर्नुहुन्छ भने मन्दिर जानुको महत्त्व के हो?", author:"अनुरोध देवकोटा", place:"नेपाल", page:61},
+  {genre:"लेख", title:"प्रेमको अभाव यो संसारमा", author:"सचिन प्रधान", place:"दार्जीलिङ", page:63},
+  {genre:"लेख", title:"जीवनको नाम", author:"राकेश लोहागुन", place:"दक्षिण सिक्किम", page:64},
+  {genre:"लेख", title:"प्रिति-सहयोगिता", author:"निमेष सुब्बा", place:"बिजनबारी", page:65},
+  {genre:"लेख", title:"आफ्नो इच्छा आफैं पूरा गर्नुभयो", author:"आशिष विसुन्के", place:"धरान, नेपाल", page:67},
+  {genre:"लेख", title:"नामस्मरण", author:"निखिल सुनाम", place:"दार्जीलिङ", page:69},
+  {genre:"लेख", title:"कृतज्ञता जनाऊँ कसरी?", author:"प्रशान्त राई", place:"दार्जीलिङ", page:71},
+  {genre:"लेख", title:"प्रेम स्वरूप साई", author:"आयुष राई", place:"दार्जीलिङ", page:73},
+  {genre:"लेख", title:"यात्रा सिंहासनको", author:"बसन्त शर्मा", place:"बिजनबारी", page:76},
+  {genre:"लेख", title:"लक्ष्य", author:"साइदोर्जे मोक्तान", place:"", page:78},
+  {genre:"लेख", title:"दीपावलीको एक साँझ", author:"जी.एस. नोर्देन", place:"खरसाड", page:81},
+  {genre:"समाचार", title:"'फेस्टिभल अफ् डिभाइन लभ' कार्यक्रम", author:"", place:"", page:83, front:true},
+  {genre:"समाचार", title:"ओम् पत्रिका प्रथम अङ्क सार्वजनिक", author:"", place:"", page:84, front:true},
+  {genre:"कविता", title:"चाहना परिवर्तनको", author:"मनोहर भूजेल", place:"खरसाड", page:85},
+  {genre:"कविता", title:"स्वामीको विचित्र लीला", author:"लेकनाथ शर्मा", place:"दार्जीलिङ", page:87},
+  {genre:"कविता", title:"परमात्मा भइबर्सनु भएको पाएँ", author:"श्याम प्रधान", place:"तीनधारे", page:87},
+  {genre:"कविता", title:"आमा तिम्रो माया", author:"विकल खनाल", place:"धरान, नेपाल", page:88},
+  {genre:"समाचार", title:"खरसाडमा साईदेखि साईसम्म समूहको कार्यक्रम", author:"", place:"", page:89, front:true},
+];
+
+/* ════════════════════════════════════════════════════
    VOLUME 3 ARTICLE DATA (full table of contents)
    ════════════════════════════════════════════════════ */
 const V3_ITEMS = [
@@ -800,7 +840,13 @@ const VOLUMES = [
     patrons:"सुश्री देवी भूजेल",
     price:"रु. ८०",
     items:V1_ITEMS},
-  {vol:2,  volD:"२",  year:"२०१७", yearEn:2017, date:"२३ नोभेम्बर २०१७", bday:"९२औं जन्मजयन्ती",  name:"ओम् स्वर्णभूमि",  cover:"covers/v02.jpg", pdf:"pdfs/v02.pdf", pages:null, items:[]},
+  {vol:2,  volD:"२",  year:"२०१७", yearEn:2017, date:"२३ नोभेम्बर २०१७", bday:"९२औं जन्मजयन्ती",  name:"ओम् स्वर्णभूमि",  cover:"covers/v02.jpg", pdf:"pdfs/v02.pdf", pages:94,
+    editors:"कृष्णसिंह मोक्तान, विन्द्या सुब्बा, हरि शर्मा, विवेक केशर पाण्डे, अर्जुन शर्मा, मनोहर भूजेल, सुशील छेत्री",
+    publishers:"वसन्त प्रधान, आदित्य मोक्तान",
+    patrons:"सुश्री देवी भूजेल",
+    price:"रु. ८०/-",
+    web:"saidekhisaisamma.org",
+    items:V2_ITEMS},
   {vol:3,  volD:"३",  year:"२०१८", yearEn:2018, date:"२३ नोभेम्बर २०१८", bday:"९३औं जन्मजयन्ती",  name:"ओम् प्रतिध्वनि", cover:"covers/v03.jpg", pdf:"pdfs/v03.pdf", pages:93,
     editors:"कृष्णसिंह मोक्तान, विन्द्या सुब्बा, हरि शर्मा, विवेक केशर पाण्डे, अर्जुन शर्मा, मनोहर भूजेल, सुशील छेत्री",
     publishers:"वसन्त प्रधान, आदित्य मोक्तान",
