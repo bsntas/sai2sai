@@ -476,7 +476,6 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
     </button>
     <nav class="doors" aria-label="मुख्य नेभिगेसन">
       <button class="door" id="nav-shelf" onclick="go('shelf')">अङ्कहरू</button>
-      <button class="door" id="nav-contrib" onclick="goContrib()">योगदानकर्ता</button>
     </nav>
   </div>
 </header>
@@ -768,7 +767,6 @@ function selectAuthor(idx){
 
 function _updateNav(){
   document.getElementById('nav-shelf').setAttribute('aria-current', S.view==='shelf'?'true':'false');
-  document.getElementById('nav-contrib').setAttribute('aria-current', S.view==='contributors'?'true':'false');
 }
 
 /* ════════════════════════════════════════════════════
