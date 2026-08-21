@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<meta name="description" content="साई देखि साई सम्मको वार्षिक स्मारिका — भगवान् श्री सत्य साई बाबाका भक्तहरूका कविता, अनुभव, लेख अनि नियात्राको संग्रह। वर्ष २०१६ देखि प्रकाशित।"/>
-<title>साई देखि साई सम्म · sai2sai</title>
+<meta name="description" content="साईदेखि साईसम्मको वार्षिक स्मारिका — भगवान् श्री सत्य साई बाबाका भक्तहरूका कविता, अनुभव, लेख अनि नियात्राको संग्रह। वर्ष २०१६ देखि प्रकाशित।"/>
+<title>साईदेखि साईसम्म · sai2sai</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
@@ -473,7 +473,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
     <button class="brand" onclick="go('shelf')" aria-label="गृहपृष्ठ">
       <span class="logo-mark" aria-hidden="true"><img src="logo/sai2sai-opt.svg" width="40" height="40" alt=""></span>
       <span class="mark">sai<span class="two">2</span>sai</span>
-      <span class="mark-sub">साई देखि साई सम्म</span>
+      <span class="mark-sub">साईदेखि साईसम्म</span>
     </button>
     <nav class="doors" aria-label="मुख्य नेभिगेसन">
       <button class="door" id="nav-shelf" onclick="go('shelf')">अङ्कहरू</button>
@@ -486,7 +486,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 
 <footer class="site">
   <div class="wrap">
-    <span>साई देखि साई सम्म — पुट्टपर्ती, अनन्तपुर</span>
+    <span>साईदेखि साईसम्म — पुट्टपर्ती, अनन्तपुर</span>
     <span>वर्ष २०१६ देखि · <a href="http://www.sai2sai.in" target="_blank" rel="noopener">sai2sai.in</a></span>
   </div>
 </footer>
@@ -635,7 +635,7 @@ function placeholderSrc(vol){
 <text x="150" y="178" text-anchor="middle" font-size="80" font-family="serif" fill="#C1362B" opacity="0.45">ॐ</text>
 <text x="150" y="238" text-anchor="middle" font-size="17" font-family="serif" fill="#241F1A" opacity="0.65">${vol.name}</text>
 <text x="150" y="272" text-anchor="middle" font-size="13" font-family="serif" fill="#A9812F">वर्ष ${vol.volD} · ${vol.year}</text>
-<text x="150" y="305" text-anchor="middle" font-size="11" font-family="serif" fill="#6B6155">साई देखि साई सम्म</text>
+<text x="150" y="305" text-anchor="middle" font-size="11" font-family="serif" fill="#6B6155">साईदेखि साईसम्म</text>
 <text x="150" y="428" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#C8BBA4">sai2sai.in</text>
 </svg>`;
   return 'data:image/svg+xml,' + encodeURIComponent(svg);
@@ -818,7 +818,7 @@ function viewShelf(){
   return `<div class="wrap fade">
   <section class="shelf-hero">
     <p class="kicker">वार्षिक स्मारिका · भगवान् श्री सत्य साई बाबाका भक्तहरूद्वारा</p>
-    <h1 class="deva-display">साई देखि साई सम्म</h1>
+    <h1 class="deva-display">साईदेखि साईसम्म</h1>
     <p class="lead">कविता, अनुभव, लेख अनि नियात्रा — एकै ठाउँमा। वर्ष २०१६ देखि प्रकाशित सबै ${deva(VOLUMES.length)} अङ्कहरू यहाँ संग्रहीत छन्।</p>
   </section>
 
@@ -939,7 +939,7 @@ function viewVolume(){
       <div class="na-label">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)} · ${vol.date}</div>
       <h2 class="deva-display">${vol.name}${vol.centenary?'<span class="badge badge-centenary" style="font-size:14px">शताब्दी</span>':''}</h2>
       <p class="na-label" style="margin-top:2px">${vol.bday}</p>
-      <p class="na-desc">भगवान् श्री सत्य साई बाबाका भक्तहरूका रचनाहरूको वार्षिक स्मारिका — साई देखि साई सम्म, पुट्टपर्ती।</p>
+      <p class="na-desc">भगवान् श्री सत्य साई बाबाका भक्तहरूका रचनाहरूको वार्षिक स्मारिका — साईदेखि साईसम्म, पुट्टपर्ती।</p>
       <div class="btn-row">
         <button class="pdfbtn" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् ${icon('arrow-right')}</button>
       </div>
