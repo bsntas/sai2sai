@@ -659,6 +659,7 @@ function go(view, params){
     if(!('pdfPage' in (params||{}))) S.pdfPage=1;
     _pdfFullpage=false; _pdfDrawerOpen=false;
     document.addEventListener('keydown',_pdfKey);
+    window.scrollTo({top:0, behavior:'instant'});
   }
   if(view==='contributors'){
     const vol = volByNum(S.vol);
@@ -670,7 +671,15 @@ function go(view, params){
   }
   _updateNav();
   render();
-  if(view!=='pdf') window.scrollTo({top:0,behavior:'smooth'});
+  if(view!=='pdf'){
+    if(view==='volume'){
+      const art = document.querySelector('article.page');
+      if(art) art.scrollIntoView({behavior:'smooth', block:'start'});
+      else window.scrollTo({top:0, behavior:'smooth'});
+    } else {
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  }
   const h = _stateHash();
   if(location.hash !== h) history.pushState(null,'',h);
 }
@@ -1267,9 +1276,7 @@ function pdfToggleFullpage(){
   const fbtn=document.getElementById('pfullbtn');
   if(fbtn) fbtn.title=_pdfFullpage?'सामान्य दृश्य (F)':'पूर्ण पर्दा (F)';
   document.body.style.overflow=_pdfFullpage?'hidden':'';
-  if(_pdfFullpage && window.innerWidth<=600 && _pdfZoom==='fit') _pdfZoom=1.2;
-  else if(!_pdfFullpage && typeof _pdfZoom==='number' && _pdfZoom===1.2) _pdfZoom='fit';
-  if(_pdfFullpage) setTimeout(()=>_renderPage(S.pdfPage),50);
+  if(_pdfFullpage){ _pdfZoom='fit'; setTimeout(()=>_renderPage(S.pdfPage),50); }
   else _renderPage(S.pdfPage);
 }
 function pdfFullpageTocToggle(){
@@ -1375,14 +1382,22 @@ function _applyParsed(parsed){
   if(parsed.view==='pdf' && prev!=='pdf'){
     _pdfFullpage=false; _pdfDrawerOpen=false;
     document.addEventListener('keydown',_pdfKey);
+    window.scrollTo({top:0, behavior:'instant'});
   }
   if(parsed.view==='volume' && !('itemId' in parsed)) parsed.itemId=0;
   if(parsed.view==='shelf') parsed.showColophon=false;
   Object.assign(S, parsed);
   _updateNav();
   render();
-  if(parsed.view==='pdf') setTimeout(_initPdfReader,0);
-  else window.scrollTo({top:0,behavior:'smooth'});
+  if(parsed.view==='pdf'){
+    setTimeout(_initPdfReader,0);
+  } else if(parsed.view==='volume'){
+    const art = document.querySelector('article.page');
+    if(art) art.scrollIntoView({behavior:'smooth', block:'start'});
+    else window.scrollTo({top:0, behavior:'smooth'});
+  } else {
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
 }
 
 window.addEventListener('popstate', function(){ _applyParsed(_parseHash()); });
