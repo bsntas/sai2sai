@@ -37,8 +37,8 @@ header.site{
 .brand{display:flex;align-items:center;gap:11px;background:none;border:none;cursor:pointer;
   color:inherit;padding:0;font-family:inherit}
 .logo-mark{flex-shrink:0;display:flex;align-items:center}
-.mark{font-family:"Fraunces",serif;font-weight:600;font-size:26px;letter-spacing:.3px}
-.mark .two{color:var(--kumkum);font-style:italic}
+.mark{font-family:"Tiro Devanagari Hindi","Noto Serif Devanagari",serif;font-size:clamp(17px,2.2vw,24px);letter-spacing:.3px}
+.mark .two{color:var(--kumkum)}
 .mark-sub{font-family:"Tiro Devanagari Hindi",serif;font-size:18px;color:var(--indigo);
   border-left:1px solid var(--line);padding-left:11px;margin-left:2px}
 nav.doors{display:flex;gap:5px;background:var(--paper2);padding:4px;border-radius:100px;border:1px solid var(--line)}
@@ -472,8 +472,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
   <div class="site-in">
     <button class="brand" onclick="go('shelf')" aria-label="गृहपृष्ठ">
       <span class="logo-mark" aria-hidden="true"><img src="logo/sai2sai-opt.svg" width="40" height="40" alt=""></span>
-      <span class="mark">sai<span class="two">2</span>sai</span>
-      <span class="mark-sub">साईदेखि साईसम्म</span>
+      <span class="mark">साईदेखि <span class="two">साई</span>सम्म</span>
     </button>
     <nav class="doors" aria-label="मुख्य नेभिगेसन">
       <button class="door" id="nav-shelf" onclick="go('shelf')">अङ्कहरू</button>
