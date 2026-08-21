@@ -670,7 +670,15 @@ function go(view, params){
   }
   _updateNav();
   render();
-  if(view!=='pdf') window.scrollTo({top:0,behavior:'smooth'});
+  if(view!=='pdf'){
+    if(view==='volume'){
+      const art = document.querySelector('article.page');
+      if(art) art.scrollIntoView({behavior:'smooth', block:'start'});
+      else window.scrollTo({top:0, behavior:'smooth'});
+    } else {
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  }
   const h = _stateHash();
   if(location.hash !== h) history.pushState(null,'',h);
 }
@@ -1381,8 +1389,15 @@ function _applyParsed(parsed){
   Object.assign(S, parsed);
   _updateNav();
   render();
-  if(parsed.view==='pdf') setTimeout(_initPdfReader,0);
-  else window.scrollTo({top:0,behavior:'smooth'});
+  if(parsed.view==='pdf'){
+    setTimeout(_initPdfReader,0);
+  } else if(parsed.view==='volume'){
+    const art = document.querySelector('article.page');
+    if(art) art.scrollIntoView({behavior:'smooth', block:'start'});
+    else window.scrollTo({top:0, behavior:'smooth'});
+  } else {
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
 }
 
 window.addEventListener('popstate', function(){ _applyParsed(_parseHash()); });
