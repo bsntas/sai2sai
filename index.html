@@ -169,7 +169,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 /* Article page */
 .page{background:var(--card);border:1px solid var(--line);
   box-shadow:0 24px 60px -38px rgba(26,42,58,.45);
-  padding:34px clamp(20px,4vw,48px) 42px;min-height:480px}
+  padding:34px clamp(20px,4vw,48px) 42px;min-height:480px;scroll-margin-top:76px}
 .art-head{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px;overflow:hidden}
 .art-pg{float:right;font-family:"Tiro Devanagari Hindi",serif;color:var(--gold);font-size:16px}
 .art-title{font-family:"Tiro Devanagari Hindi",serif;font-size:clamp(26px,4.2vw,44px);
@@ -921,6 +921,8 @@ function viewVolume(){
       ${vol.price?`<div><b>मूल्य / सहयोग राशि:</b> ${vol.price}</div>`:''}
     </div>` : '';
 
+    const volHash = `#v${vol.vol}`;
+    const artHash = `#v${vol.vol}/a${S.itemId}`;
     const artContent = `<div class="art-head">
         <span class="art-pg">पृष्ठ ${deva(it.page)}</span>
         ${chip(it.genre)}
@@ -941,8 +943,6 @@ function viewVolume(){
         </button>
       </div>`;
 
-    const volHash = `#v${vol.vol}`;
-    const artHash = `#v${vol.vol}/a${S.itemId}`;
     return `<div class="wrap fade">
     <div class="back-bar"><button class="back" onclick="go('shelf')">${icon('arrow-left')} सबै अङ्क</button></div>
     <div class="reader">
@@ -1468,13 +1468,11 @@ function _applyParsed(parsed){
   Object.assign(S, parsed);
   _updateNav();
   render();
-  if(parsed.view==='pdf'){
-    setTimeout(_initPdfReader,0);
-  } else if(parsed.view==='volume'){
+  if(parsed.view==='volume'){
     const art = document.querySelector('article.page');
     if(art) art.scrollIntoView({behavior:'smooth', block:'start'});
     else window.scrollTo({top:0, behavior:'smooth'});
-  } else {
+  } else if(parsed.view!=='pdf'){
     window.scrollTo({top:0, behavior:'smooth'});
   }
 }
