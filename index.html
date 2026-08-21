@@ -41,12 +41,6 @@ header.site{
 .mark .two{color:var(--kumkum)}
 .mark-sub{font-family:"Tiro Devanagari Hindi",serif;font-size:18px;color:var(--indigo);
   border-left:1px solid var(--line);padding-left:11px;margin-left:2px}
-.site-home{font-family:"Noto Serif Devanagari",serif;font-size:14.5px;
-  background:none;border:1.5px solid var(--line);color:var(--soft);
-  padding:7px 18px;border-radius:100px;cursor:pointer;transition:.18s;
-  display:none;align-items:center;gap:6px;white-space:nowrap}
-.site-home:hover{border-color:var(--kumkum);color:var(--kumkum)}
-.site-home.visible{display:inline-flex}
 
 /* ── Footer ── */
 footer.site{border-top:1px solid var(--line);padding:20px 0;color:var(--soft);font-size:14px}
@@ -471,7 +465,6 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 <body>
 <header class="site">
   <div class="site-in">
-    <button class="site-home" id="nav-home" onclick="go('shelf')" aria-label="सबै अङ्कहरू"></button>
     <button class="brand" onclick="go('shelf')" aria-label="गृहपृष्ठ">
       <span class="logo-mark" aria-hidden="true"><img src="logo/sai2sai-opt.svg" width="40" height="40" alt=""></span>
       <span class="mark">साईदेखि <span class="two">साई</span>सम्म</span>
@@ -764,13 +757,7 @@ function selectAuthor(idx){
   if(location.hash !== h) history.pushState(null,'',h);
 }
 
-function _updateNav(){
-  const btn = document.getElementById('nav-home');
-  if(!btn) return;
-  const away = S.view !== 'shelf';
-  btn.classList.toggle('visible', away);
-  if(away) btn.innerHTML = icon('arrow-left') + ' अङ्कहरू';
-}
+function _updateNav(){}
 
 /* ════════════════════════════════════════════════════
    HASH ROUTING
@@ -956,7 +943,6 @@ function viewVolume(){
         <div class="meta">${deva(pieceCount)} रचना · ${deva(contribCount)} योगदानकर्ता${vol.pages?` · ${deva(vol.pages)} पृष्ठ`:''}</div>
         <div class="toc-actions">
           <button class="pdfbtn" style="font-size:13px;padding:8px 16px" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् ${icon('arrow-right')}</button>
-          <button class="btn-outline" style="font-size:13px;padding:8px 16px" onclick="go('contributors',{vol:${vol.vol},authorIdx:0})">योगदानकर्ता</button>
         </div>
         <div class="toc-label">अनुक्रमणिका</div>
         <ul class="toc-list">${tocList}</ul>
