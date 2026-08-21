@@ -444,6 +444,21 @@ footer a:hover{text-decoration:underline}
   .pfn-of{font-size:12px}
   .pdf-float-nav{gap:4px;padding:8px 10px}
 }
+
+/* ── Permalinks ── */
+.nm-wrap{display:flex;align-items:baseline;gap:8px}
+.perma{font-size:13px;text-decoration:none;color:var(--line);
+  opacity:0;transition:opacity .15s,color .15s;flex-shrink:0;
+  padding:2px 4px;border-radius:3px;line-height:1}
+.perma:hover{color:var(--gold);opacity:1!important;background:rgba(169,129,47,.08)}
+.nm-wrap:hover .perma{opacity:.55}
+.art-head:hover .art-perma{opacity:.55}
+.art-perma{font-size:13px;text-decoration:none;color:var(--line);
+  opacity:0;transition:opacity .15s,color .15s;
+  padding:2px 4px;border-radius:3px;line-height:1;margin-left:6px;vertical-align:middle}
+.art-perma:hover{color:var(--gold);opacity:1!important;background:rgba(169,129,47,.08)}
+.perma-copied{color:var(--leaf)!important;opacity:1!important}
+@media(hover:none){.perma,.art-perma{opacity:.4}}
 </style>
 </head>
 <body>
@@ -612,7 +627,7 @@ function placeholderSrc(vol){
 <rect x="8" y="8" width="284" height="434" fill="none" stroke="#DBCFB2" stroke-width="1.5"/>
 <rect x="14" y="14" width="272" height="422" fill="none" stroke="#A9812F" stroke-width="0.6" stroke-dasharray="5,4"/>
 <text x="150" y="178" text-anchor="middle" font-size="80" font-family="serif" fill="#C1362B" opacity="0.45">ॐ</text>
-<text x="150" y="238" text-anchor="middle" font-size="17" font-family="serif" fill="#241F1A" opacity="0.65">ओम् अनन्तः</text>
+<text x="150" y="238" text-anchor="middle" font-size="17" font-family="serif" fill="#241F1A" opacity="0.65">${vol.name}</text>
 <text x="150" y="272" text-anchor="middle" font-size="13" font-family="serif" fill="#A9812F">वर्ष ${vol.volD} · ${vol.year}</text>
 <text x="150" y="305" text-anchor="middle" font-size="11" font-family="serif" fill="#6B6155">साई देखि साई सम्म</text>
 <text x="150" y="428" text-anchor="middle" font-size="10" font-family="sans-serif" fill="#C8BBA4">sai2sai.in</text>
@@ -656,6 +671,8 @@ function go(view, params){
   _updateNav();
   render();
   if(view!=='pdf') window.scrollTo({top:0,behavior:'smooth'});
+  const h = _stateHash();
+  if(location.hash !== h) history.pushState(null,'',h);
 }
 
 function goContrib(){
@@ -667,11 +684,67 @@ function goContrib(){
 function selectAuthor(idx){
   S.authorIdx = idx;
   render();
+  const h = _stateHash();
+  if(location.hash !== h) history.pushState(null,'',h);
 }
 
 function _updateNav(){
   document.getElementById('nav-shelf').setAttribute('aria-current', S.view==='shelf'?'true':'false');
   document.getElementById('nav-contrib').setAttribute('aria-current', S.view==='contributors'?'true':'false');
+}
+
+/* ════════════════════════════════════════════════════
+   HASH ROUTING
+   ════════════════════════════════════════════════════ */
+function _stateHash(){
+  const v = S.vol;
+  if(S.view==='shelf') return '#shelf';
+  if(S.view==='volume') return S.itemId>0 ? `#v${v}/a${S.itemId}` : `#v${v}`;
+  if(S.view==='contributors') return S.authorIdx>0 ? `#contrib/${v}/i${S.authorIdx}` : `#contrib/${v}`;
+  if(S.view==='pdf') return S.pdfPage>1 ? `#pdf/${v}/p${S.pdfPage}` : `#pdf/${v}`;
+  return '#shelf';
+}
+
+function _parseHash(){
+  const h = decodeURIComponent(location.hash.replace(/^#/,''));
+  if(!h || h==='shelf') return {view:'shelf'};
+  const parts = h.split('/');
+  if(parts[0].match(/^v\d+$/)){
+    const vol = parseInt(parts[0].slice(1));
+    if(parts[1] && parts[1].match(/^a\d+$/))
+      return {view:'volume', vol, itemId:parseInt(parts[1].slice(1))};
+    return {view:'volume', vol};
+  }
+  if(parts[0]==='contrib'){
+    const vol = parseInt(parts[1]);
+    if(!isNaN(vol)){
+      const authorIdx = parts[2]&&parts[2].match(/^i\d+$/) ? parseInt(parts[2].slice(1)) : 0;
+      return {view:'contributors', vol, authorIdx};
+    }
+    return {view:'contributors'};
+  }
+  if(parts[0]==='pdf'){
+    const vol = parseInt(parts[1]);
+    const pdfPage = parts[2]&&parts[2].match(/^p\d+$/) ? parseInt(parts[2].slice(1)) : 1;
+    return {view:'pdf', vol, pdfPage};
+  }
+  return {view:'shelf'};
+}
+
+/* ════════════════════════════════════════════════════
+   PERMALINK COPY
+   ════════════════════════════════════════════════════ */
+async function copyPermalink(e, hash){
+  e.preventDefault();
+  const url = location.origin + location.pathname + hash;
+  const btn = e.currentTarget;
+  try {
+    await navigator.clipboard.writeText(url);
+    const orig = btn.textContent;
+    btn.textContent = '✓';
+    btn.classList.add('perma-copied');
+    setTimeout(()=>{ btn.textContent=orig; btn.classList.remove('perma-copied'); }, 1600);
+  } catch(_){}
 }
 
 /* ════════════════════════════════════════════════════
@@ -763,16 +836,16 @@ function viewVolume(){
       <h4>यस अङ्कको बारेमा</h4>
       <div><b>वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)}</b> — ${vol.date} (भगवान्को ${vol.bday})</div>
       <div><b>कार्यकारी सम्पादक:</b> ${vol.editors}</div>
-      <div><b>प्रकाशक:</b> ${vol.publishers}</div>
-      <div><b>संरक्षक:</b> ${vol.patrons}</div>
-      <div><b>वेब संयोजक:</b> ${vol.web}</div>
-      <div><b>मूल्य / सहयोग राशि:</b> ${vol.price}</div>
+      ${vol.publishers?`<div><b>प्रकाशक:</b> ${vol.publishers}</div>`:''}
+      ${vol.patrons?`<div><b>संरक्षक:</b> ${vol.patrons}</div>`:''}
+      ${vol.web?`<div><b>वेब संयोजक:</b> ${vol.web}</div>`:''}
+      ${vol.price?`<div><b>मूल्य / सहयोग राशि:</b> ${vol.price}</div>`:''}
     </div>` : '';
 
     const artContent = `<div class="art-head">
         <span class="art-pg">पृष्ठ ${deva(it.page)}</span>
         ${chip(it.genre)}
-        <h1 class="art-title">${it.title}</h1>
+        <h1 class="art-title">${it.title}${!it.front?`<a href="${artHash}" class="art-perma" onclick="copyPermalink(event,'${artHash}')" title="रचनाको पर्मालिङ्क">🔗</a>`:''}</h1>
         ${!it.front?`<div class="art-by"><b>${it.author}</b></div><div class="art-place">${it.place}</div>`:''}
       </div>
       <div class="pdf-view">
@@ -789,13 +862,18 @@ function viewVolume(){
         </button>
       </div>`;
 
+    const volHash = `#v${vol.vol}`;
+    const artHash = `#v${vol.vol}/a${S.itemId}`;
     return `<div class="wrap fade">
     <div class="back-bar"><button class="back" onclick="go('shelf')">← सबै अङ्क</button></div>
     <div class="reader">
       <aside class="toc">
         <div class="yr deva-display">${vol.year}</div>
         <div class="vr">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)}</div>
-        <div class="nm deva-display">${vol.name}</div>
+        <div class="nm-wrap">
+          <div class="nm deva-display">${vol.name}</div>
+          <a href="${volHash}" class="perma" onclick="copyPermalink(event,'${volHash}')" title="यस अङ्कको पर्मालिङ्क">🔗</a>
+        </div>
         <div class="meta">${deva(pieceCount)} रचना · ${deva(contribCount)} योगदानकर्ता${vol.pages?` · ${deva(vol.pages)} पृष्ठ`:''}</div>
         <div class="toc-actions">
           <button class="pdfbtn" style="font-size:13px;padding:8px 16px" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् →</button>
@@ -1286,9 +1364,36 @@ function render(){
 }
 
 /* ════════════════════════════════════════════════════
-   INIT
+   INIT — hash routing
    ════════════════════════════════════════════════════ */
-go('shelf');
+function _applyParsed(parsed){
+  const prev = S.view;
+  if(prev==='pdf' && parsed.view!=='pdf'){
+    document.removeEventListener('keydown',_pdfKey);
+    document.body.style.overflow='';
+  }
+  if(parsed.view==='pdf' && prev!=='pdf'){
+    _pdfFullpage=false; _pdfDrawerOpen=false;
+    document.addEventListener('keydown',_pdfKey);
+  }
+  if(parsed.view==='volume' && !('itemId' in parsed)) parsed.itemId=0;
+  if(parsed.view==='shelf') parsed.showColophon=false;
+  Object.assign(S, parsed);
+  _updateNav();
+  render();
+  if(parsed.view==='pdf') setTimeout(_initPdfReader,0);
+  else window.scrollTo({top:0,behavior:'smooth'});
+}
+
+window.addEventListener('popstate', function(){ _applyParsed(_parseHash()); });
+
+function _initFromHash(){
+  const parsed = _parseHash();
+  _applyParsed(parsed);
+  history.replaceState(null,'',_stateHash());
+}
+
+_initFromHash();
 </script>
 </body>
 </html>
