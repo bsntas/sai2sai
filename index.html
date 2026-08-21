@@ -474,9 +474,6 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
       <span class="logo-mark" aria-hidden="true"><img src="logo/sai2sai-opt.svg" width="40" height="40" alt=""></span>
       <span class="mark">साईदेखि <span class="two">साई</span>सम्म</span>
     </button>
-    <nav class="doors" aria-label="मुख्य नेभिगेसन">
-      <button class="door" id="nav-shelf" onclick="go('shelf')">अङ्कहरू</button>
-    </nav>
   </div>
 </header>
 
@@ -765,9 +762,7 @@ function selectAuthor(idx){
   if(location.hash !== h) history.pushState(null,'',h);
 }
 
-function _updateNav(){
-  document.getElementById('nav-shelf').setAttribute('aria-current', S.view==='shelf'?'true':'false');
-}
+function _updateNav(){}
 
 /* ════════════════════════════════════════════════════
    HASH ROUTING
