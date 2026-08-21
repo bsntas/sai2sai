@@ -1276,9 +1276,7 @@ function pdfToggleFullpage(){
   const fbtn=document.getElementById('pfullbtn');
   if(fbtn) fbtn.title=_pdfFullpage?'सामान्य दृश्य (F)':'पूर्ण पर्दा (F)';
   document.body.style.overflow=_pdfFullpage?'hidden':'';
-  if(_pdfFullpage && window.innerWidth<=600 && _pdfZoom==='fit') _pdfZoom=1.2;
-  else if(!_pdfFullpage && typeof _pdfZoom==='number' && _pdfZoom===1.2) _pdfZoom='fit';
-  if(_pdfFullpage) setTimeout(()=>_renderPage(S.pdfPage),50);
+  if(_pdfFullpage){ _pdfZoom='fit'; setTimeout(()=>_renderPage(S.pdfPage),50); }
   else _renderPage(S.pdfPage);
 }
 function pdfFullpageTocToggle(){
