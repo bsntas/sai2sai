@@ -446,6 +446,36 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
   .pdf-float-nav{gap:4px;padding:8px 10px}
 }
 
+/* ── Header Nav Tabs ── */
+.site-nav{display:flex;gap:4px;align-items:center}
+.nav-tab{font-family:"Noto Serif Devanagari",serif;font-size:15px;background:none;border:none;
+  cursor:pointer;color:var(--soft);padding:7px 14px;border-radius:100px;transition:.15s;
+  display:inline-flex;align-items:center;gap:5px}
+.nav-tab:hover{color:var(--ink);background:rgba(26,42,58,.06)}
+.nav-tab[aria-current="true"]{color:var(--kumkum)}
+
+/* ══════════════ ALL CONTRIBUTORS ══════════════ */
+.caz-search{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 12px;
+  font-size:14.5px;font-family:"Noto Serif Devanagari",serif;background:var(--paper);
+  color:var(--ink);margin-bottom:12px;box-sizing:border-box}
+.caz-search:focus{outline:2px solid var(--kumkum);outline-offset:2px}
+.caz-empty{padding:14px 4px;font-size:14px;color:var(--soft);text-align:center}
+.cpro-panel{display:flex;flex-direction:column}
+.cpro-head{display:flex;gap:22px;align-items:flex-start;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.cpro-cover{flex-shrink:0;width:88px}
+.cpro-cover img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;border:1px solid var(--line);
+  box-shadow:0 6px 18px -10px rgba(26,42,58,.40)}
+.cpro-meta{flex:1;min-width:0}
+.cpro-name{font-family:"Tiro Devanagari Hindi",serif;font-size:34px;line-height:1.1;margin:0 0 4px}
+.cpro-pl{color:var(--soft);font-size:15px;margin:0 0 4px}
+.cpro-stat{font-size:13.5px;color:var(--gold);letter-spacing:.05em;margin:0}
+.vol-grp{margin-bottom:8px}
+.vol-grp-hd{font-size:11.5px;letter-spacing:.16em;color:var(--gold);text-transform:uppercase;
+  padding:16px 0 8px;border-top:1px solid var(--line);display:flex;align-items:baseline;gap:9px}
+.vol-grp-hd .vgn{font-family:"Tiro Devanagari Hindi",serif;font-size:16px;color:var(--ink);
+  letter-spacing:0;text-transform:none}
+.vol-thread{display:flex;flex-direction:column;gap:10px;margin-bottom:6px}
+
 /* ── Permalinks ── */
 .nm-wrap{display:flex;align-items:baseline;gap:8px}
 .perma{font-size:13px;text-decoration:none;color:var(--line);
@@ -469,6 +499,10 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
       <span class="logo-mark" aria-hidden="true"><img src="logo/sai2sai-opt.svg" width="40" height="40" alt=""></span>
       <span class="mark">साईदेखि <span class="two">साई</span>सम्म</span>
     </button>
+    <nav class="site-nav" aria-label="मुख्य नेभिगेसन">
+      <button class="nav-tab" data-view="shelf" onclick="go('shelf')">अङ्कहरू</button>
+      <button class="nav-tab" data-view="allContributors" onclick="go('allContributors',{authorIdx:0})">योगदानकर्ता</button>
+    </nav>
   </div>
 </header>
 
@@ -941,6 +975,17 @@ function sortedNames(m){
   return Object.keys(m).sort((a,b)=>a.localeCompare(b,'ne'));
 }
 
+function allByAuthor(){
+  const m={};
+  VOLUMES.forEach(vol=>{
+    vol.items.filter(x=>!x.front && x.author).forEach(x=>{
+      if(!m[x.author]) m[x.author]=[];
+      m[x.author].push({...x, _vol:vol});
+    });
+  });
+  return m;
+}
+
 function placeholderSrc(vol){
   const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450">
 <rect width="300" height="450" fill="#FCF8EE"/>
@@ -1012,6 +1057,11 @@ function go(view, params){
       if(S.authorIdx >= names.length) S.authorIdx=0;
     }
   }
+  if(view==='allContributors'){
+    const m = allByAuthor();
+    const names = sortedNames(m);
+    if(S.authorIdx >= names.length) S.authorIdx=0;
+  }
   _updateNav();
   render();
   if(view!=='pdf'){
@@ -1040,7 +1090,13 @@ function selectAuthor(idx){
   if(location.hash !== h) history.pushState(null,'',h);
 }
 
-function _updateNav(){}
+function _updateNav(){
+  const activeView = (S.view==='shelf'||S.view==='volume'||S.view==='pdf') ? 'shelf' : 'allContributors';
+  document.querySelectorAll('.nav-tab').forEach(btn=>{
+    if(btn.dataset.view===activeView) btn.setAttribute('aria-current','true');
+    else btn.removeAttribute('aria-current');
+  });
+}
 
 /* ════════════════════════════════════════════════════
    HASH ROUTING
@@ -1051,6 +1107,7 @@ function _stateHash(){
   if(S.view==='volume') return S.itemId>0 ? `#v${v}/a${S.itemId}` : `#v${v}`;
   if(S.view==='contributors') return S.authorIdx>0 ? `#contrib/${v}/i${S.authorIdx}` : `#contrib/${v}`;
   if(S.view==='pdf') return S.pdfPage>1 ? `#pdf/${v}/p${S.pdfPage}` : `#pdf/${v}`;
+  if(S.view==='allContributors') return S.authorIdx>0 ? `#contributors/i${S.authorIdx}` : '#contributors';
   return '#shelf';
 }
 
@@ -1076,6 +1133,10 @@ function _parseHash(){
     const vol = parseInt(parts[1]);
     const pdfPage = parts[2]&&parts[2].match(/^p\d+$/) ? parseInt(parts[2].slice(1)) : 1;
     return {view:'pdf', vol, pdfPage};
+  }
+  if(parts[0]==='contributors'){
+    const authorIdx = parts[1]&&parts[1].match(/^i\d+$/) ? parseInt(parts[1].slice(1)) : 0;
+    return {view:'allContributors', authorIdx};
   }
   return {view:'shelf'};
 }
@@ -1314,6 +1375,130 @@ function viewContributors(){
       <p class="who-pl">${pieces[0]?.place||''}</p>
       <p class="who-n">${deva(pieces.length)} रचना</p>
       <div class="thread">${beads}</div>
+    </section>
+  </div>
+  </div>`;
+}
+
+/* ════════════════════════════════════════════════════
+   VIEW: ALL CONTRIBUTORS (across all volumes)
+   ════════════════════════════════════════════════════ */
+function selectAllAuthor(idx){
+  S.authorIdx=idx;
+  render();
+  const h=_stateHash();
+  if(location.hash!==h) history.pushState(null,'',h);
+  // On mobile (single column), scroll the profile into view
+  if(window.innerWidth<=960){
+    const panel=document.querySelector('.cpro-panel');
+    if(panel) panel.scrollIntoView({behavior:'smooth',block:'start'});
+  } else {
+    // Scroll the active item into view in the sidebar list
+    const activeBtn=document.querySelector('.azi[aria-current="true"]');
+    if(activeBtn) activeBtn.scrollIntoView({block:'nearest',behavior:'smooth'});
+  }
+}
+
+function filterContribSearch(q){
+  const query=(q||'').trim().toLowerCase();
+  let anyVisible=false;
+  document.querySelectorAll('.azi[data-cname]').forEach(btn=>{
+    const nm=btn.dataset.cname.toLowerCase();
+    const hide=query && !nm.includes(query);
+    btn.style.display=hide?'none':'';
+    if(!hide) anyVisible=true;
+  });
+  const empty=document.getElementById('caz-empty');
+  if(empty) empty.style.display=(query&&!anyVisible)?'':'none';
+}
+
+function viewAllContributors(){
+  const m=allByAuthor();
+  const names=sortedNames(m);
+  if(!names.length){
+    return `<div class="wrap fade" style="padding:70px 0;text-align:center;color:var(--soft)">
+      <div style="font-size:52px;color:var(--kumkum);opacity:.35;margin-bottom:18px;font-family:'Tiro Devanagari Hindi',serif">ॐ</div>
+      <h2 style="font-family:'Tiro Devanagari Hindi',serif;color:var(--ink);margin:0 0 12px">योगदानकर्ता विवरण उपलब्ध छैन</h2>
+      <button class="btn" style="margin-top:24px" onclick="go('shelf')">${icon('arrow-left')} अङ्कहरूमा फर्कनुहोस्</button>
+    </div>`;
+  }
+
+  if(S.authorIdx>=names.length) S.authorIdx=0;
+  const curName=names[S.authorIdx];
+  const pieces=m[curName]||[];
+
+  // most recent volume cover for profile photo
+  const recentVol=pieces[pieces.length-1]._vol;
+  const ph=placeholderSrc(recentVol);
+
+  // collect unique volumes this author appeared in
+  const uniqueVolNums=[...new Set(pieces.map(p=>p._vol.vol))];
+  const totalVols=uniqueVolNums.length;
+
+  // most recent place (from most recent article)
+  const recentPlace=pieces[pieces.length-1].place||'';
+  // all unique places (show up to 2)
+  const allPlaces=[...new Set(pieces.map(p=>p.place).filter(Boolean))];
+  const placeDisplay=allPlaces.slice(0,2).join(' · ')+(allPlaces.length>2?' · …':'');
+
+  // group articles by volume (most recent first)
+  const byVol={};
+  pieces.forEach(p=>{
+    const k=p._vol.vol;
+    if(!byVol[k]) byVol[k]=[];
+    byVol[k].push(p);
+  });
+  const volKeys=Object.keys(byVol).map(Number).sort((a,b)=>b-a);
+
+  const volGroups=volKeys.map(vn=>{
+    const vol=byVol[vn][0]._vol;
+    const beads=byVol[vn].map(p=>{
+      const idx=vol.items.indexOf(p);
+      return `<button class="bead" onclick="go('volume',{vol:${vol.vol},itemId:${idx}})">
+        ${chip(p.genre)}
+        <div class="bt">${p.title}</div>
+        <div class="bm">पृष्ठ ${deva(p.page)} · खोल्नुहोस् ${icon('arrow-right')}</div>
+      </button>`;
+    }).join('');
+    return `<div class="vol-grp">
+      <div class="vol-grp-hd">वर्ष ${vol.volD} · ${vol.year} <span class="vgn">${vol.name}</span></div>
+      <div class="vol-thread">${beads}</div>
+    </div>`;
+  }).join('');
+
+  const azList=names.map((n,i)=>{
+    const arts=m[n];
+    const vols=new Set(arts.map(a=>a._vol.vol)).size;
+    return `<li><button class="azi" data-cname="${n.replace(/"/g,'&quot;')}" aria-current="${i===S.authorIdx}" onclick="selectAllAuthor(${i})">
+      <span style="min-width:0"><span class="nm">${n}</span><span class="ct"> · ${deva(arts.length)}</span></span>
+      <span class="pl">${vols>1?deva(vols)+' अङ्क':arts[0].place||''}</span>
+    </button></li>`;
+  }).join('');
+
+  const totalPieces=names.reduce((s,n)=>s+m[n].length,0);
+
+  return `<div class="wrap fade">
+  <div class="contrib">
+    <aside class="az">
+      <h2 class="deva-display">योगदानकर्ता</h2>
+      <p class="hint">${deva(VOLUMES.length)} अङ्कमा ${deva(names.length)} स्रष्टाका ${deva(totalPieces)} रचना। नाम छान्नुहोस्।</p>
+      <input class="caz-search" type="search" placeholder="नाम खोज्नुहोस्…" aria-label="योगदानकर्ता खोज्नुहोस्"
+        oninput="filterContribSearch(this.value)" autocomplete="off">
+      <ul class="az-list" id="caz-list">${azList}</ul>
+      <div class="caz-empty" id="caz-empty" style="display:none">कुनै नाम फेला परेन।</div>
+    </aside>
+    <section class="cpro-panel" aria-live="polite">
+      <div class="cpro-head">
+        <div class="cpro-cover">
+          <img src="${recentVol.cover}" alt="${recentVol.name}" onerror="this.onerror=null;this.src='${ph}'" title="नवीनतम योगदान: वर्ष ${recentVol.volD} · ${recentVol.name}">
+        </div>
+        <div class="cpro-meta">
+          <h3 class="cpro-name">${curName}</h3>
+          ${placeDisplay?`<p class="cpro-pl">${placeDisplay}</p>`:''}
+          <p class="cpro-stat">${deva(pieces.length)} रचना · ${deva(totalVols)} अङ्क</p>
+        </div>
+      </div>
+      ${volGroups}
     </section>
   </div>
   </div>`;
@@ -1716,6 +1901,7 @@ function render(){
     S.view==='shelf' ? viewShelf() :
     S.view==='volume' ? viewVolume() :
     S.view==='pdf' ? viewPdfReader() :
+    S.view==='allContributors' ? viewAllContributors() :
     viewContributors();
   if(S.view==='pdf') setTimeout(_initPdfReader, 0);
 }
