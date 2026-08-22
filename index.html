@@ -1512,11 +1512,11 @@ function viewAllContributors(){
   const volGroups=volKeys.map(vn=>{
     const vol=byVol[vn][0]._vol;
     const beads=byVol[vn].map(p=>{
-      const idx=vol.items.indexOf(p);
-      return `<button class="bead" onclick="go('volume',{vol:${vol.vol},itemId:${idx}})">
+      const pdfPg=p.page+(vol.pageOffset||0);
+      return `<button class="bead" onclick="go('pdf',{vol:${vol.vol},pdfPage:${pdfPg}})">
         ${chip(p.genre)}
         <div class="bt">${p.title}</div>
-        <div class="bm">पृष्ठ ${deva(p.page)} · खोल्नुहोस् ${icon('arrow-right')}</div>
+        <div class="bm">पृष्ठ ${deva(p.page)} · PDF मा खोल्नुहोस् ${icon('arrow-right')}</div>
       </button>`;
     }).join('');
     return `<div class="vol-grp">
