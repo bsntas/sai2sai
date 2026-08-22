@@ -1103,7 +1103,7 @@ function go(view, params){
     S.showColophon=false;
   }
   if(view==='pdf'){
-    if(S.view !== 'pdf') S.pdfFrom = {view:S.view, vol:S.vol, authorIdx:S.authorIdx};
+    if(prevView !== 'pdf') S.pdfFrom = {view:prevView, vol:prevVol, authorIdx:S.authorIdx};
     if(!('pdfPage' in (params||{}))) S.pdfPage=1;
     _pdfFullpage=false; _pdfDrawerOpen=false;
     document.addEventListener('keydown',_pdfKey);
