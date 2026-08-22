@@ -943,7 +943,7 @@ const VOLUMES = [
 /* ════════════════════════════════════════════════════
    STATE
    ════════════════════════════════════════════════════ */
-let S = {view:'shelf', vol:10, itemId:0, authorIdx:0, showColophon:false, pdfPage:1};
+let S = {view:'shelf', vol:10, itemId:0, authorIdx:0, showColophon:false, pdfPage:1, pdfFrom:null};
 
 /* PDF.js runtime state (lives outside S — heavy objects, not serialisable) */
 let _pdf=null, _pdfRendering=false, _pdfPending=null;
@@ -1103,6 +1103,7 @@ function go(view, params){
     S.showColophon=false;
   }
   if(view==='pdf'){
+    if(S.view !== 'pdf') S.pdfFrom = {view:S.view, vol:S.vol, authorIdx:S.authorIdx};
     if(!('pdfPage' in (params||{}))) S.pdfPage=1;
     _pdfFullpage=false; _pdfDrawerOpen=false;
     document.addEventListener('keydown',_pdfKey);
@@ -1620,7 +1621,7 @@ function viewPdfReader(){
 
     <div class="pdf-main">
       <div class="pdf-bar">
-        <button class="pdf-back" onclick="go('volume',{vol:${vol.vol}})">${icon('arrow-left')} अङ्क विवरण</button>
+        <button class="pdf-back" onclick="_pdfBack()">${icon('arrow-left')} ${S.pdfFrom&&S.pdfFrom.view==='allContributors'?'योगदानकर्ता':'अङ्क विवरण'}</button>
         <div class="pdf-crumb" id="pcrumb"></div>
         <div class="pdf-pgnav">
           <button class="pdf-pgbtn" id="pprev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ (←)">${icon('chevron-left')}</button>
@@ -1836,6 +1837,12 @@ function _tocHighlight(pageNum){
 }
 
 /* ── Public PDF controls ── */
+function _pdfBack(){
+  const f = S.pdfFrom;
+  if(f && f.view==='allContributors') go('allContributors',{authorIdx:f.authorIdx});
+  else if(f && f.view==='contributors') go('contributors',{vol:f.vol,authorIdx:f.authorIdx});
+  else go('volume',{vol:S.vol});
+}
 function pdfJump(n){ if(!isNaN(n)) _renderPage(n); }
 function pdfPrev(){ if(S.pdfPage>1) _renderPage(S.pdfPage-1); }
 function pdfNext(){ if(S.pdfPage<_pdfTotal) _renderPage(S.pdfPage+1); }
