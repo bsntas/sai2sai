@@ -8,7 +8,7 @@ Everything lives in `index.html`:
 
 ```
 <style>          CSS (custom properties, component styles, responsive)
-<header>         Sticky nav (अङ्कहरू / योगदानकर्ता tabs)
+<header>         Sticky nav (अङ्कहरू / योगदानकर्ता / यात्रा tabs)
 <main id="app">  Replaced entirely on each navigation
 <footer>
 <script>         Data + state + routing + views + PDF engine
@@ -20,7 +20,7 @@ Everything lives in `index.html`:
 let S = {view, vol, itemId, authorIdx, showColophon, pdfPage};
 ```
 
-`view` is one of: `'shelf'` | `'volume'` | `'contributors'` | `'pdf'`
+`view` is one of: `'shelf'` | `'volume'` | `'contributors'` | `'allContributors'` | `'journey'` | `'pdf'`
 
 ### Routing
 
@@ -37,6 +37,9 @@ Hash format:
 - `#v1/a3` → volume 1, article at index 3
 - `#contrib/1` → contributors for volume 1
 - `#contrib/1/i2` → contributors, author at index 2
+- `#contrib/all` → cross-volume contributors list
+- `#contrib/all/i5` → cross-volume contributors, author at index 5
+- `#journey` → journey/history page
 - `#pdf/1/p9` → PDF reader, volume 1, page 9
 
 `_parseHash()` and `_stateHash()` convert between hash strings and state.  
@@ -48,7 +51,9 @@ Hash format:
 |---|---|
 | `viewShelf()` | Grid of all volumes + featured card |
 | `viewVolume()` | TOC sidebar + article reader panel |
-| `viewContributors()` | Author list + their works |
+| `viewContributors()` | Per-volume author list + their works |
+| `viewAllContributors()` | Cross-volume author search + detail panel |
+| `viewJourney()` | Magazine history / decade retrospective |
 | `viewPdfReader()` | PDF.js canvas + sidebar TOC + float nav |
 
 ### Data
@@ -104,3 +109,5 @@ Missing covers fall back to an SVG placeholder that shows the volume name and ye
 - **Do not** add `vol.web` or other optional fields to the colophon template unconditionally — check truthiness first (`${vol.web ? ... : ''}`).
 - The `placeholderSrc` SVG is embedded as a data URI inside an `onerror` attribute — keep it short and avoid `"` double quotes inside (use single or encode them).
 - PDF sidebar TOC IDs use `ptoc-{page}` and `dtoc-{page}` prefixes to distinguish the main sidebar from the fullpage drawer.
+- The Journey nav tab uses two spans (`.nav-journey-label` for desktop, `.nav-journey-short` for mobile ≤640px). The short span is hidden by CSS (`.nav-journey-short{display:none}`) and revealed by the media query — do **not** add an inline `style="display:none"` to it as that would override the media query.
+- `.nav-journey-short` default hidden state lives in the regular CSS block (not inside the media query) so inline styles can never accidentally shadow it.

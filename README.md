@@ -11,6 +11,12 @@ Annual commemorative collection of poetry, personal experiences, essays, and tra
 
 A single-page web archive of all ten volumes of the *Sai Dekhi Sai Samma* (साई देखि साई सम्म) annual publication. Volumes 1 (2016) and 6 (2021) have full article indexes; the rest link to their PDFs.
 
+Four main views:
+- **Shelf** (`#shelf`) — featured latest volume + grid of all volumes
+- **Volume** (`#v1`, `#v1/a3`) — article TOC and reader panel with PDF access
+- **Contributors** (`#contrib/all`) — cross-volume author search and article listing
+- **Journey** (`#journey`) — decade retrospective of the publication's history
+
 ## Tech
 
 - Single `index.html` — no build step, no dependencies to install
