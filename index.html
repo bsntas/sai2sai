@@ -256,7 +256,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
   .na-cover{width:120px}
   .shelf-hero{padding:36px 0 24px}
   .nav-journey-label{display:none}
-  .nav-journey-short{display:inline}
+  .nav-journey-short{display:inline!important}
 }
 
 /* ══════════════ PDF READER ══════════════ */
@@ -388,6 +388,8 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
   display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1;
   margin-left:2px;flex-shrink:0}
 .pdf-fullbtn:hover{background:var(--paper2);color:var(--ink)}
+.pdf-sep{width:1px;height:18px;background:var(--line);flex-shrink:0;margin:0 2px}
+@media(max-width:800px){.pdf-sep{display:none}}
 
 /* Float nav pill (shown only in fullpage) */
 .pdf-float-nav{position:fixed;
@@ -460,6 +462,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
   display:inline-flex;align-items:center;gap:5px}
 .nav-tab:hover{color:var(--ink);background:rgba(26,42,58,.06)}
 .nav-tab[aria-current="true"]{color:var(--kumkum)}
+.nav-journey-short{display:none}
 
 /* ══════════════ ALL CONTRIBUTORS ══════════════ */
 .caz-search{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 12px;
@@ -564,7 +567,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
     <nav class="site-nav" aria-label="मुख्य नेभिगेसन">
       <button class="nav-tab" data-view="shelf" onclick="go('shelf')">अङ्कहरू</button>
       <button class="nav-tab" data-view="allContributors" onclick="go('allContributors',{authorIdx:0})">योगदानकर्ता</button>
-      <button class="nav-tab" data-view="journey" onclick="go('journey')"><span class="nav-journey-label">यात्रा – एक दशक</span><span class="nav-journey-short" style="display:none">यात्रा</span></button>
+      <button class="nav-tab" data-view="journey" onclick="go('journey')"><span class="nav-journey-label">यात्रा – एक दशक</span><span class="nav-journey-short">यात्रा</span></button>
     </nav>
   </div>
 </header>
@@ -1935,6 +1938,7 @@ function viewPdfReader(){
           <span class="pdf-pgtotal">/ <span id="ptotal">—</span></span>
           <button class="pdf-pgbtn" id="pnext" onclick="pdfNext()" disabled title="अर्को पृष्ठ (→)">${icon('chevron-right')}</button>
         </div>
+        <div class="pdf-sep" aria-hidden="true"></div>
         <div class="pdf-zoom">
           <button class="pdf-zbtn" id="pzout" onclick="pdfZoomOut()" title="सानो (−)">${icon('minus')}</button>
           <span class="pdf-zlabel" id="pzlbl">—</span>
