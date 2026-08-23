@@ -507,7 +507,10 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .journey-name-list li::before{content:"·";color:var(--kumkum);margin-right:8px}
 .om-series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:20px}
 .om-card{background:var(--card);border:1px solid var(--line);padding:16px 18px;
-  border-radius:2px;position:relative;overflow:hidden}
+  border-radius:2px;position:relative;overflow:hidden;
+  cursor:pointer;font-family:inherit;color:inherit;text-align:left;width:100%;
+  transition:box-shadow .18s, border-color .15s, transform .18s}
+.om-card:hover{border-color:var(--kumkum);box-shadow:0 6px 24px -12px rgba(26,42,58,.35);transform:translateY(-2px)}
 .om-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--kumkum)}
 .om-card-num{font-size:11.5px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;margin-bottom:4px}
 .om-card-name{font-family:"Tiro Devanagari Hindi",serif;font-size:20px;color:var(--indigo);line-height:1.2;margin-bottom:3px}
@@ -1625,16 +1628,16 @@ function viewAllContributors(){
    ════════════════════════════════════════════════════ */
 function viewJourney(){
   const omSeries = [
-    {num:'१',name:'ओम्',subname:'',year:'२०१६'},
-    {num:'२',name:'ओम् – स्वर्णभूमि',subname:'',year:'२०१७'},
-    {num:'३',name:'ओम् – प्रतिध्वनि',subname:'',year:'२०१८'},
-    {num:'४',name:'ओम् – प्रेमामृत',subname:'',year:'२०१९'},
-    {num:'५',name:'ओम् – सारथि',subname:'',year:'२०२०'},
-    {num:'६',name:'ओम् – अनन्तः',subname:'',year:'२०२१'},
-    {num:'७',name:'ओम् – अनादि',subname:'',year:'२०२२'},
-    {num:'८',name:'ओम् – आराध्य',subname:'',year:'२०२३'},
-    {num:'९',name:'ओम् – आनन्दम्',subname:'',year:'२०२४'},
-    {num:'१०',name:'ओम् – स्वर्णिमा',subname:'(अन्तिम अङ्क)',year:'२०२५'},
+    {vol:1, num:'१',  name:'ओम्',             year:'२०१६'},
+    {vol:2, num:'२',  name:'ओम् – स्वर्णभूमि', year:'२०१७'},
+    {vol:3, num:'३',  name:'ओम् – प्रतिध्वनि', year:'२०१८'},
+    {vol:4, num:'४',  name:'ओम् – प्रेमामृत',  year:'२०१९'},
+    {vol:5, num:'५',  name:'ओम् – सारथि',      year:'२०२०'},
+    {vol:6, num:'६',  name:'ओम् – अनन्तः',     year:'२०२१'},
+    {vol:7, num:'७',  name:'ओम् – अनादि',      year:'२०२२'},
+    {vol:8, num:'८',  name:'ओम् – आराध्य',     year:'२०२३'},
+    {vol:9, num:'९',  name:'ओम् – आनन्दम्',    year:'२०२४'},
+    {vol:10,num:'१०', name:'ओम् – स्वर्णिमा',  year:'२०२५'},
   ];
 
   return `<div class="wrap fade">
@@ -1815,11 +1818,11 @@ function viewJourney(){
       <h2>"ओम्" श्रृङ्खला — दश अङ्क</h2>
       <p>ओम् पत्रिका शुरू देखि आजसम्म (१ देखि १०) प्रकाशित अङ्कहरू —</p>
       <div class="om-series-grid">
-        ${omSeries.map(s=>`<div class="om-card">
+        ${omSeries.map(s=>`<button class="om-card" onclick="go('volume',{vol:${s.vol}})" aria-label="${s.name} — ${s.year}">
           <div class="om-card-num">अङ्क ${s.num}</div>
           <div class="om-card-name">${s.name}</div>
           <div class="om-card-year">${s.year}</div>
-        </div>`).join('')}
+        </button>`).join('')}
       </div>
     </section>
 
