@@ -13,6 +13,7 @@
   --paper:#FDF8F2; --paper2:#EDF5F3; --card:#FFFFFF; --ink:#1A2A3A; --soft:#5A6878;
   --kumkum:#D97018; --indigo:#1A5050; --gold:#A87820; --line:#C2DDD8;
   --leaf:#3A8A50; --plum:#7040A0; --sky:#2870B8;
+  --faint:rgba(26,42,58,.04);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -43,7 +44,7 @@ header.site{
   border-left:1px solid var(--line);padding-left:11px;margin-left:2px}
 
 /* ── Footer ── */
-footer.site{border-top:1px solid var(--line);padding:20px 0;color:var(--soft);font-size:14px}
+footer.site{border-top:1px solid var(--line);padding:28px 0;color:var(--soft);font-size:14px}
 footer.site .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 footer a{color:var(--gold);text-decoration:none}
 footer a:hover{text-decoration:underline}
@@ -97,8 +98,8 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 
 /* Featured card */
 .feat-card{display:grid;grid-template-columns:200px 1fr;gap:32px;
-  background:var(--card);border:1px solid var(--line);
-  box-shadow:0 30px 70px -40px rgba(26,42,58,.45);padding:28px;
+  background:var(--card);border:1px solid var(--line);border-radius:8px;
+  box-shadow:0 20px 56px -30px rgba(26,42,58,.38);padding:28px;
   align-items:center;margin-bottom:40px}
 .feat-card .cov{width:100%;display:block;border:1px solid var(--line);
   box-shadow:0 12px 28px -14px rgba(26,42,58,.45)}
@@ -122,7 +123,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
   text-align:left;font-family:inherit;color:inherit;display:flex;flex-direction:column}
 .vol-card:hover .vol-thumb{transform:translateY(-4px);box-shadow:0 18px 44px -18px rgba(26,42,58,.45)}
 .vol-thumb{width:100%;aspect-ratio:2/3;background:var(--paper2);border:1px solid var(--line);
-  overflow:hidden;transition:transform .22s,box-shadow .22s;
+  overflow:hidden;transition:transform .22s,box-shadow .22s;border-radius:3px;
   box-shadow:0 6px 22px -12px rgba(26,42,58,.32);position:relative}
 .vol-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .vol-sticker{position:absolute;top:8px;right:8px;font-size:10px;padding:3px 8px;
@@ -133,7 +134,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .vol-info-chip{padding:10px 2px 0}
 .vol-info-chip .vi-num{font-family:"Tiro Devanagari Hindi",serif;font-size:18px;color:var(--ink);line-height:1.2}
 .vol-info-chip .vi-year{font-size:13px;color:var(--gold);letter-spacing:.06em}
-.vol-info-chip .vi-tag{font-size:11.5px;color:var(--leaf);margin-top:3px}
+.vol-info-chip .vi-tag{font-size:11px;color:var(--leaf);margin-top:3px;letter-spacing:.01em}
 
 /* ══════════════ VOLUME VIEW ══════════════ */
 .back-bar{padding:16px 0 4px}
@@ -161,14 +162,14 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .ti .cw{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 
 /* Colophon */
-.colophon{margin-top:18px;border:1px solid var(--line);background:rgba(200,238,232,.25);
+.colophon{margin-top:18px;border:1px solid var(--line);border-radius:6px;background:rgba(200,238,232,.25);
   padding:14px 16px;font-size:13.5px;color:var(--soft);line-height:1.75}
 .colophon h4{font-family:"Tiro Devanagari Hindi",serif;color:var(--ink);margin:0 0 10px;font-size:17px}
 .colophon b{color:var(--ink);font-weight:500}
 
 /* Article page */
-.page{background:var(--card);border:1px solid var(--line);
-  box-shadow:0 24px 60px -38px rgba(26,42,58,.45);
+.page{background:var(--card);border:1px solid var(--line);border-radius:6px;
+  box-shadow:0 18px 50px -30px rgba(26,42,58,.38);
   padding:34px clamp(20px,4vw,48px) 42px;min-height:480px;scroll-margin-top:76px}
 .art-head{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px;overflow:hidden}
 .art-pg{float:right;font-family:"Tiro Devanagari Hindi",serif;color:var(--gold);font-size:16px}
@@ -185,8 +186,8 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .pdf-note{font-size:15.5px;color:var(--soft);max-width:46ch;line-height:1.65;margin:0}
 
 /* No-content panel */
-.no-articles{padding:40px 32px;background:var(--card);border:1px solid var(--line);
-  box-shadow:0 24px 60px -38px rgba(26,42,58,.45);display:flex;gap:34px;align-items:flex-start}
+.no-articles{padding:40px 32px;background:var(--card);border:1px solid var(--line);border-radius:6px;
+  box-shadow:0 18px 50px -30px rgba(26,42,58,.38);display:flex;gap:34px;align-items:flex-start}
 .na-cover{flex-shrink:0;width:160px}
 .na-cover img{width:100%;display:block;border:1px solid var(--line);
   box-shadow:0 8px 20px -12px rgba(26,42,58,.40)}
@@ -233,7 +234,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .thread{display:flex;flex-direction:column;gap:12px}
 .bead{background:var(--card);border:1px solid var(--line);padding:16px 20px;
   text-align:left;cursor:pointer;font-family:inherit;color:inherit;transition:.15s;
-  border-radius:2px;width:100%}
+  border-radius:5px;width:100%}
 .bead:hover{border-color:var(--kumkum);box-shadow:0 4px 14px -8px rgba(217,112,24,.28)}
 .bt{font-family:"Tiro Devanagari Hindi",serif;font-size:20px;margin:6px 0 6px;line-height:1.25}
 .bm{font-size:13px;color:var(--soft)}
@@ -251,10 +252,11 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
   .vols-grid{grid-template-columns:repeat(2,1fr);gap:12px}
   .feat-card{grid-template-columns:110px 1fr;gap:16px;padding:18px}
   .feat-card h2{font-size:22px}
-  .mark-sub{display:none}
   .no-articles{flex-direction:column}
   .na-cover{width:120px}
   .shelf-hero{padding:36px 0 24px}
+  .nav-journey-label{display:none}
+  .nav-journey-short{display:inline}
 }
 
 /* ══════════════ PDF READER ══════════════ */
@@ -512,7 +514,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .journey-name-list li::before{content:"·";color:var(--kumkum);margin-right:8px}
 .om-series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:20px}
 .om-card{background:var(--card);border:1px solid var(--line);padding:16px 18px;
-  border-radius:2px;position:relative;overflow:hidden;
+  border-radius:6px;position:relative;overflow:hidden;
   cursor:pointer;font-family:inherit;color:inherit;text-align:left;width:100%;
   transition:box-shadow .18s, border-color .15s, transform .18s}
 .om-card:hover{border-color:var(--kumkum);box-shadow:0 6px 24px -12px rgba(26,42,58,.35);transform:translateY(-2px)}
@@ -524,7 +526,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .journey-sig .sig-name{font-family:"Tiro Devanagari Hindi",serif;font-size:26px;color:var(--ink);margin:0 0 4px}
 .journey-sig .sig-role{font-size:14.5px;color:var(--soft)}
 .journey-colophon{background:rgba(200,238,232,.2);border:1px solid var(--line);
-  padding:24px 28px;margin:32px 0;border-radius:2px}
+  padding:24px 28px;margin:32px 0;border-radius:6px}
 .journey-colophon h3{font-family:"Tiro Devanagari Hindi",serif;font-size:20px;color:var(--indigo);
   margin:0 0 10px;border-bottom:none!important}
 .journey-colophon p{font-size:15.5px;color:var(--soft);margin:0 0 10px;line-height:1.8}
@@ -562,7 +564,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
     <nav class="site-nav" aria-label="मुख्य नेभिगेसन">
       <button class="nav-tab" data-view="shelf" onclick="go('shelf')">अङ्कहरू</button>
       <button class="nav-tab" data-view="allContributors" onclick="go('allContributors',{authorIdx:0})">योगदानकर्ता</button>
-      <button class="nav-tab" data-view="journey" onclick="go('journey')">यात्रा – एक दशक</button>
+      <button class="nav-tab" data-view="journey" onclick="go('journey')"><span class="nav-journey-label">यात्रा – एक दशक</span><span class="nav-journey-short" style="display:none">यात्रा</span></button>
     </nav>
   </div>
 </header>
@@ -1320,7 +1322,7 @@ function viewShelf(){
       <div class="vol-info-chip">
         <div class="vi-num">वर्ष ${vol.volD}</div>
         <div class="vi-year">${vol.year}</div>
-        ${vol.items.length>0?`<div class="vi-tag">● सूची उपलब्ध</div>`:''}
+        ${vol.items.length>0?`<div class="vi-tag">✓ सूची उपलब्ध</div>`:''}
       </div>
     </button>`;
   }).join('');
@@ -1661,7 +1663,7 @@ function viewJourney(){
 
   return `<div class="wrap fade">
   <div class="journey-hero">
-    <p class="kicker">सम्पादकीय / प्रकाशकीय</p>
+    <p class="kicker">साईदेखि साईसम्म · एक दशक</p>
     <h1>ओम् पत्रिका</h1>
     <p class="subtitle">एक दशक — १० अङ्क</p>
     <p class="lead">शुरूवात देखि आजसम्म... साईदेखि साईसम्मको यात्राको कथा — भगवान् बाबाका भक्तहरूले नेपाली भाषामा बुनेको आस्थाको श्रृङ्खला।</p>
