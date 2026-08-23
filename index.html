@@ -332,13 +332,40 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .pdf-progress-bar{height:100%;background:var(--kumkum);width:0%;
   transition:width .3s ease;border-radius:0 2px 2px 0}
 
-/* page canvas fade transition */
-#pcanvas{transition:opacity .15s ease}
-
+/* ── Page turn animation ── */
 .pdf-canvas-area{flex:1;overflow:auto;background:var(--paper2);display:flex;
   justify-content:center;align-items:flex-start;padding:28px 20px}
-.pdf-page-wrap{box-shadow:0 6px 32px -8px rgba(26,42,58,.50);background:#fff;line-height:0;flex-shrink:0}
+.pdf-flip-stage{display:grid;perspective:1400px;perspective-origin:center 40%;flex-shrink:0}
+.pdf-page-wrap{grid-area:1/1;position:relative;box-shadow:0 6px 32px -8px rgba(26,42,58,.50);background:#fff;line-height:0}
 .pdf-page-wrap canvas{display:block}
+/* fold-shadow overlay on new page as old one sweeps away */
+.pdf-page-wrap::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .05s}
+.pdf-turn-enter-fwd::after,.pdf-turn-enter-bwd::after{animation:pdf-shadow-fade .48s ease both}
+@keyframes pdf-shadow-fade{0%{background:rgba(0,0,0,.18);opacity:1}100%{opacity:0}}
+/* exit: current page folds away */
+@keyframes pdf-exit-fwd{
+  from{transform:rotateY(0deg) scale(1);opacity:1}
+  30%{opacity:1}
+  to{transform:rotateY(-52deg) scale(0.88);opacity:0}
+}
+@keyframes pdf-exit-bwd{
+  from{transform:rotateY(0deg) scale(1);opacity:1}
+  30%{opacity:1}
+  to{transform:rotateY(52deg) scale(0.88);opacity:0}
+}
+/* enter: new page unfolds into view */
+@keyframes pdf-enter-fwd{
+  from{transform:rotateY(42deg) scale(0.9);opacity:0}
+  to{transform:rotateY(0deg) scale(1);opacity:1}
+}
+@keyframes pdf-enter-bwd{
+  from{transform:rotateY(-42deg) scale(0.9);opacity:0}
+  to{transform:rotateY(0deg) scale(1);opacity:1}
+}
+.pdf-turn-exit-fwd{animation:pdf-exit-fwd .38s cubic-bezier(.4,0,.75,.2) both;transform-origin:left center}
+.pdf-turn-enter-fwd{animation:pdf-enter-fwd .38s cubic-bezier(.22,.8,.4,1) .1s both;transform-origin:left center}
+.pdf-turn-exit-bwd{animation:pdf-exit-bwd .38s cubic-bezier(.4,0,.75,.2) both;transform-origin:right center}
+.pdf-turn-enter-bwd{animation:pdf-enter-bwd .38s cubic-bezier(.22,.8,.4,1) .1s both;transform-origin:right center}
 .pdf-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:18px;color:var(--soft);font-size:15px;min-height:300px}
 .pdf-spinner{width:34px;height:34px;border:3px solid var(--line);
@@ -1028,6 +1055,9 @@ let S = {view:'shelf', vol:10, itemId:0, authorIdx:0, showColophon:false, pdfPag
 let _pdf=null, _pdfRendering=false, _pdfPending=null;
 let _pdfZoom='fit', _pdfTotal=0, _pdfForVol=null;
 let _pdfFullpage=false, _pdfDrawerOpen=false, _pdfSidebarHidden=false;
+/* page-turn double-buffer: 'a'=#ppwrap/#pcanvas, 'b'=#ppwrap2/#pcanvas2 */
+let _pdfCanvas='a', _pdfNoAnim=false;
+let _pdfAnimCleanup=null; // pending animation cleanup fn
 
 /* ════════════════════════════════════════════════════
    HELPERS
@@ -1174,6 +1204,7 @@ function go(view, params){
   if(S.view==='pdf' && view!=='pdf'){
     document.removeEventListener('keydown',_pdfKey);
     document.body.style.overflow='';
+    if(_pdfAnimCleanup){ _pdfAnimCleanup(); _pdfAnimCleanup=null; }
   }
   Object.assign(S, {view}, params||{});
   if(view==='shelf') S.showColophon=false;
@@ -1950,8 +1981,13 @@ function viewPdfReader(){
           <div class="pdf-spinner"></div>
           <span>पीडीएफ लोड हुँदैछ…</span>
         </div>
-        <div class="pdf-page-wrap" id="ppwrap" style="display:none">
-          <canvas id="pcanvas" oncontextmenu="return false"></canvas>
+        <div class="pdf-flip-stage" id="pfstage">
+          <div class="pdf-page-wrap" id="ppwrap" style="display:none">
+            <canvas id="pcanvas" oncontextmenu="return false"></canvas>
+          </div>
+          <div class="pdf-page-wrap" id="ppwrap2" style="display:none">
+            <canvas id="pcanvas2" oncontextmenu="return false"></canvas>
+          </div>
         </div>
       </div>
     </div>
@@ -2021,7 +2057,7 @@ function _initPdfReader(){
   _loadPdfJs(()=>{
     // Re-use already-loaded doc for same volume
     if(_pdfForVol===vol.vol && _pdf){
-      _pdfApplyTotal(); _renderPage(S.pdfPage||1); return;
+      _pdfApplyTotal(); _pdfNoAnim=true; _renderPage(S.pdfPage||1); return;
     }
     // Fetch as ArrayBuffer so the real URL never appears in browser UI
     fetch(vol.pdf)
@@ -2030,6 +2066,7 @@ function _initPdfReader(){
       .then(doc=>{
         _pdf=doc; _pdfTotal=doc.numPages; _pdfForVol=vol.vol;
         _pdfApplyTotal();
+        _pdfCanvas='a'; _pdfNoAnim=true;
         _renderPage(S.pdfPage||1);
       })
       .catch(()=>_pdfError('यो अङ्कको PDF हाल उपलब्ध छैन।'));
@@ -2056,6 +2093,13 @@ function _renderPage(num){
   if(!_pdf) return;
   if(_pdfRendering){ _pdfPending=num; return; }
   num=Math.max(1,Math.min(num,_pdfTotal));
+
+  // Determine animation direction before updating S.pdfPage
+  const prevNum=S.pdfPage;
+  const doAnim=!_pdfNoAnim && _pdfTotal>0 && prevNum>0 && num!==prevNum;
+  const dir=num>=prevNum?'fwd':'bwd';
+  _pdfNoAnim=false;
+
   S.pdfPage=num;
   const pg=document.getElementById('ppg');
   const pb=document.getElementById('pprev');
@@ -2070,6 +2114,13 @@ function _renderPage(num){
   if(fpb) fpb.disabled=num<=1;
   if(fnb) fnb.disabled=num>=_pdfTotal;
   _pdfRendering=true;
+
+  // Double-buffer: render new page to the inactive canvas
+  const nextCv=doAnim?(_pdfCanvas==='a'?'b':'a'):_pdfCanvas;
+  const canvasId=nextCv==='a'?'pcanvas':'pcanvas2';
+  const wrapId  =nextCv==='a'?'ppwrap' :'ppwrap2';
+  const oldWrapId=_pdfCanvas==='a'?'ppwrap':'ppwrap2';
+
   _pdf.getPage(num).then(page=>{
     // Compute scale
     const area=document.getElementById('pca');
@@ -2085,21 +2136,67 @@ function _renderPage(num){
     // Render at device pixel ratio for crisp text on high-DPI screens
     const dpr=Math.min(window.devicePixelRatio||1,3);
     const vpHi=page.getViewport({scale:sc*dpr});
-    const canvas=document.getElementById('pcanvas');
-    const wrap=document.getElementById('ppwrap');
+    const canvas=document.getElementById(canvasId);
+    const wrap=document.getElementById(wrapId);
     const load=document.getElementById('ploading');
     if(!canvas){_pdfRendering=false;return;}
     canvas.width=vpHi.width; canvas.height=vpHi.height;
     canvas.style.width=vp.width+'px'; canvas.style.height=vp.height+'px';
-    canvas.style.opacity='0';
-    if(wrap) wrap.style.display='';
     if(load) load.style.display='none';
     const zlbl=document.getElementById('pzlbl');
     if(zlbl) zlbl.textContent=Math.round(sc*100)+'%';
     page.render({canvasContext:canvas.getContext('2d'),viewport:vpHi}).promise.then(()=>{
       const ca=document.getElementById('pca');
       if(ca) ca.scrollTop=0;
-      canvas.style.opacity='1';
+      if(doAnim && wrap){
+        // Cancel any in-progress animation cleanly
+        if(_pdfAnimCleanup){ _pdfAnimCleanup(); _pdfAnimCleanup=null; }
+        // Animate the old page out and new page in
+        const oldWrap=document.getElementById(oldWrapId);
+        if(oldWrap){
+          oldWrap.style.zIndex='2'; // outgoing page on top
+          wrap.style.zIndex='1';   // incoming page below
+          wrap.style.display='';
+          const exitCls='pdf-turn-exit-'+dir, enterCls='pdf-turn-enter-'+dir;
+          // Allow CSS to pick up fresh state before adding animation class
+          void wrap.offsetWidth;
+          oldWrap.classList.add(exitCls);
+          wrap.classList.add(enterCls);
+          let exitDone=false, enterDone=false;
+          const cleanup=()=>{
+            if(!exitDone||!enterDone) return;
+            _pdfAnimCleanup=null;
+          };
+          _pdfAnimCleanup=()=>{
+            oldWrap.classList.remove(exitCls);
+            wrap.classList.remove(enterCls);
+            oldWrap.style.display='none';
+            oldWrap.style.zIndex='';
+            wrap.style.zIndex='';
+            exitDone=enterDone=true;
+          };
+          oldWrap.addEventListener('animationend',()=>{
+            oldWrap.classList.remove(exitCls);
+            oldWrap.style.display='none';
+            oldWrap.style.zIndex='';
+            exitDone=true; cleanup();
+          },{once:true});
+          wrap.addEventListener('animationend',()=>{
+            wrap.classList.remove(enterCls);
+            wrap.style.zIndex='';
+            enterDone=true; cleanup();
+          },{once:true});
+        }
+        _pdfCanvas=nextCv;
+      } else {
+        // No animation: just show new canvas, hide old if switching
+        if(nextCv!==_pdfCanvas){
+          const oldWrap=document.getElementById(oldWrapId);
+          if(oldWrap) oldWrap.style.display='none';
+        }
+        if(wrap){ wrap.style.display=''; wrap.style.opacity='1'; }
+        _pdfCanvas=nextCv;
+      }
       const prog=document.getElementById('pprogress');
       if(prog&&_pdfTotal>0) prog.style.width=(num/_pdfTotal*100)+'%';
       _pdfRendering=false;
@@ -2157,14 +2254,14 @@ function _updateZoomBtns(){
   ['pzout','pfn-zout'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=atMin;});
   ['pzin','pfn-zin'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=atMax;});
 }
-function pdfZoomIn(){ _pdfZoom=typeof _pdfZoom==='number'?Math.min(_pdfZoom+.2,3):1.7; _updateZoomBtns(); _renderPage(S.pdfPage); }
-function pdfZoomOut(){ _pdfZoom=typeof _pdfZoom==='number'?Math.max(_pdfZoom-.2,.4):1.0; _updateZoomBtns(); _renderPage(S.pdfPage); }
-function pdfFit(){ _pdfZoom='fit'; _updateZoomBtns(); _renderPage(S.pdfPage); }
+function pdfZoomIn(){ _pdfZoom=typeof _pdfZoom==='number'?Math.min(_pdfZoom+.2,3):1.7; _updateZoomBtns(); _pdfNoAnim=true; _renderPage(S.pdfPage); }
+function pdfZoomOut(){ _pdfZoom=typeof _pdfZoom==='number'?Math.max(_pdfZoom-.2,.4):1.0; _updateZoomBtns(); _pdfNoAnim=true; _renderPage(S.pdfPage); }
+function pdfFit(){ _pdfZoom='fit'; _updateZoomBtns(); _pdfNoAnim=true; _renderPage(S.pdfPage); }
 function pdfToggleSidebar(){
   _pdfSidebarHidden=!_pdfSidebarHidden;
   const layout=document.getElementById('pdf-layout');
   if(layout) layout.classList.toggle('sb-hidden',_pdfSidebarHidden);
-  if(_pdfZoom==='fit') setTimeout(()=>_renderPage(S.pdfPage),50);
+  if(_pdfZoom==='fit') setTimeout(()=>{_pdfNoAnim=true;_renderPage(S.pdfPage);},50);
 }
 
 function pdfToggleFullpage(){
@@ -2201,7 +2298,7 @@ function pdfFullpageTocToggle(){
         if(lbl) lbl.textContent=' लुकाउनुहोस्';
       }
     }
-    if(_pdfZoom==='fit') setTimeout(()=>_renderPage(S.pdfPage),50);
+    if(_pdfZoom==='fit') setTimeout(()=>{_pdfNoAnim=true;_renderPage(S.pdfPage);},50);
   } else {
     pdfToggleDrawer();
   }
