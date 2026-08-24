@@ -1229,6 +1229,9 @@ function go(view, params){
       window.scrollTo({top:0, behavior:'smooth'});
     }
   }
+  if(view==='contributors'||view==='allContributors'){
+    setTimeout(()=>_scrollListToActive('smooth'), 0);
+  }
   const h = _stateHash();
   if(location.hash !== h) history.pushState(null,'',h);
 }
