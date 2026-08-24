@@ -1244,6 +1244,16 @@ function selectAuthor(idx){
   render();
   const h = _stateHash();
   if(location.hash !== h) history.pushState(null,'',h);
+  _scrollActiveContrib();
+}
+
+function _scrollActiveContrib(){
+  const activeBtn=document.querySelector('.azi[aria-current="true"]');
+  if(activeBtn) activeBtn.scrollIntoView({block:'nearest',behavior:'smooth'});
+  if(window.innerWidth<=960){
+    const panel=document.querySelector('.mala,.cpro-panel');
+    if(panel) panel.scrollIntoView({behavior:'smooth',block:'start'});
+  }
 }
 
 function _updateNav(){
@@ -1545,15 +1555,7 @@ function selectAllAuthor(idx){
   render();
   const h=_stateHash();
   if(location.hash!==h) history.pushState(null,'',h);
-  // On mobile (single column), scroll the profile into view
-  if(window.innerWidth<=960){
-    const panel=document.querySelector('.cpro-panel');
-    if(panel) panel.scrollIntoView({behavior:'smooth',block:'start'});
-  } else {
-    // Scroll the active item into view in the sidebar list
-    const activeBtn=document.querySelector('.azi[aria-current="true"]');
-    if(activeBtn) activeBtn.scrollIntoView({block:'nearest',behavior:'smooth'});
-  }
+  _scrollActiveContrib();
 }
 
 function filterContribSearch(q){
@@ -2355,6 +2357,7 @@ function render(){
     S.view==='allContributors' ? viewAllContributors() :
     viewContributors();
   if(S.view==='pdf') setTimeout(_initPdfReader, 0);
+  if(S.view==='contributors'||S.view==='allContributors') setTimeout(_scrollActiveContrib, 0);
 }
 
 /* ════════════════════════════════════════════════════
