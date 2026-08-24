@@ -1244,7 +1244,6 @@ function selectAuthor(idx){
   render();
   const h = _stateHash();
   if(location.hash !== h) history.pushState(null,'',h);
-  _scrollActiveContrib();
 }
 
 function _scrollActiveContrib(){
@@ -1555,7 +1554,6 @@ function selectAllAuthor(idx){
   render();
   const h=_stateHash();
   if(location.hash!==h) history.pushState(null,'',h);
-  _scrollActiveContrib();
 }
 
 function filterContribSearch(q){
@@ -2357,7 +2355,6 @@ function render(){
     S.view==='allContributors' ? viewAllContributors() :
     viewContributors();
   if(S.view==='pdf') setTimeout(_initPdfReader, 0);
-  if(S.view==='contributors'||S.view==='allContributors') setTimeout(_scrollActiveContrib, 0);
 }
 
 /* ════════════════════════════════════════════════════
@@ -2385,6 +2382,9 @@ function _applyParsed(parsed){
     else window.scrollTo({top:0, behavior:'smooth'});
   } else if(parsed.view!=='pdf'){
     window.scrollTo({top:0, behavior:'smooth'});
+  }
+  if(parsed.view==='contributors'||parsed.view==='allContributors'){
+    setTimeout(_scrollActiveContrib, 0);
   }
 }
 
