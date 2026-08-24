@@ -1244,11 +1244,21 @@ function selectAuthor(idx){
   render();
   const h = _stateHash();
   if(location.hash !== h) history.pushState(null,'',h);
+  // restore list scroll so the active item stays in view after innerHTML reset
+  _scrollListToActive('instant');
 }
 
-function _scrollActiveContrib(){
+/* Scroll the sidebar list so the active author button is in view.
+   Called with 'instant' on click (no jarring animation) and 'smooth' on
+   URL/back-forward navigation where the list may open mid-way. */
+function _scrollListToActive(behavior){
   const activeBtn=document.querySelector('.azi[aria-current="true"]');
-  if(activeBtn) activeBtn.scrollIntoView({block:'nearest',behavior:'smooth'});
+  if(activeBtn) activeBtn.scrollIntoView({block:'nearest',behavior:behavior||'smooth'});
+}
+
+/* Full contrib scroll: list + mobile panel. Used only on URL navigation. */
+function _scrollActiveContrib(){
+  _scrollListToActive('smooth');
   if(window.innerWidth<=960){
     const panel=document.querySelector('.mala,.cpro-panel');
     if(panel) panel.scrollIntoView({behavior:'smooth',block:'start'});
@@ -1554,6 +1564,7 @@ function selectAllAuthor(idx){
   render();
   const h=_stateHash();
   if(location.hash!==h) history.pushState(null,'',h);
+  _scrollListToActive('instant');
 }
 
 function filterContribSearch(q){
