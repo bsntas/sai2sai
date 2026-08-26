@@ -345,6 +345,21 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 /* ── Page turn animation ── */
 .pdf-canvas-area{flex:1;overflow:auto;background:var(--paper2);display:flex;
   justify-content:center;align-items:flex-start;padding:28px 20px}
+
+/* ── Desktop side prev/next nav ── */
+.pdf-canvas-outer{display:flex;flex-direction:row;flex:1;overflow:hidden;background:var(--paper2)}
+.pdf-sidenav{flex-shrink:0;width:52px;height:96px;align-self:center;
+  border:none;border-radius:12px;
+  background:var(--card);color:var(--ink);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;
+  box-shadow:0 2px 16px rgba(0,0,0,.18);
+  transition:background .15s,color .15s,box-shadow .15s,opacity .15s;
+  opacity:.88;margin:0 10px}
+.pdf-sidenav:hover:not(:disabled){opacity:1;background:var(--gold);color:#fff;box-shadow:0 4px 22px rgba(0,0,0,.26)}
+.pdf-sidenav:disabled{opacity:.22;cursor:default}
+@media(max-width:800px){.pdf-sidenav{display:none}.pdf-canvas-outer{display:contents}}
 .pdf-flip-stage{display:grid;perspective:1200px;flex-shrink:0}
 .pdf-page-wrap{grid-area:1/1;position:relative;backface-visibility:hidden;
   box-shadow:0 6px 32px -8px rgba(26,42,58,.50);background:#fff;line-height:0}
@@ -1986,19 +2001,23 @@ function viewPdfReader(){
         <button class="pdf-fullbtn" id="pfullbtn" onclick="pdfToggleFullpage()" title="पूर्ण पर्दा (F)">${icon('expand')}</button>
       </div>
       <div class="pdf-progress"><div class="pdf-progress-bar" id="pprogress"></div></div>
-      <div class="pdf-canvas-area" id="pca" oncontextmenu="return false">
-        <div class="pdf-loading" id="ploading">
-          <div class="pdf-spinner"></div>
-          <span>पीडीएफ लोड हुँदैछ…</span>
-        </div>
-        <div class="pdf-flip-stage" id="pfstage">
-          <div class="pdf-page-wrap" id="ppwrap" style="display:none">
-            <canvas id="pcanvas" oncontextmenu="return false"></canvas>
+      <div class="pdf-canvas-outer">
+        <button class="pdf-sidenav" id="pside-prev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ (←)" aria-label="अघिल्लो पृष्ठ">${icon('chevron-left')}</button>
+        <div class="pdf-canvas-area" id="pca" oncontextmenu="return false">
+          <div class="pdf-loading" id="ploading">
+            <div class="pdf-spinner"></div>
+            <span>पीडीएफ लोड हुँदैछ…</span>
           </div>
-          <div class="pdf-page-wrap" id="ppwrap2" style="display:none">
-            <canvas id="pcanvas2" oncontextmenu="return false"></canvas>
+          <div class="pdf-flip-stage" id="pfstage">
+            <div class="pdf-page-wrap" id="ppwrap" style="display:none">
+              <canvas id="pcanvas" oncontextmenu="return false"></canvas>
+            </div>
+            <div class="pdf-page-wrap" id="ppwrap2" style="display:none">
+              <canvas id="pcanvas2" oncontextmenu="return false"></canvas>
+            </div>
           </div>
         </div>
+        <button class="pdf-sidenav" id="pside-next" onclick="pdfNext()" disabled title="अर्को पृष्ठ (→)" aria-label="अर्को पृष्ठ">${icon('chevron-right')}</button>
       </div>
     </div>
   </div>
@@ -2123,6 +2142,10 @@ function _renderPage(num){
   if(fpg) fpg.value=num;
   if(fpb) fpb.disabled=num<=1;
   if(fnb) fnb.disabled=num>=_pdfTotal;
+  const spb=document.getElementById('pside-prev');
+  const snb=document.getElementById('pside-next');
+  if(spb) spb.disabled=num<=1;
+  if(snb) snb.disabled=num>=_pdfTotal;
   _pdfRendering=true;
 
   // Double-buffer: render new page to the inactive canvas
