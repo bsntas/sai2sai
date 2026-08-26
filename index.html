@@ -189,6 +189,17 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .page{background:var(--card);border:1px solid var(--line);border-radius:6px;
   box-shadow:0 18px 50px -30px rgba(26,42,58,.38);
   padding:28px clamp(16px,3.5vw,42px) 32px;scroll-margin-top:76px}
+
+/* Minimal article prev/next nav */
+.art-nav{display:flex;justify-content:space-between;gap:10px;
+  margin-top:22px;padding-top:14px;border-top:1px solid var(--line)}
+.art-navbtn{background:none;border:none;color:var(--soft);cursor:pointer;
+  font-family:"Noto Serif Devanagari",serif;font-size:13px;padding:2px 0;
+  display:flex;align-items:center;gap:5px;transition:color .15s;max-width:47%;line-height:1.35}
+.art-navbtn:hover:not(:disabled){color:var(--kumkum)}
+.art-navbtn:disabled{opacity:.22;cursor:default;pointer-events:none}
+.art-navbtn .ant{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.art-navbtn.next{text-align:right;justify-content:flex-end}
 .art-head{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px;overflow:hidden}
 .art-pg{float:right;font-family:"Tiro Devanagari Hindi",serif;color:var(--gold);font-size:16px}
 .art-title{font-family:"Tiro Devanagari Hindi",serif;font-size:clamp(26px,4.2vw,44px);
@@ -1479,6 +1490,8 @@ function viewVolume(){
     const pieceCount = items.filter(x=>!x.front).length;
     const contribCount = Object.keys(m).length;
     const it = items[S.itemId] || items[0];
+    const prev = S.itemId>0 ? items[S.itemId-1] : null;
+    const next = S.itemId<items.length-1 ? items[S.itemId+1] : null;
 
     const tocList = items.map((x,i)=>`
       <li><button class="ti" aria-current="${i===S.itemId}" onclick="go('volume',{vol:${vol.vol},itemId:${i}})">
@@ -1501,6 +1514,14 @@ function viewVolume(){
         <div class="pdf-icon">${icon('file-pdf')}</div>
         <p class="pdf-note">यो रचना मूल अङ्कको <b>पृष्ठ ${deva(it.page)}</b> बाट सुरु हुन्छ। पूरा पाठ पढ्न PDF रिडरमा खोल्नुहोस्।</p>
         <button class="pdfbtn" onclick="go('pdf',{vol:${vol.vol},pdfPage:${it.page+(vol.pageOffset||0)}})">PDF रिडरमा खोल्नुहोस् — पृष्ठ ${deva(it.page)} ${icon('arrow-right')}</button>
+      </div>
+      <div class="art-nav">
+        <button class="art-navbtn" ${prev?'':'disabled'} onclick="go('volume',{vol:${vol.vol},itemId:${S.itemId-1}})">
+          ${icon('chevron-left')}<span class="ant">${prev?prev.title:''}</span>
+        </button>
+        <button class="art-navbtn next" ${next?'':'disabled'} onclick="go('volume',{vol:${vol.vol},itemId:${S.itemId+1}})">
+          <span class="ant">${next?next.title:''}</span>${icon('chevron-right')}
+        </button>
       </div>`;
 
     return `<div class="wrap fade">
@@ -2406,6 +2427,14 @@ function pdfFilterAuthor(author){
 }
 
 /* ── Keyboard handler ── */
+function _volKey(e){
+  if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='TEXTAREA') return;
+  const items=(volByNum(S.vol)||{}).items||[];
+  if(!items.length) return;
+  if(e.key==='ArrowLeft'&&S.itemId>0){e.preventDefault();go('volume',{vol:S.vol,itemId:S.itemId-1});}
+  else if(e.key==='ArrowRight'&&S.itemId<items.length-1){e.preventDefault();go('volume',{vol:S.vol,itemId:S.itemId+1});}
+}
+
 function _pdfKey(e){
   if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); pdfPrev(); }
   if(['ArrowRight','ArrowDown','PageDown'].includes(e.key)){ e.preventDefault(); pdfNext(); }
@@ -2447,6 +2476,8 @@ function _applyParsed(parsed){
     document.addEventListener('keydown',_pdfKey);
     window.scrollTo({top:0, behavior:'instant'});
   }
+  if(prev==='volume' && parsed.view!=='volume') document.removeEventListener('keydown',_volKey);
+  if(parsed.view==='volume' && prev!=='volume') document.addEventListener('keydown',_volKey);
   if(parsed.view==='volume' && !('itemId' in parsed)) parsed.itemId=0;
   if(parsed.view==='shelf') parsed.showColophon=false;
   Object.assign(S, parsed);
