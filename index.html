@@ -154,7 +154,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 
 /* ══════════════ VOLUME VIEW ══════════════ */
 .back-bar{padding:16px 0 4px}
-.reader{display:grid;grid-template-columns:300px 1fr;gap:40px;
+.reader{display:grid;grid-template-columns:360px 1fr;gap:40px;
   padding:6px 0 80px;align-items:start}
 .toc{position:sticky;top:68px;max-height:calc(100vh - 88px);
   overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
@@ -176,16 +176,19 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .ti .au{display:block;font-size:13px;color:var(--soft);margin-top:2px}
 .ti .cw{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 
-/* Colophon */
-.colophon{margin-top:18px;border:1px solid var(--line);border-radius:6px;background:rgba(200,238,232,.25);
-  padding:14px 16px;font-size:13.5px;color:var(--soft);line-height:1.75}
-.colophon h4{font-family:"Tiro Devanagari Hindi",serif;color:var(--ink);margin:0 0 10px;font-size:17px}
-.colophon b{color:var(--ink);font-weight:500}
+/* Colophon — field list in TOC sidebar */
+.colophon{margin:0;padding:0}
+.colo-row{padding:6px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.colo-key{font-size:10px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;
+  font-family:"Noto Serif Devanagari",serif}
+.colo-val{font-size:13px;color:var(--ink);line-height:1.5}
+/* Colophon inside no-articles panel: indented with a top border */
+.na-body .colophon{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
 
 /* Article page */
 .page{background:var(--card);border:1px solid var(--line);border-radius:6px;
   box-shadow:0 18px 50px -30px rgba(26,42,58,.38);
-  padding:34px clamp(20px,4vw,48px) 42px;min-height:480px;scroll-margin-top:76px}
+  padding:28px clamp(16px,3.5vw,42px) 32px;scroll-margin-top:76px}
 .art-head{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:28px;overflow:hidden}
 .art-pg{float:right;font-family:"Tiro Devanagari Hindi",serif;color:var(--gold);font-size:16px}
 .art-title{font-family:"Tiro Devanagari Hindi",serif;font-size:clamp(26px,4.2vw,44px);
@@ -216,16 +219,6 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .na-soon-text h3{font-family:"Tiro Devanagari Hindi",serif;font-size:22px;color:var(--ink);margin:0 0 6px}
 .na-soon-text p{font-size:15px;color:var(--soft);margin:0;line-height:1.6}
 
-/* Pager */
-.pager{display:flex;justify-content:space-between;gap:14px;
-  margin-top:36px;padding-top:22px;border-top:1px solid var(--line)}
-.pgb{background:none;border:1px solid var(--line);color:var(--ink);
-  font-family:"Noto Serif Devanagari",serif;font-size:14px;
-  padding:10px 16px;border-radius:4px;cursor:pointer;transition:.15s;max-width:48%;text-align:left}
-.pgb:hover:not(:disabled){border-color:var(--kumkum);color:var(--kumkum)}
-.pgb:disabled{opacity:.3;cursor:default}
-.pgb.next{text-align:right}
-.pgb small{display:block;font-size:12px;color:var(--soft)}
 
 /* ══════════════ CONTRIBUTORS ══════════════ */
 .contrib{display:grid;grid-template-columns:280px 1fr;gap:40px;padding:16px 0 80px;align-items:start}
@@ -255,10 +248,17 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .bm{font-size:13px;color:var(--soft)}
 
 /* ══════════════ RESPONSIVE ══════════════ */
+/* TOC list section — groups label + article list */
+.toc-list-section{margin-top:18px}
+
 @media(max-width:960px){
   .vols-grid{grid-template-columns:repeat(3,1fr);gap:14px}
-  .reader{grid-template-columns:1fr}
-  .toc{position:static;max-height:none;overflow:visible}
+  /* Dissolve <aside class="toc"> so its children become flex items of .reader */
+  .reader{display:flex;flex-direction:column;gap:20px;padding:6px 0 60px}
+  .toc{display:contents}
+  /* Article comes before the TOC list on mobile */
+  .page{order:5}
+  .toc-list-section{order:10;margin-top:0;border-top:1px solid var(--line);padding-top:16px}
   .contrib{grid-template-columns:1fr}
   .az{position:static}
   .az-list{max-height:280px}
@@ -392,16 +392,17 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .pdf-err .ei{font-size:42px;margin-bottom:14px;opacity:.5}
 
 @media(max-width:800px){
-  .pdf-layout{grid-template-columns:1fr;grid-template-rows:1fr clamp(180px,28vw,220px)}
+  .pdf-layout{grid-template-columns:1fr;grid-template-rows:1fr clamp(240px,36vw,290px)}
   .pdf-main{grid-column:1;grid-row:1}
   .pdf-sidebar{grid-column:1;grid-row:2;border-left:none;border-top:1px solid var(--line)}
-  .pdf-sb-head{display:none}
+  .pdf-sb-head{display:block;padding:9px 14px 7px}
+  .pdf-sb-head .pdf-sb-sub{display:none}
   .pdf-sb-filter{display:none}
   .pdf-zoom .pdf-zlabel,.pdf-zoom .pdf-fitbtn{display:none}
   .pdf-crumb{display:none}
 }
 @media(max-width:480px){
-  .pdf-layout{grid-template-rows:1fr 180px}
+  .pdf-layout{grid-template-rows:1fr 220px}
   .pdf-bar{padding:7px 10px;gap:5px}
   .pdf-canvas-area{padding:14px 6px}
   .pdf-fullbtn{width:34px;height:34px}
@@ -1463,15 +1464,14 @@ function viewVolume(){
   const hasArticles = items.length>0;
 
   const coloHtml = vol.editors ? `<div class="colophon">
-      <h4>यस अङ्कको बारेमा</h4>
-      <div><b>वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)}</b> — ${vol.date} (भगवान्को ${vol.bday})</div>
-      <div><b>कार्यकारी सम्पादक:</b> ${vol.editors}</div>
-      ${vol.publishers?`<div><b>प्रकाशक:</b> ${vol.publishers}</div>`:''}
-      ${vol.patrons?`<div><b>संरक्षक:</b> ${vol.patrons}</div>`:''}
-      ${vol.coverDesigner?`<div><b>आवरण डिजाइन:</b> ${vol.coverDesigner}</div>`:''}
-      ${vol.layoutDesigner?`<div><b>लेआउट डिजाइन:</b> ${vol.layoutDesigner}</div>`:''}
-      ${vol.web?`<div><b>वेब संयोजक:</b> ${vol.web}</div>`:''}
-      ${vol.price?`<div><b>मूल्य / सहयोग राशि:</b> ${vol.price}</div>`:''}
+      <div class="colo-row"><span class="colo-key">मिति</span><span class="colo-val">${vol.date} — ${vol.bday}</span></div>
+      <div class="colo-row"><span class="colo-key">कार्यकारी सम्पादक</span><span class="colo-val">${vol.editors}</span></div>
+      ${vol.publishers?`<div class="colo-row"><span class="colo-key">प्रकाशक</span><span class="colo-val">${vol.publishers}</span></div>`:''}
+      ${vol.patrons?`<div class="colo-row"><span class="colo-key">संरक्षक</span><span class="colo-val">${vol.patrons}</span></div>`:''}
+      ${vol.coverDesigner?`<div class="colo-row"><span class="colo-key">आवरण डिजाइन</span><span class="colo-val">${vol.coverDesigner}</span></div>`:''}
+      ${vol.layoutDesigner?`<div class="colo-row"><span class="colo-key">लेआउट डिजाइन</span><span class="colo-val">${vol.layoutDesigner}</span></div>`:''}
+      ${vol.web?`<div class="colo-row"><span class="colo-key">वेब संयोजक</span><span class="colo-val">${vol.web}</span></div>`:''}
+      ${vol.price?`<div class="colo-row"><span class="colo-key">मूल्य</span><span class="colo-val">${vol.price}</span></div>`:''}
     </div>` : '';
 
   if(hasArticles){
@@ -1479,8 +1479,6 @@ function viewVolume(){
     const pieceCount = items.filter(x=>!x.front).length;
     const contribCount = Object.keys(m).length;
     const it = items[S.itemId] || items[0];
-    const prev = S.itemId>0 ? items[S.itemId-1] : null;
-    const next = S.itemId<items.length-1 ? items[S.itemId+1] : null;
 
     const tocList = items.map((x,i)=>`
       <li><button class="ti" aria-current="${i===S.itemId}" onclick="go('volume',{vol:${vol.vol},itemId:${i}})">
@@ -1503,32 +1501,28 @@ function viewVolume(){
         <div class="pdf-icon">${icon('file-pdf')}</div>
         <p class="pdf-note">यो रचना मूल अङ्कको <b>पृष्ठ ${deva(it.page)}</b> बाट सुरु हुन्छ। पूरा पाठ पढ्न PDF रिडरमा खोल्नुहोस्।</p>
         <button class="pdfbtn" onclick="go('pdf',{vol:${vol.vol},pdfPage:${it.page+(vol.pageOffset||0)}})">PDF रिडरमा खोल्नुहोस् — पृष्ठ ${deva(it.page)} ${icon('arrow-right')}</button>
-      </div>
-      <div class="pager">
-        <button class="pgb" ${prev?'':'disabled'} onclick="go('volume',{vol:${vol.vol},itemId:${S.itemId-1}})">
-          <small>${icon('chevron-left')} अघिल्लो</small>${prev?prev.title:'—'}
-        </button>
-        <button class="pgb next" ${next?'':'disabled'} onclick="go('volume',{vol:${vol.vol},itemId:${S.itemId+1}})">
-          <small>अर्को ${icon('chevron-right')}</small>${next?next.title:'—'}
-        </button>
       </div>`;
 
     return `<div class="wrap fade">
     <div class="back-bar"><button class="back" onclick="go('shelf')">${icon('arrow-left')} सबै अङ्क</button></div>
     <div class="reader">
       <aside class="toc">
-        <div class="nm-wrap">
-          <div class="yr deva-display">${vol.name}</div>
-          <a href="${volHash}" class="perma" onclick="copyPermalink(event,'${volHash}')" title="यस अङ्कको पर्मालिङ्क">${icon('link')}</a>
+        <div class="toc-head">
+          <div class="nm-wrap">
+            <div class="yr deva-display">${vol.name}</div>
+            <a href="${volHash}" class="perma" onclick="copyPermalink(event,'${volHash}')" title="यस अङ्कको पर्मालिङ्क">${icon('link')}</a>
+          </div>
+          <div class="vr">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)} · ${vol.year}</div>
+          <div class="meta">${deva(pieceCount)} रचना · ${deva(contribCount)} योगदानकर्ता${vol.pages?` · ${deva(vol.pages)} पृष्ठ`:''}</div>
         </div>
-        <div class="vr">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)} · ${vol.year}</div>
-        <div class="meta">${deva(pieceCount)} रचना · ${deva(contribCount)} योगदानकर्ता${vol.pages?` · ${deva(vol.pages)} पृष्ठ`:''}</div>
         <div class="toc-actions">
           <button class="pdfbtn" style="font-size:13px;padding:8px 16px" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् ${icon('arrow-right')}</button>
         </div>
-        <div class="toc-label">अनुक्रमणिका</div>
-        <ul class="toc-list">${tocList}</ul>
         ${coloHtml}
+        <div class="toc-list-section">
+          <div class="toc-label">अनुक्रमणिका</div>
+          <ul class="toc-list">${tocList}</ul>
+        </div>
       </aside>
       <article class="page" aria-live="polite">${artContent}</article>
     </div>
