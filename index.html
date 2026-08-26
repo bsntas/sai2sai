@@ -2194,6 +2194,7 @@ function _renderPage(num){
           oldWrap.style.zIndex='2';
           void oldWrap.offsetWidth;
           oldWrap.classList.add(exitCls);
+          if(ca) ca.style.overflow='hidden';
           let cancelled=false;
           _pdfAnimCleanup=()=>{
             cancelled=true;
@@ -2202,6 +2203,7 @@ function _renderPage(num){
             oldWrap.style.zIndex='';
             wrap.style.display='';
             wrap.style.zIndex='';
+            if(ca) ca.style.overflow='';
             _pdfAnimCleanup=null;
           };
           const onExitEnd=(e)=>{
@@ -2212,6 +2214,7 @@ function _renderPage(num){
             oldWrap.style.display='none';
             oldWrap.style.zIndex='';
             wrap.style.zIndex='';
+            if(ca) ca.style.overflow='';
             _pdfAnimCleanup=null;
           };
           oldWrap.addEventListener('animationend',onExitEnd);
