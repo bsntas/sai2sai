@@ -1442,6 +1442,17 @@ function viewVolume(){
   const items = vol.items;
   const hasArticles = items.length>0;
 
+  const coloHtml = vol.editors ? `<div class="colophon">
+      <h4>यस अङ्कको बारेमा</h4>
+      <div><b>वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)}</b> — ${vol.date} (भगवान्को ${vol.bday})</div>
+      <div><b>कार्यकारी सम्पादक:</b> ${vol.editors}</div>
+      ${vol.publishers?`<div><b>प्रकाशक:</b> ${vol.publishers}</div>`:''}
+      ${vol.patrons?`<div><b>संरक्षक:</b> ${vol.patrons}</div>`:''}
+      ${vol.coverDesigner?`<div><b>आवरण डिजाइन:</b> ${vol.coverDesigner}</div>`:''}
+      ${vol.web?`<div><b>वेब संयोजक:</b> ${vol.web}</div>`:''}
+      ${vol.price?`<div><b>मूल्य / सहयोग राशि:</b> ${vol.price}</div>`:''}
+    </div>` : '';
+
   if(hasArticles){
     const m = byAuthor(items);
     const pieceCount = items.filter(x=>!x.front).length;
@@ -1458,16 +1469,6 @@ function viewVolume(){
           ${!x.front?`<span class="au">${x.author}${x.place?' — '+x.place:''}</span>`:''}
         </span>
       </button></li>`).join('');
-
-    const coloHtml = vol.editors ? `<div class="colophon">
-      <h4>यस अङ्कको बारेमा</h4>
-      <div><b>वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)}</b> — ${vol.date} (भगवान्को ${vol.bday})</div>
-      <div><b>कार्यकारी सम्पादक:</b> ${vol.editors}</div>
-      ${vol.publishers?`<div><b>प्रकाशक:</b> ${vol.publishers}</div>`:''}
-      ${vol.patrons?`<div><b>संरक्षक:</b> ${vol.patrons}</div>`:''}
-      ${vol.web?`<div><b>वेब संयोजक:</b> ${vol.web}</div>`:''}
-      ${vol.price?`<div><b>मूल्य / सहयोग राशि:</b> ${vol.price}</div>`:''}
-    </div>` : '';
 
     const volHash = `#v${vol.vol}`;
     const artHash = `#v${vol.vol}/a${S.itemId}`;
@@ -1506,10 +1507,7 @@ function viewVolume(){
         </div>
         <div class="toc-label">अनुक्रमणिका</div>
         <ul class="toc-list">${tocList}</ul>
-        <button class="back" style="margin-top:14px" onclick="S.showColophon=!S.showColophon;render()">
-          ${S.showColophon?`${icon('chevron-up')} लुकाउनुहोस्`:`${icon('chevron-down')} यस अङ्कको बारेमा`}
-        </button>
-        ${S.showColophon?coloHtml:''}
+        ${coloHtml}
       </aside>
       <article class="page" aria-live="polite">${artContent}</article>
     </div>
@@ -1530,6 +1528,7 @@ function viewVolume(){
       <div class="btn-row">
         <button class="pdfbtn" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् ${icon('arrow-right')}</button>
       </div>
+      ${coloHtml}
       <div class="na-soon">
         <span class="om deva-display">ॐ</span>
         <div class="na-soon-text">
