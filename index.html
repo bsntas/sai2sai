@@ -248,10 +248,17 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .bm{font-size:13px;color:var(--soft)}
 
 /* ══════════════ RESPONSIVE ══════════════ */
+/* TOC list section — groups label + article list */
+.toc-list-section{margin-top:18px}
+
 @media(max-width:960px){
   .vols-grid{grid-template-columns:repeat(3,1fr);gap:14px}
-  .reader{grid-template-columns:1fr}
-  .toc{position:static;max-height:none;overflow:visible}
+  /* Dissolve <aside class="toc"> so its children become flex items of .reader */
+  .reader{display:flex;flex-direction:column;gap:20px;padding:6px 0 60px}
+  .toc{display:contents}
+  /* Article comes before the TOC list on mobile */
+  .page{order:5}
+  .toc-list-section{order:10;margin-top:0;border-top:1px solid var(--line);padding-top:16px}
   .contrib{grid-template-columns:1fr}
   .az{position:static}
   .az-list{max-height:280px}
@@ -1500,18 +1507,22 @@ function viewVolume(){
     <div class="back-bar"><button class="back" onclick="go('shelf')">${icon('arrow-left')} सबै अङ्क</button></div>
     <div class="reader">
       <aside class="toc">
-        <div class="nm-wrap">
-          <div class="yr deva-display">${vol.name}</div>
-          <a href="${volHash}" class="perma" onclick="copyPermalink(event,'${volHash}')" title="यस अङ्कको पर्मालिङ्क">${icon('link')}</a>
+        <div class="toc-head">
+          <div class="nm-wrap">
+            <div class="yr deva-display">${vol.name}</div>
+            <a href="${volHash}" class="perma" onclick="copyPermalink(event,'${volHash}')" title="यस अङ्कको पर्मालिङ्क">${icon('link')}</a>
+          </div>
+          <div class="vr">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)} · ${vol.year}</div>
+          <div class="meta">${deva(pieceCount)} रचना · ${deva(contribCount)} योगदानकर्ता${vol.pages?` · ${deva(vol.pages)} पृष्ठ`:''}</div>
         </div>
-        <div class="vr">वर्ष ${vol.volD} · अङ्क ${deva(vol.vol)} · ${vol.year}</div>
-        <div class="meta">${deva(pieceCount)} रचना · ${deva(contribCount)} योगदानकर्ता${vol.pages?` · ${deva(vol.pages)} पृष्ठ`:''}</div>
         <div class="toc-actions">
           <button class="pdfbtn" style="font-size:13px;padding:8px 16px" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् ${icon('arrow-right')}</button>
         </div>
         ${coloHtml}
-        <div class="toc-label" style="margin-top:18px">अनुक्रमणिका</div>
-        <ul class="toc-list">${tocList}</ul>
+        <div class="toc-list-section">
+          <div class="toc-label">अनुक्रमणिका</div>
+          <ul class="toc-list">${tocList}</ul>
+        </div>
       </aside>
       <article class="page" aria-live="polite">${artContent}</article>
     </div>
