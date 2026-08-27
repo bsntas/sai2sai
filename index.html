@@ -402,6 +402,12 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .pdf-err{text-align:center;color:var(--kumkum);font-size:15px;padding:48px 24px}
 .pdf-err .ei{font-size:42px;margin-bottom:14px;opacity:.5}
 
+/* Hide site header in PDF view on mobile to maximise canvas space */
+@media(max-width:800px){
+  body.in-pdf header.site{display:none}
+  body.in-pdf .pdf-layout{height:100vh;height:100dvh}
+}
+
 @media(max-width:800px){
   .pdf-layout{grid-template-columns:1fr;grid-template-rows:1fr clamp(240px,36vw,290px)}
   .pdf-main{grid-column:1;grid-row:1}
@@ -2459,7 +2465,8 @@ function render(){
     S.view==='journey' ? viewJourney() :
     S.view==='allContributors' ? viewAllContributors() :
     viewContributors();
-  if(S.view==='pdf') setTimeout(_initPdfReader, 0);
+  if(S.view==='pdf'){ setTimeout(_initPdfReader, 0); document.body.classList.add('in-pdf'); }
+  else document.body.classList.remove('in-pdf');
 }
 
 /* ════════════════════════════════════════════════════
@@ -2470,11 +2477,13 @@ function _applyParsed(parsed){
   if(prev==='pdf' && parsed.view!=='pdf'){
     document.removeEventListener('keydown',_pdfKey);
     document.body.style.overflow='';
+    document.body.classList.remove('in-pdf');
   }
   if(parsed.view==='pdf' && prev!=='pdf'){
     _pdfFullpage=false; _pdfDrawerOpen=false;
     document.addEventListener('keydown',_pdfKey);
     window.scrollTo({top:0, behavior:'instant'});
+    document.body.classList.add('in-pdf');
   }
   if(prev==='volume' && parsed.view!=='volume') document.removeEventListener('keydown',_volKey);
   if(parsed.view==='volume' && prev!=='volume') document.addEventListener('keydown',_volKey);
