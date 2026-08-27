@@ -154,7 +154,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 
 /* ══════════════ VOLUME VIEW ══════════════ */
 .back-bar{padding:16px 0 4px}
-.reader{display:grid;grid-template-columns:360px 1fr;column-gap:40px;row-gap:16px;
+.reader{display:grid;grid-template-columns:360px 1fr;gap:40px;
   padding:6px 0 80px;align-items:start}
 .toc{position:sticky;top:68px;max-height:calc(100vh - 88px);
   overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
@@ -176,15 +176,13 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .ti .au{display:block;font-size:13px;color:var(--soft);margin-top:2px}
 .ti .cw{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 
-/* Colophon — field list below the article card */
-.colophon{margin:0;padding:0}
+/* Colophon — field list inside the article card */
+.colophon{margin:24px 0 0;padding-top:20px;border-top:1px solid var(--line)}
 .colo-row{padding:6px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
 .colo-key{font-size:10px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;
   font-family:"Noto Serif Devanagari",serif}
 .colo-val{font-size:13px;color:var(--ink);line-height:1.5}
-.reader-colo{grid-column:2;padding:18px clamp(14px,3vw,32px) 20px;
-  border:1px solid var(--line);border-radius:6px;background:var(--paper2)}
-/* Colophon inside no-articles panel: indented with a top border */
+/* Colophon inside no-articles panel */
 .na-body .colophon{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
 
 /* Article page */
@@ -271,7 +269,6 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
   .toc{display:contents}
   /* Article comes before the TOC list on mobile */
   .page{order:5}
-  .reader-colo{order:7}
   .toc-list-section{order:10;margin-top:0;border-top:1px solid var(--line);padding-top:16px}
   .contrib{grid-template-columns:1fr}
   .az{position:static}
@@ -1531,7 +1528,8 @@ function viewVolume(){
         <button class="art-navbtn next" ${next?'':'disabled'} onclick="go('volume',{vol:${vol.vol},itemId:${S.itemId+1}})">
           <span class="ant">${next?next.title:''}</span>${icon('chevron-right')}
         </button>
-      </div>`;
+      </div>
+      ${coloHtml}`;
 
     return `<div class="wrap fade">
     <div class="back-bar"><button class="back" onclick="go('shelf')">${icon('arrow-left')} सबै अङ्क</button></div>
@@ -1554,7 +1552,6 @@ function viewVolume(){
         </div>
       </aside>
       <article class="page" aria-live="polite">${artContent}</article>
-      ${coloHtml ? `<div class="reader-colo">${coloHtml}</div>` : ''}
     </div>
     </div>`;
   }
