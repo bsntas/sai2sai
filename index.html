@@ -176,12 +176,14 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .ti .au{display:block;font-size:13px;color:var(--soft);margin-top:2px}
 .ti .cw{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 
-/* Colophon — field list in TOC sidebar */
+/* Colophon — field list below the article card */
 .colophon{margin:0;padding:0}
 .colo-row{padding:6px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
 .colo-key{font-size:10px;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;
   font-family:"Noto Serif Devanagari",serif}
 .colo-val{font-size:13px;color:var(--ink);line-height:1.5}
+.reader-colo{grid-column:2;padding:18px clamp(14px,3vw,32px) 20px;
+  border:1px solid var(--line);border-radius:6px;background:var(--paper2)}
 /* Colophon inside no-articles panel: indented with a top border */
 .na-body .colophon{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
 
@@ -269,6 +271,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
   .toc{display:contents}
   /* Article comes before the TOC list on mobile */
   .page{order:5}
+  .reader-colo{order:7}
   .toc-list-section{order:10;margin-top:0;border-top:1px solid var(--line);padding-top:16px}
   .contrib{grid-template-columns:1fr}
   .az{position:static}
@@ -1545,13 +1548,13 @@ function viewVolume(){
         <div class="toc-actions">
           <button class="pdfbtn" style="font-size:13px;padding:8px 16px" onclick="go('pdf',{vol:${vol.vol},pdfPage:1})">PDF पढ्नुहोस् ${icon('arrow-right')}</button>
         </div>
-        ${coloHtml}
         <div class="toc-list-section">
           <div class="toc-label">अनुक्रमणिका</div>
           <ul class="toc-list">${tocList}</ul>
         </div>
       </aside>
       <article class="page" aria-live="polite">${artContent}</article>
+      ${coloHtml ? `<div class="reader-colo">${coloHtml}</div>` : ''}
     </div>
     </div>`;
   }
