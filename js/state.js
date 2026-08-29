@@ -51,8 +51,8 @@ function go(view, params){
   _updateNav();
   render();
   if(view!=='pdf'){
-    if(view==='volume' && prevView==='volume' && S.vol===prevVol){
-      // next/prev within same volume: scroll article into view
+    if(view==='volume' && prevView==='volume' && S.vol===prevVol && S.itemId>0){
+      // navigating to a non-first article within same volume: scroll it into view
       const art = document.querySelector('article.page');
       if(art) art.scrollIntoView({behavior:'smooth', block:'start'});
     } else {
@@ -231,9 +231,13 @@ function _applyParsed(parsed){
   _updateNav();
   render();
   if(parsed.view==='volume'){
-    const art = document.querySelector('article.page');
-    if(art) art.scrollIntoView({behavior:'smooth', block:'start'});
-    else window.scrollTo({top:0, behavior:'smooth'});
+    if((parsed.itemId||0) > 0){
+      const art = document.querySelector('article.page');
+      if(art) art.scrollIntoView({behavior:'smooth', block:'start'});
+      else window.scrollTo({top:0, behavior:'smooth'});
+    } else {
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
   } else if(parsed.view!=='pdf'){
     window.scrollTo({top:0, behavior:'smooth'});
   }
