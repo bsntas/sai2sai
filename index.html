@@ -620,6 +620,40 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .art-perma:hover{color:var(--gold);opacity:1!important;background:rgba(168,120,32,.08)}
 .perma-copied{color:var(--leaf)!important;opacity:1!important}
 @media(hover:none){.perma,.art-perma{opacity:.4}}
+
+/* ══════════════════ CONTACT ══════════════════ */
+.contact-wrap{max-width:680px;margin:0 auto;padding:52px 0 80px}
+.contact-hero{margin-bottom:36px}
+.contact-hero h1{font-family:"Tiro Devanagari Hindi",serif;font-size:clamp(32px,6vw,52px);margin:0 0 12px;line-height:1.1}
+.contact-hero .lead{color:var(--soft);font-size:17px;max-width:56ch;margin:0}
+.contact-card{background:var(--card);border:1px solid var(--line);border-radius:8px;
+  box-shadow:0 18px 50px -30px rgba(26,42,58,.35);padding:32px clamp(20px,4vw,40px) 36px}
+.cf-field{margin-bottom:22px}
+.cf-label{display:block;font-size:13.5px;letter-spacing:.04em;color:var(--ink);font-weight:600;
+  margin-bottom:6px;font-family:"Noto Serif Devanagari",serif}
+.cf-req{color:var(--kumkum);margin-left:2px}
+.cf-inp,.cf-ta{width:100%;font-family:"Noto Serif Devanagari",serif;font-size:16px;
+  background:var(--paper);border:1.5px solid var(--line);border-radius:6px;
+  padding:10px 14px;color:var(--ink);transition:border-color .16s,box-shadow .16s;
+  -webkit-appearance:none;appearance:none}
+.cf-inp:focus,.cf-ta:focus{outline:none;border-color:var(--kumkum);box-shadow:0 0 0 3px rgba(217,112,24,.14)}
+.cf-ta{min-height:180px;resize:vertical;line-height:1.65}
+.cf-hint{font-size:12.5px;color:var(--soft);margin-top:5px}
+.cf-math{display:flex;align-items:center;gap:10px}
+.cf-math-q{font-family:"Tiro Devanagari Hindi",serif;font-size:17px;color:var(--ink)}
+.cf-math .cf-inp{width:90px;flex-shrink:0}
+.cf-err{color:#c0392b;font-size:13.5px;margin-top:10px;padding:10px 14px;
+  background:rgba(192,57,43,.07);border-radius:5px;border-left:3px solid #c0392b}
+.cf-submit{width:100%;font-size:17px;padding:13px 28px;border-radius:8px;margin-top:8px;
+  justify-content:center;cursor:pointer}
+.cf-submit:disabled{opacity:.55;cursor:not-allowed}
+.cf-success{text-align:center;padding:40px 20px}
+.cf-success-icon{font-size:52px;margin-bottom:16px}
+.cf-success h2{font-family:"Tiro Devanagari Hindi",serif;font-size:28px;margin:0 0 10px;color:var(--indigo)}
+.cf-success p{color:var(--soft);font-size:16px;max-width:42ch;margin:0 auto 24px}
+.cf-note{font-size:13px;color:var(--soft);margin-top:24px;padding-top:16px;
+  border-top:1px solid var(--line);display:flex;gap:8px;line-height:1.6}
+.cf-note svg{flex-shrink:0;margin-top:3px}
 </style>
 </head>
 <body>
@@ -633,6 +667,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
       <button class="nav-tab" data-view="shelf" onclick="go('shelf')">अङ्कहरू</button>
       <button class="nav-tab" data-view="allContributors" onclick="go('allContributors',{authorIdx:0})">योगदानकर्ता</button>
       <button class="nav-tab" data-view="journey" onclick="go('journey')"><span class="nav-journey-label">यात्रा – एक दशक</span><span class="nav-journey-short">यात्रा</span></button>
+      <button class="nav-tab" data-view="contact" onclick="go('contact')">सम्पर्क</button>
     </nav>
   </div>
 </header>
@@ -1349,7 +1384,8 @@ function _scrollActiveContrib(){
 
 function _updateNav(){
   const activeView = (S.view==='shelf'||S.view==='volume'||S.view==='pdf') ? 'shelf' :
-                     S.view==='journey' ? 'journey' : 'allContributors';
+                     S.view==='journey' ? 'journey' :
+                     S.view==='contact' ? 'contact' : 'allContributors';
   document.querySelectorAll('.nav-tab').forEach(btn=>{
     if(btn.dataset.view===activeView) btn.setAttribute('aria-current','true');
     else btn.removeAttribute('aria-current');
@@ -1367,6 +1403,7 @@ function _stateHash(){
   if(S.view==='pdf') return S.pdfPage>1 ? `#pdf/${v}/p${S.pdfPage}` : `#pdf/${v}`;
   if(S.view==='allContributors') return S.authorIdx>0 ? `#contributors/i${S.authorIdx}` : '#contributors';
   if(S.view==='journey') return '#journey';
+  if(S.view==='contact') return '#contact';
   return '#shelf';
 }
 
@@ -1398,6 +1435,7 @@ function _parseHash(){
     return {view:'allContributors', authorIdx};
   }
   if(parts[0]==='journey') return {view:'journey'};
+  if(parts[0]==='contact') return {view:'contact'};
   return {view:'shelf'};
 }
 
@@ -2436,6 +2474,121 @@ function pdfFilterAuthor(author){
   });
 }
 
+/* ════════════════════════════════════════════════════
+   CONTACT FORM
+   Web3Forms access key — get yours free at https://web3forms.com
+   The key is linked to the email that receives submissions.
+   Add additional recipient emails in the Web3Forms dashboard.
+   ════════════════════════════════════════════════════ */
+const CONTACT_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY'; // ← replace before going live
+
+function viewContact(){
+  const a = Math.floor(Math.random()*8)+2;
+  const b = Math.floor(Math.random()*8)+1;
+  const ans = a + b;
+  return `<div class="wrap fade">
+  <div class="contact-wrap">
+    <div class="contact-hero">
+      <p class="kicker">सम्पर्क</p>
+      <h1>हामीसँग सम्पर्क<br>गर्नुहोस्</h1>
+      <p class="lead">लेख, कविता, अनुभव वा अन्य सन्देश पठाउनुहोस्। हामी यथासक्य छिटो जवाफ दिने प्रयास गर्नेछौं।</p>
+    </div>
+    <div class="contact-card" id="cf-wrap">
+      <form id="cf" onsubmit="submitContact(event,${ans})" novalidate>
+        <input type="text" name="_honey" style="display:none;position:absolute;left:-9999px" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="cf-field">
+          <label class="cf-label" for="cf-subj">विषय<span class="cf-req">*</span></label>
+          <input class="cf-inp" type="text" id="cf-subj" name="subject" required
+            placeholder="लेखको शीर्षक वा सन्देशको विषय">
+        </div>
+        <div class="cf-field">
+          <label class="cf-label" for="cf-body">सन्देश<span class="cf-req">*</span></label>
+          <textarea class="cf-ta" id="cf-body" name="message" required
+            placeholder="यहाँ आफ्नो सन्देश लेख्नुहोस्…"></textarea>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label" for="cf-email">तपाईंको इमेल<span class="cf-req">*</span></label>
+          <input class="cf-inp" type="email" id="cf-email" name="email" required
+            placeholder="your@email.com" autocomplete="email">
+          <p class="cf-hint">हामी यही इमेलमा जवाफ दिनेछौं।</p>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">स्प्याम जाँच<span class="cf-req">*</span></label>
+          <div class="cf-math">
+            <span class="cf-math-q">${deva(a)} + ${deva(b)} = ?</span>
+            <input class="cf-inp" type="number" name="_math" id="cf-math" required
+              placeholder="उत्तर" min="1" max="25" inputmode="numeric">
+          </div>
+        </div>
+        <div id="cf-err" class="cf-err" hidden></div>
+        <button type="submit" class="btn cf-submit" id="cf-btn">पठाउनुहोस् →</button>
+        <div class="cf-note">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          तपाईंको सन्देश सम्पादक मण्डलसम्म पुग्नेछ। प्रकाशनसम्बन्धी जुनसुकै कुरा जान्न चाहनुभए पनि सम्पर्क गर्नुहोस्।
+        </div>
+      </form>
+    </div>
+  </div>
+</div>`;
+}
+
+async function submitContact(e, expectedAns){
+  e.preventDefault();
+  const form = e.target;
+  const errEl = document.getElementById('cf-err');
+  const btn   = document.getElementById('cf-btn');
+
+  // Honeypot: bots fill hidden field, humans leave it empty
+  if(form._honey && form._honey.value) return;
+
+  // Math CAPTCHA
+  const mathVal = parseInt(form._math.value, 10);
+  if(isNaN(mathVal) || mathVal !== expectedAns){
+    errEl.textContent = 'स्प्याम जाँच गलत छ। कृपया पुनः प्रयास गर्नुहोस्।';
+    errEl.hidden = false;
+    form._math.focus();
+    return;
+  }
+
+  errEl.hidden = true;
+  btn.disabled = true;
+  btn.textContent = 'पठाउँदै…';
+
+  const data = new FormData();
+  data.append('access_key', CONTACT_KEY);
+  data.append('subject', 'sai2sai.in — ' + form.subject.value.trim());
+  data.append('from_name', 'sai2sai.in सम्पर्क फारम');
+  data.append('reply_to', form.email.value.trim());
+  data.append('email', form.email.value.trim());
+  data.append('message',
+    'प्रेषक: ' + form.email.value.trim() + '\n\n' + form.message.value.trim());
+  data.append('botcheck', '');
+
+  try {
+    const res  = await fetch('https://api.web3forms.com/submit', {method:'POST', body:data});
+    const json = await res.json();
+    if(json.success){
+      document.getElementById('cf-wrap').innerHTML = `
+        <div class="cf-success">
+          <div class="cf-success-icon">🙏</div>
+          <h2>धन्यवाद!</h2>
+          <p>तपाईंको सन्देश सफलतापूर्वक पठाइयो। हामी छिटै जवाफ दिनेछौं।</p>
+          <button class="btn" onclick="go('shelf')">गृहपृष्ठमा फर्कनुहोस्</button>
+        </div>`;
+    } else {
+      throw new Error(json.message || 'submit failed');
+    }
+  } catch(_){
+    errEl.textContent = 'सन्देश पठाउन सकिएन। कृपया केही समयपछि पुनः प्रयास गर्नुहोस्।';
+    errEl.hidden = false;
+    btn.disabled = false;
+    btn.textContent = 'पठाउनुहोस् →';
+  }
+}
+
 /* ── Keyboard handler ── */
 function _volKey(e){
   if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='TEXTAREA') return;
@@ -2467,6 +2620,7 @@ function render(){
     S.view==='volume' ? viewVolume() :
     S.view==='pdf' ? viewPdfReader() :
     S.view==='journey' ? viewJourney() :
+    S.view==='contact' ? viewContact() :
     S.view==='allContributors' ? viewAllContributors() :
     viewContributors();
   if(S.view==='pdf'){ setTimeout(_initPdfReader, 0); document.body.classList.add('in-pdf'); }
