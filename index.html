@@ -14,10 +14,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="description" content="साईदेखि साईसम्मको वार्षिक स्मारिका — भगवान् श्री सत्य साई बाबाका भक्तहरूका कविता, अनुभव, लेख अनि नियात्राको संग्रह। वर्ष २०१६ देखि प्रकाशित।"/>
 <title>साईदेखि साईसम्म · sai2sai</title>
-<link rel="icon" type="image/png" href="logo/sai2sai.png">
-<link rel="apple-touch-icon" href="logo/sai2sai.png">
+<link rel="icon" type="image/png" href="logo/icon-192.png">
+<link rel="apple-touch-icon" href="logo/icon-192.png">
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#FDF8F2">
+<meta name="apple-mobile-web-app-title" content="sai2sai">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.sai2sai.in/">
+<meta property="og:title" content="साईदेखि साईसम्म">
+<meta property="og:description" content="साईदेखि साईसम्मको वार्षिक स्मारिका — भगवान् श्री सत्य साई बाबाका भक्तहरूका कविता, अनुभव, लेख अनि नियात्राको संग्रह। वर्ष २०१६ देखि प्रकाशित।">
+<meta property="og:image" content="https://www.sai2sai.in/logo/icon-512.png">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="साईदेखि साईसम्म">
+<meta name="twitter:description" content="साईदेखि साईसम्मको वार्षिक स्मारिका — भगवान् श्री सत्य साई बाबाका भक्तहरूका कविता, अनुभव, लेख अनि नियात्राको संग्रह।">
+<meta name="twitter:image" content="https://www.sai2sai.in/logo/icon-512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
@@ -82,5 +96,10 @@
 <script src="js/views/contact.js"></script>
 <!-- State, router, and app init (depends on everything above) -->
 <script src="js/state.js"></script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+}
+</script>
 </body>
 </html>
