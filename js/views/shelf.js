@@ -13,7 +13,7 @@ function viewShelf(){
     const ph = placeholderSrc(vol);
     return `<button class="vol-card" onclick="go('volume',{vol:${vol.vol}})" title="${vol.name} · वर्ष ${vol.volD} (${vol.year})">
       <div class="vol-thumb">
-        <img src="${vol.cover}" alt="वर्ष ${vol.volD}" onerror="this.onerror=null;this.src='${ph}'" style="width:100%;height:100%;object-fit:cover;display:block"/>
+        <img src="${vol.cover}" alt="वर्ष ${vol.volD}" loading="lazy" onerror="this.onerror=null;this.src='${ph}'" style="width:100%;height:100%;object-fit:cover;display:block"/>
         ${isLatest?`<div class="vol-sticker" style="background:var(--kumkum);color:#fff">नवीनतम</div>`:''}
         ${vol.centenary?`<div class="vol-sticker-c" style="background:var(--gold);color:#fff">शताब्दी</div>`:''}
       </div>
