@@ -1,26 +1,45 @@
 # CLAUDE.md — sai2sai codebase guide
 
-Single HTML file SPA. No build tooling. Edit `index.html` directly.
+Modular SPA. No build tooling. Files are plain `<script src>` and `<link rel="stylesheet">` — no bundler, no modules.
 
-## Architecture
-
-Everything lives in `index.html`:
+## File layout
 
 ```
-<style>          CSS (custom properties, component styles, responsive)
-<header>         Sticky nav (अङ्कहरू / योगदानकर्ता / यात्रा tabs)
-<main id="app">  Replaced entirely on each navigation
-<footer>
-<script>         Data + state + routing + views + PDF engine
+index.html              HTML shell: head, header, main#app, footer, <script> tags
+css/
+  styles.css            All CSS: custom properties, component styles, responsive
+js/
+  data.js               VOLUMES array + per-volume item arrays (V1_ITEMS … V10_ITEMS)
+  helpers.js            Pure utility functions (deva, chip, coverImg, byAuthor, icon, …)
+  state.js              State (S), router (go), render(), hash routing, keyboard handlers
+  views/
+    shelf.js            viewShelf() — home grid of all volumes
+    volume.js           viewVolume() — TOC sidebar + article reader
+    contributors.js     viewContributors() — per-volume author list
+    all-contributors.js viewAllContributors() — cross-volume author search
+    journey.js          viewJourney() — magazine history / decade retrospective
+    pdf.js              viewPdfReader() + entire PDF.js engine
+    contact.js          viewContact() + submitContact()
 ```
+
+### Load order (critical)
+
+`index.html` loads scripts in this exact order — each depends on what precedes it:
+
+1. `js/data.js` — defines `VOLUMES`, `V1_ITEMS`, …
+2. `js/helpers.js` — uses `VOLUMES`
+3. `js/views/*.js` — use `VOLUMES`, helpers, and each other
+4. `js/state.js` — uses everything above; calls `_initFromHash()` at the very end
+
+All functions are **global** (classic scripts, not ES modules) because HTML templates use inline `onclick="go(...)"` handlers.
 
 ### State
 
 ```js
-let S = {view, vol, itemId, authorIdx, showColophon, pdfPage};
+let S = {view, vol, itemId, authorIdx, showColophon, pdfPage, pdfFrom};
 ```
 
-`view` is one of: `'shelf'` | `'volume'` | `'contributors'` | `'allContributors'` | `'journey'` | `'pdf'`
+`view` is one of: `'shelf'` | `'volume'` | `'contributors'` | `'allContributors'` | `'journey'` | `'pdf'` | `'contact'`
 
 ### Routing
 
@@ -37,9 +56,10 @@ Hash format:
 - `#v1/a3` → volume 1, article at index 3
 - `#contrib/1` → contributors for volume 1
 - `#contrib/1/i2` → contributors, author at index 2
-- `#contrib/all` → cross-volume contributors list
-- `#contrib/all/i5` → cross-volume contributors, author at index 5
+- `#contributors` → cross-volume contributors list
+- `#contributors/i5` → cross-volume contributors, author at index 5
 - `#journey` → journey/history page
+- `#contact` → contact page
 - `#pdf/1/p9` → PDF reader, volume 1, page 9
 
 `_parseHash()` and `_stateHash()` convert between hash strings and state.  
@@ -47,14 +67,15 @@ Hash format:
 
 ### Views
 
-| Function | Renders |
-|---|---|
-| `viewShelf()` | Grid of all volumes + featured card |
-| `viewVolume()` | TOC sidebar + article reader panel |
-| `viewContributors()` | Per-volume author list + their works |
-| `viewAllContributors()` | Cross-volume author search + detail panel |
-| `viewJourney()` | Magazine history / decade retrospective |
-| `viewPdfReader()` | PDF.js canvas + sidebar TOC + float nav |
+| File | Function | Renders |
+|---|---|---|
+| `views/shelf.js` | `viewShelf()` | Grid of all volumes + featured card |
+| `views/volume.js` | `viewVolume()` | TOC sidebar + article reader panel |
+| `views/contributors.js` | `viewContributors()` | Per-volume author list + their works |
+| `views/all-contributors.js` | `viewAllContributors()` | Cross-volume author search + detail panel |
+| `views/journey.js` | `viewJourney()` | Magazine history / decade retrospective |
+| `views/pdf.js` | `viewPdfReader()` | PDF.js canvas + sidebar TOC + float nav |
+| `views/contact.js` | `viewContact()` | Contact form |
 
 ### Data
 
@@ -73,7 +94,8 @@ const VOLUMES = [{vol, volD, year, yearEn, date, bday, name, cover, pdf, pages, 
 
 ### PDF engine
 
-PDF.js is loaded lazily on first PDF view. State:
+Entirely in `js/views/pdf.js`. PDF.js is loaded lazily on first PDF view. Runtime state lives in `js/state.js` (alongside `S`) because `go()` reads and resets it when entering/leaving the PDF view:
+
 - `_pdf` — pdfjsLib document
 - `_pdfZoom` — `'fit'` | number (scale factor)
 - `_pdfRendering` — prevents concurrent renders
@@ -83,18 +105,20 @@ Key functions: `_initPdfReader()`, `_renderPage(num)`, `_tocHighlight(pageNum)`.
 
 Fullpage mode: `position:fixed; inset:0; z-index:300` via `.fullpage` class on `.pdf-layout`. Always opens at `fit` zoom.
 
-### Helpers
+### Helpers (`js/helpers.js`)
 
 - `deva(n)` — converts ASCII digits to Devanagari (0→०, 1→१, …)
 - `chip(genre)` — returns genre badge `<span>`
 - `coverImg(vol, attrs)` — `<img>` with inline SVG placeholder fallback
 - `placeholderSrc(vol)` — generates an SVG data URI cover placeholder
 - `byAuthor(items)` — groups items by author name
-- `copyPermalink(e, hash)` — copies full URL to clipboard; shows ✓ briefly
+- `icon(n)` — returns SVG icon markup by name
+
+`copyPermalink(e, hash)` lives in `js/state.js` (copies full URL to clipboard; shows ✓ briefly).
 
 ## Adding articles to a volume
 
-See README.md. After adding `VNN_ITEMS`, the TOC, contributors view, and PDF sidebar populate automatically — no other code changes needed.
+Edit `js/data.js`: populate the relevant `VNN_ITEMS` array and ensure the matching `VOLUMES` entry references it via `items: VNN_ITEMS`. The TOC, contributors view, and PDF sidebar populate automatically — no other code changes needed.
 
 ## Covers and PDFs
 
@@ -111,3 +135,4 @@ Missing covers fall back to an SVG placeholder that shows the volume name and ye
 - PDF sidebar TOC IDs use `ptoc-{page}` and `dtoc-{page}` prefixes to distinguish the main sidebar from the fullpage drawer.
 - The Journey nav tab uses two spans (`.nav-journey-label` for desktop, `.nav-journey-short` for mobile ≤640px). The short span is hidden by CSS (`.nav-journey-short{display:none}`) and revealed by the media query — do **not** add an inline `style="display:none"` to it as that would override the media query.
 - `.nav-journey-short` default hidden state lives in the regular CSS block (not inside the media query) so inline styles can never accidentally shadow it.
+- PDF runtime state (`_pdf`, `_pdfRendering`, etc.) is declared in `js/state.js`, not `js/views/pdf.js`, because `go()` in state.js directly reads and resets those vars when entering/leaving PDF view.
