@@ -2476,11 +2476,11 @@ function pdfFilterAuthor(author){
 
 /* ════════════════════════════════════════════════════
    CONTACT FORM
-   Web3Forms access key — get yours free at https://web3forms.com
-   The key is linked to the email that receives submissions.
-   Add additional recipient emails in the Web3Forms dashboard.
+   Formspree endpoint — sign up at formspree.io, create a form,
+   paste the endpoint URL (https://formspree.io/f/xxxxxxxx) below.
+   Add a second recipient in the Formspree form settings.
    ════════════════════════════════════════════════════ */
-const CONTACT_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY'; // ← replace before going live
+const CONTACT_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID'; // ← replace before going live
 
 function viewContact(){
   const a = Math.floor(Math.random()*8)+2;
@@ -2558,19 +2558,16 @@ async function submitContact(e, expectedAns){
   btn.textContent = 'पठाउँदै…';
 
   const data = new FormData();
-  data.append('access_key', CONTACT_KEY);
-  data.append('subject', 'sai2sai.in — ' + form.subject.value.trim());
-  data.append('from_name', 'sai2sai.in सम्पर्क फारम');
-  data.append('reply_to', form.email.value.trim());
   data.append('email', form.email.value.trim());
-  data.append('message',
-    'प्रेषक: ' + form.email.value.trim() + '\n\n' + form.message.value.trim());
-  data.append('botcheck', '');
+  data.append('_subject', 'sai2sai.in — ' + form.subject.value.trim());
+  data.append('subject', form.subject.value.trim());
+  data.append('message', form.message.value.trim());
 
   try {
-    const res  = await fetch('https://api.web3forms.com/submit', {method:'POST', body:data});
-    const json = await res.json();
-    if(json.success){
+    const res = await fetch(CONTACT_ENDPOINT, {
+      method: 'POST', body: data, headers: {'Accept': 'application/json'}
+    });
+    if(res.ok){
       document.getElementById('cf-wrap').innerHTML = `
         <div class="cf-success">
           <div class="cf-success-icon">🙏</div>
@@ -2579,7 +2576,8 @@ async function submitContact(e, expectedAns){
           <button class="btn" onclick="go('shelf')">गृहपृष्ठमा फर्कनुहोस्</button>
         </div>`;
     } else {
-      throw new Error(json.message || 'submit failed');
+      const json = await res.json().catch(()=>({}));
+      throw new Error((json.errors||[]).map(x=>x.message).join(', ') || 'submit failed');
     }
   } catch(_){
     errEl.textContent = 'सन्देश पठाउन सकिएन। कृपया केही समयपछि पुनः प्रयास गर्नुहोस्।';
