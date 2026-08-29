@@ -1,0 +1,16 @@
+{
+  "name": "साईदेखि साईसम्म",
+  "short_name": "sai2sai",
+  "description": "साईदेखि साईसम्मको वार्षिक स्मारिका — भगवान् श्री सत्य साई बाबाका भक्तहरूका कविता, अनुभव, लेख अनि नियात्राको संग्रह।",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#FDF8F2",
+  "theme_color": "#FDF8F2",
+  "icons": [
+    {
+      "src": "logo/sai2sai.png",
+      "sizes": "614x615",
+      "type": "image/png"
+    }
+  ]
+}
