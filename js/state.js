@@ -251,4 +251,3 @@ function _initFromHash(){
 }
 
 _initFromHash();
-</script>
