@@ -54,21 +54,14 @@ function viewPdfReader(){
       <div class="pdf-bar">
         <button class="pdf-back" onclick="_pdfBack()">${icon('arrow-left')} ${S.pdfFrom&&S.pdfFrom.view==='allContributors'?'योगदानकर्ता':'अङ्क विवरण'}</button>
         <div class="pdf-crumb" id="pcrumb"></div>
-        <div class="pdf-pgnav">
-          <button class="pdf-pgbtn" id="pprev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ (←)">${icon('chevron-left')}</button>
-          <input class="pdf-pginput" id="ppg" type="number" min="1" value="1"
-            onchange="pdfJump(+this.value)" onkeydown="if(event.key==='Enter')pdfJump(+this.value)"
-            aria-label="पृष्ठ सङ्ख्या">
-          <span class="pdf-pgtotal">/ <span id="ptotal">—</span></span>
-          <button class="pdf-pgbtn" id="pnext" onclick="pdfNext()" disabled title="अर्को पृष्ठ (→)">${icon('chevron-right')}</button>
-        </div>
-        <div class="pdf-sep" aria-hidden="true"></div>
         <div class="pdf-zoom">
           <button class="pdf-zbtn" id="pzout" onclick="pdfZoomOut()" title="सानो (−)">${icon('minus')}</button>
           <span class="pdf-zlabel" id="pzlbl">—</span>
           <button class="pdf-zbtn" id="pzin" onclick="pdfZoomIn()" title="ठूलो (+)">${icon('plus')}</button>
           <button class="pdf-zbtn pdf-fitbtn" onclick="pdfFit()" title="पृष्ठमा मिलाउनुहोस्">${icon('expand')} FIT</button>
         </div>
+        <div class="pdf-sep" aria-hidden="true"></div>
+        <button class="pdf-sbtoggle" onclick="pdfToggleSidebar()" title="अनुक्रमणिका देखाउनुहोस्/लुकाउनुहोस्">${icon('menu')} अनुक्रम</button>
         <button class="pdf-fullbtn" id="pfullbtn" onclick="pdfToggleFullpage()" title="पूर्ण पर्दा (F)">${icon('expand')}</button>
       </div>
       <div class="pdf-progress"><div class="pdf-progress-bar" id="pprogress"></div></div>
@@ -89,6 +82,15 @@ function viewPdfReader(){
           </div>
         </div>
         <button class="pdf-sidenav" id="pside-next" onclick="pdfNext()" disabled title="अर्को पृष्ठ (→)" aria-label="अर्को पृष्ठ">${icon('chevron-right')}</button>
+      </div>
+      <div class="pdf-bottom-bar">
+        <button class="pdf-pgbtn" id="pprev" onclick="pdfPrev()" disabled title="अघिल्लो पृष्ठ (←)">${icon('chevron-left')}</button>
+        <input class="pdf-pginput" id="ppg" type="number" min="1" value="1"
+          onchange="pdfJump(+this.value)" onkeydown="if(event.key==='Enter')pdfJump(+this.value)"
+          aria-label="पृष्ठ सङ्ख्या">
+        <span class="pdf-pgtotal">/ <span id="ptotal">—</span></span>
+        <button class="pdf-pgbtn" id="pnext" onclick="pdfNext()" disabled title="अर्को पृष्ठ (→)">${icon('chevron-right')}</button>
+        <span class="pdf-bb-hint">← → तीर कुञ्जीहरू प्रयोग गर्नुहोस्</span>
       </div>
     </div>
   </div>

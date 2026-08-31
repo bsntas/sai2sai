@@ -269,7 +269,13 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 }
 
 /* ══════════════ PDF READER ══════════════ */
-.pdf-layout{display:grid;grid-template-columns:1fr 300px;grid-template-rows:1fr;height:calc(100vh - 62px);overflow:hidden}
+
+/* PDF mode: hide chrome on all devices so reader owns the full viewport */
+body.in-pdf header.site{display:none}
+body.in-pdf footer.site{display:none}
+body.in-pdf #app{min-height:0}
+
+.pdf-layout{display:grid;grid-template-columns:1fr 280px;grid-template-rows:1fr;height:100vh;height:100dvh;overflow:hidden}
 .pdf-main{grid-column:1;grid-row:1}
 .pdf-sidebar{grid-column:2;grid-row:1;overflow:hidden;border-left:1px solid var(--line);background:var(--card);display:flex;flex-direction:column}
 .pdf-sb-head{padding:16px 18px 12px;border-bottom:1px solid var(--line);flex-shrink:0}
@@ -294,14 +300,14 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .pdf-ti-pg{font-size:13px;color:var(--gold);flex-shrink:0;font-variant-numeric:tabular-nums;padding-top:1px}
 
 .pdf-main{display:flex;flex-direction:column;overflow:hidden}
-.pdf-bar{display:flex;align-items:center;gap:8px;padding:9px 14px;
-  border-bottom:1px solid var(--line);background:var(--card);flex-shrink:0;flex-wrap:wrap}
+.pdf-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;
+  border-bottom:1px solid var(--line);background:var(--card);flex-shrink:0}
 .pdf-back{background:none;border:1px solid var(--line);color:var(--soft);
   font-size:13.5px;padding:5px 12px;border-radius:6px;cursor:pointer;
   font-family:"Noto Serif Devanagari",serif;transition:.15s;white-space:nowrap;
   display:inline-flex;align-items:center;gap:5px}
 .pdf-back:hover{border-color:var(--ink);color:var(--ink)}
-.pdf-pgnav{display:flex;align-items:center;gap:5px;margin-left:auto}
+
 .pdf-pgbtn{width:30px;height:30px;border-radius:7px;border:1px solid var(--line);
   background:var(--card);color:var(--ink);cursor:pointer;font-size:17px;
   display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1}
@@ -330,10 +336,12 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
   letter-spacing:.06em;font-family:"Noto Serif Devanagari",serif;opacity:.85}
 
 /* sidebar collapse toggle */
-.pdf-sbtoggle{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);
-  background:var(--card);color:var(--soft);cursor:pointer;font-size:13px;
-  display:flex;align-items:center;justify-content:center;transition:.15s;line-height:1;flex-shrink:0}
+.pdf-sbtoggle{height:30px;padding:0 10px;border-radius:6px;border:1px solid var(--line);
+  background:var(--card);color:var(--soft);cursor:pointer;font-size:12.5px;
+  display:flex;align-items:center;gap:4px;transition:.15s;line-height:1;flex-shrink:0;
+  font-family:"Noto Serif Devanagari",serif;white-space:nowrap}
 .pdf-sbtoggle:hover{background:var(--paper2);color:var(--ink)}
+@media(max-width:800px){.pdf-sbtoggle{display:none}}
 .pdf-layout.sb-hidden{grid-template-columns:1fr}
 .pdf-layout.sb-hidden .pdf-sidebar{display:none}
 
@@ -342,12 +350,12 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .pdf-progress-bar{height:100%;background:var(--kumkum);width:0%;
   transition:width .3s ease;border-radius:0 2px 2px 0}
 
-/* ── Page turn animation ── */
-.pdf-canvas-area{flex:1;overflow:auto;background:var(--paper2);display:flex;
-  justify-content:center;align-items:flex-start;padding:28px 20px}
+/* ── Canvas area ── */
+.pdf-canvas-area{flex:1;overflow:auto;background:#171c27;display:flex;
+  justify-content:center;align-items:flex-start;padding:32px 20px}
 
 /* ── Desktop side prev/next nav ── */
-.pdf-canvas-outer{display:flex;flex-direction:row;flex:1;overflow:hidden;background:var(--paper2)}
+.pdf-canvas-outer{display:flex;flex-direction:row;flex:1;overflow:hidden;background:#171c27}
 .pdf-sidenav{flex-shrink:0;width:52px;height:96px;align-self:center;
   border:none;border-radius:12px;
   background:var(--card);color:var(--ink);
@@ -362,7 +370,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 @media(max-width:800px){.pdf-sidenav{display:none}.pdf-canvas-outer{display:contents}}
 .pdf-flip-stage{display:grid;perspective:1200px;flex-shrink:0}
 .pdf-page-wrap{grid-area:1/1;position:relative;backface-visibility:hidden;
-  box-shadow:0 6px 32px -8px rgba(26,42,58,.50);background:#fff;line-height:0}
+  box-shadow:0 12px 60px rgba(0,0,0,.70),0 4px 16px rgba(0,0,0,.40);background:#fff;line-height:0}
 .pdf-page-wrap canvas{display:block}
 /* old page folds away, revealing new page beneath — like a real book */
 @keyframes pdf-exit-fwd{
@@ -385,14 +393,22 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .pdf-err{text-align:center;color:var(--kumkum);font-size:15px;padding:48px 24px}
 .pdf-err .ei{font-size:42px;margin-bottom:14px;opacity:.5}
 
-/* Hide site header in PDF view on mobile to maximise canvas space */
-@media(max-width:800px){
-  body.in-pdf header.site{display:none}
-  body.in-pdf .pdf-layout{height:100vh;height:100dvh}
-}
+/* ── Bottom page-navigation bar ── */
+.pdf-bottom-bar{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  height:52px;flex-shrink:0;
+  background:var(--card);border-top:1px solid var(--line);
+  padding:0 16px;position:relative}
+.pdf-bb-hint{
+  position:absolute;right:16px;
+  font-size:12px;color:var(--soft);
+  font-family:"Noto Serif Devanagari",serif;
+  letter-spacing:.02em}
+@media(max-width:600px){.pdf-bb-hint{display:none}}
+.pdf-layout.fullpage .pdf-bottom-bar{display:none}
 
 @media(max-width:800px){
-  .pdf-layout{grid-template-columns:1fr;grid-template-rows:1fr clamp(240px,36vw,290px)}
+  .pdf-layout{grid-template-columns:1fr;grid-template-rows:1fr clamp(220px,30vw,270px)}
   .pdf-main{grid-column:1;grid-row:1}
   .pdf-sidebar{grid-column:1;grid-row:2;border-left:none;border-top:1px solid var(--line)}
   .pdf-sb-head{display:block;padding:9px 14px 7px}
@@ -400,12 +416,14 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
   .pdf-sb-filter{display:none}
   .pdf-zoom .pdf-zlabel,.pdf-zoom .pdf-fitbtn{display:none}
   .pdf-crumb{display:none}
+  .pdf-bottom-bar{height:46px}
 }
 @media(max-width:480px){
-  .pdf-layout{grid-template-rows:1fr 220px}
+  .pdf-layout{grid-template-rows:1fr 200px}
   .pdf-bar{padding:7px 10px;gap:5px}
-  .pdf-canvas-area{padding:14px 6px}
+  .pdf-canvas-area{padding:16px 6px}
   .pdf-fullbtn{width:34px;height:34px}
+  .pdf-bottom-bar{height:42px;gap:8px}
 }
 
 /* ── PDF fullpage mode ── */
@@ -417,7 +435,7 @@ button svg,a svg{vertical-align:-0.125em;flex-shrink:0}
 .pdf-layout.fullpage .pdf-sidebar{display:flex}
 .pdf-layout.fullpage .pdf-bar{display:none}
 .pdf-layout.fullpage .pdf-canvas-area{
-  padding:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 80px max(12px,env(safe-area-inset-left,0px))
+  padding:max(20px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 88px max(12px,env(safe-area-inset-left,0px))
 }
 /* TOC hidden state in fullpage */
 .pdf-layout.fullpage.sb-hidden{grid-template-columns:1fr}
